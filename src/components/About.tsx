@@ -1,3 +1,5 @@
+"use client"
+
 import { motion } from 'framer-motion';
 import { ZapIcon, DollarSignIcon, SparklesIcon } from 'lucide-react';
 const HIGHLIGHTS = [

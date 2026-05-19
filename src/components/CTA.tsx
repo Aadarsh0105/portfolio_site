@@ -1,3 +1,5 @@
+"use client"
+
 import { motion } from 'framer-motion';
 import { ArrowRightIcon } from 'lucide-react';
 export function CTA() {
