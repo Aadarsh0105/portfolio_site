@@ -1,0 +1,18 @@
+[
+  {
+    "keywords": ["price", "cost", "fees", "pricing", "plan", "plans"],
+    "answer": "Our pricing starts from $10/month. If you share your requirements, I can suggest the best plan.",
+    "suggestions": ["View plans", "Contact sales", "Share requirements"]
+  },
+  {
+    "keywords": ["refund", "cancel", "cancellation", "money back"],
+    "answer": "Refunds are available within 7 days of purchase. Tell me your order email and I’ll guide you.",
+    "suggestions": ["Refund policy", "Talk to support", "Cancel subscription"]
+  },
+  {
+    "keywords": ["login", "signin", "sign in", "log in", "account"],
+    "answer": "Click the Login button on the top right. If you can’t access your account, try resetting your password.",
+    "suggestions": ["Reset password", "Create account", "Contact support"]
+  }
+]
+

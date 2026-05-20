@@ -31,10 +31,48 @@ const CONTACT_INFO = [
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false);
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    if (submitting) return;
+
+    setError(null);
+    setSubmitting(true);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    const payload = {
+      name: String(data.get('name') ?? ''),
+      email: String(data.get('email') ?? ''),
+      subject: String(data.get('subject') ?? ''),
+      message: String(data.get('message') ?? ''),
+      budget: String(data.get('budget') ?? '')
+    };
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        setError(body?.error ?? 'Something went wrong. Please try again.');
+        return;
+      }
+
+      form.reset();
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 4000);
+    } catch {
+      setError('Network error. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
   return (
     <section id="contact" className="py-24 relative overflow-hidden">
@@ -170,6 +208,7 @@ export function Contact() {
                   </label>
                   <input
                     id="name"
+                    name="name"
                     type="text"
                     required
                     placeholder="Jane Doe"
@@ -185,6 +224,7 @@ export function Contact() {
                   </label>
                   <input
                     id="email"
+                    name="email"
                     type="email"
                     required
                     placeholder="jane@company.com"
@@ -202,6 +242,7 @@ export function Contact() {
                 </label>
                 <input
                   id="subject"
+                  name="subject"
                   type="text"
                   placeholder="Project inquiry"
                   className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:outline-none focus:border-accent-start focus:ring-2 focus:ring-accent-start/20 text-sm transition-all" />
@@ -217,6 +258,7 @@ export function Contact() {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   required
                   rows={5}
                   placeholder="Tell us about your project..."
@@ -253,6 +295,7 @@ export function Contact() {
                 whileTap={{
                   scale: 0.98
                 }}
+                disabled={submitting}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-accent text-white font-medium hover:shadow-lg hover:shadow-accent-start/25 transition-all">
                 
                 {submitted ?
@@ -262,11 +305,15 @@ export function Contact() {
                   </> :
 
                 <>
-                    Send message
+                    {submitting ? 'Sending…' : 'Send message'}
                     <SendIcon className="w-4 h-4" />
                   </>
                 }
               </motion.button>
+
+              {error && (
+                <div className="text-sm text-red-600">{error}</div>
+              )}
             </form>
           </motion.div>
         </div>

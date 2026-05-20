@@ -13,7 +13,7 @@ export function useTheme() {
         return 'dark';
       }
     }
-    return 'dark'; // Default to dark as requested
+    return 'dark'; // Default to dark as in mp-portfolio
   });
   useEffect(() => {
     const root = window.document.documentElement;
