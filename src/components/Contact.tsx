@@ -1,323 +1,239 @@
-"use client"
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  MailIcon,
-  PhoneIcon,
-  MapPinIcon,
-  SendIcon,
-  CheckCircle2Icon } from
-'lucide-react';
-const CONTACT_INFO = [
-{
-  icon: MailIcon,
-  label: 'Email us',
-  value: 'hello@launchfast.io',
-  href: 'mailto:hello@launchfast.io'
-},
-{
-  icon: PhoneIcon,
-  label: 'Call us',
-  value: '+1 (555) 123-4567',
-  href: 'tel:+15551234567'
-},
-{
-  icon: MapPinIcon,
-  label: 'Visit us',
-  value: '123 Innovation Drive, SF',
-  href: '#'
-}];
+import { CheckCircle2, Mail, MapPin, Phone, Send } from 'lucide-react';
 
 export function Contact() {
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (submitting) return;
+    if (isSubmitting) return;
 
     setError(null);
-    setSubmitting(true);
+    setIsSubmitting(true);
 
     const form = e.currentTarget;
     const data = new FormData(form);
+    const company = String(data.get('company') ?? '').trim();
+    const message = String(data.get('message') ?? '').trim();
 
     const payload = {
-      name: String(data.get('name') ?? ''),
-      email: String(data.get('email') ?? ''),
-      subject: String(data.get('subject') ?? ''),
-      message: String(data.get('message') ?? ''),
-      budget: String(data.get('budget') ?? '')
+      name: String(data.get('name') ?? '').trim(),
+      email: String(data.get('email') ?? '').trim(),
+      budget: String(data.get('budget') ?? '').trim(),
+      subject: company ? `Project inquiry from ${company}` : 'Project inquiry',
+      message: company ? `Company: ${company}\n\n${message}` : message
     };
 
     try {
-      const res = await fetch('/api/contact', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(payload)
       });
 
-      if (!res.ok) {
-        const body = await res.json().catch(() => null);
+      if (!response.ok) {
+        const body = await response.json().catch(() => null);
         setError(body?.error ?? 'Something went wrong. Please try again.');
         return;
       }
 
       form.reset();
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 4000);
+      setIsSuccess(true);
+      setTimeout(() => setIsSuccess(false), 5000);
     } catch {
       setError('Network error. Please try again.');
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   };
+
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
-      {/* Subtle background accents */}
-      <div className="absolute top-1/2 left-0 w-72 h-72 bg-accent-start/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />
-      <div className="absolute top-1/2 right-0 w-72 h-72 bg-accent-end/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />
+    <section id="contact" className="py-24 bg-gray-50/50 dark:bg-white/[0.02]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-16">
+          <div>
+            <h2 className="text-sm font-bold text-primary uppercase tracking-widest mb-3">
+              Contact Us
+            </h2>
+            <h3 className="text-3xl md:text-4xl font-bold mb-6">
+              Let&apos;s Build Something Amazing Together
+            </h3>
+            <p className="text-light dark:text-gray-300 mb-10 text-lg">
+              Ready to transform your business? Fill out the form and our team
+              will get back to you within 24 hours to schedule a discovery call.
+            </p>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.h2
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0
-            }}
-            viewport={{
-              once: true
-            }}
-            className="text-3xl md:text-4xl font-bold mb-6">
-            
-            Get in <span className="text-gradient">touch</span>
-          </motion.h2>
-          <motion.p
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0
-            }}
-            viewport={{
-              once: true
-            }}
-            transition={{
-              delay: 0.1
-            }}
-            className="text-lg text-text-secondary">
-            
-            Have a project in mind? Drop us a message and we'll get back to you
-            within 24 hours.
-          </motion.p>
-        </div>
-
-        <div className="grid lg:grid-cols-5 gap-8">
-          {/* Contact Info Sidebar */}
-          <motion.div
-            initial={{
-              opacity: 0,
-              x: -20
-            }}
-            whileInView={{
-              opacity: 1,
-              x: 0
-            }}
-            viewport={{
-              once: true
-            }}
-            className="lg:col-span-2 space-y-4">
-            
-            <div className="p-8 rounded-2xl bg-surface border border-border h-full">
-              <h3 className="text-xl font-bold mb-2">Let's talk</h3>
-              <p className="text-text-secondary text-sm mb-8 leading-relaxed">
-                Prefer a quick chat? Reach us through any of these channels.
-              </p>
-
-              <div className="space-y-5">
-                {CONTACT_INFO.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      className="flex items-start gap-4 group">
-                      
-                      <div className="w-11 h-11 shrink-0 rounded-xl bg-background border border-border flex items-center justify-center text-text-primary group-hover:text-accent-start group-hover:border-accent-start/50 transition-colors">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <div className="text-xs uppercase tracking-wider text-text-secondary font-medium mb-1">
-                          {item.label}
-                        </div>
-                        <div className="text-text-primary font-medium group-hover:text-accent-start transition-colors">
-                          {item.value}
-                        </div>
-                      </div>
-                    </a>);
-
-                })}
-              </div>
-
-              <div className="mt-10 pt-8 border-t border-border">
-                <div className="flex items-center gap-3 text-sm text-text-secondary">
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-                  </span>
-                  Available for new projects
+            <div className="space-y-6">
+              {[
+                {
+                  icon: Mail,
+                  title: 'Email',
+                  detail: 'hello@nexusai.com'
+                },
+                {
+                  icon: Phone,
+                  title: 'Phone',
+                  detail: '+1 (555) 123-4567'
+                },
+                {
+                  icon: MapPin,
+                  title: 'Office',
+                  detail: '100 Innovation Drive, San Francisco, CA'
+                }
+              ].map((item) => (
+                <div key={item.title} className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center shrink-0 shadow-sm">
+                    <item.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-bold mb-1">{item.title}</div>
+                    <div className="text-light dark:text-gray-400">{item.detail}</div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Contact Form */}
           <motion.div
             initial={{
               opacity: 0,
-              x: 20
+              y: 20
             }}
             whileInView={{
               opacity: 1,
-              x: 0
+              y: 0
             }}
             viewport={{
               once: true
             }}
-            className="lg:col-span-3">
-            
-            <form
-              onSubmit={handleSubmit}
-              className="p-8 rounded-2xl bg-surface border border-border space-y-5">
-              
-              <div className="grid sm:grid-cols-2 gap-5">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium mb-2">
-                    
-                    Full name
-                  </label>
+            className="glass-card p-8 rounded-3xl relative overflow-hidden"
+          >
+            {isSuccess ? (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 dark:bg-navy/95 backdrop-blur-sm z-10">
+                <motion.div
+                  initial={{
+                    scale: 0
+                  }}
+                  animate={{
+                    scale: 1
+                  }}
+                  className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4"
+                >
+                  <CheckCircle2 className="w-8 h-8 text-green-500" />
+                </motion.div>
+                <h4 className="text-2xl font-bold mb-2">Message Sent!</h4>
+                <p className="text-light text-center px-6">
+                  We&apos;ll be in touch shortly to discuss your project.
+                </p>
+              </div>
+            ) : null}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">Name *</label>
                   <input
-                    id="name"
                     name="name"
+                    required
                     type="text"
-                    required
-                    placeholder="Jane Doe"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:outline-none focus:border-accent-start focus:ring-2 focus:ring-accent-start/20 text-sm transition-all" />
-                  
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                    placeholder="John Doe"
+                  />
                 </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium mb-2">
-                    
-                    Email
-                  </label>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">Email *</label>
                   <input
-                    id="email"
                     name="email"
-                    type="email"
                     required
-                    placeholder="jane@company.com"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:outline-none focus:border-accent-start focus:ring-2 focus:ring-accent-start/20 text-sm transition-all" />
-                  
+                    type="email"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                    placeholder="john@company.com"
+                  />
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="subject"
-                  className="block text-sm font-medium mb-2">
-                  
-                  Subject
-                </label>
-                <input
-                  id="subject"
-                  name="subject"
-                  type="text"
-                  placeholder="Project inquiry"
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:outline-none focus:border-accent-start focus:ring-2 focus:ring-accent-start/20 text-sm transition-all" />
-                
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">Company</label>
+                  <input
+                    name="company"
+                    type="text"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                    placeholder="Company Name"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">Budget</label>
+                  <select
+                    name="budget"
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
+                  >
+                    <option value="">Select Budget</option>
+                    <option value="10k-25k">$10k - $25k</option>
+                    <option value="25k-50k">$25k - $50k</option>
+                    <option value="50k-100k">$50k - $100k</option>
+                    <option value="100k+">$100k+</option>
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium mb-2">
-                  
-                  Message
-                </label>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">Message *</label>
                 <textarea
-                  id="message"
                   name="message"
                   required
-                  rows={5}
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
                   placeholder="Tell us about your project..."
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:outline-none focus:border-accent-start focus:ring-2 focus:ring-accent-start/20 text-sm transition-all resize-none" />
-                
+                />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-3">
-                  Budget range
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {['< $100', '$100 – $500', '$500 – $2k', '$2k+'].map(
-                    (budget) =>
-                    <label
-                      key={budget}
-                      className="px-4 py-2 rounded-full bg-background border border-border text-sm cursor-pointer hover:border-accent-start/50 transition-colors has-[:checked]:bg-text-primary has-[:checked]:text-background has-[:checked]:border-text-primary">
-                      
-                        <input
-                        type="radio"
-                        name="budget"
-                        value={budget}
-                        className="sr-only" />
-                      
-                        {budget}
-                      </label>
-
-                  )}
-                </div>
-              </div>
-
-              <motion.button
+              <button
                 type="submit"
-                whileTap={{
-                  scale: 0.98
-                }}
-                disabled={submitting}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-accent text-white font-medium hover:shadow-lg hover:shadow-accent-start/25 transition-all">
-                
-                {submitted ?
-                <>
-                    <CheckCircle2Icon className="w-4 h-4" />
-                    Message sent
-                  </> :
+                disabled={isSubmitting}
+                className="w-full btn-primary py-4 mt-2"
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center gap-2">
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    Sending...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    Get Free Consultation <Send className="w-4 h-4" />
+                  </span>
+                )}
+              </button>
 
-                <>
-                    {submitting ? 'Sending…' : 'Send message'}
-                    <SendIcon className="w-4 h-4" />
-                  </>
-                }
-              </motion.button>
-
-              {error && (
-                <div className="text-sm text-red-600">{error}</div>
-              )}
+              {error ? <p className="text-sm text-red-500">{error}</p> : null}
             </form>
           </motion.div>
         </div>
       </div>
-    </section>);
-
+    </section>
+  );
 }

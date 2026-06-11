@@ -1,67 +1,104 @@
-"use client"
-
+import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  CodeIcon,
-  PaletteIcon,
-  LayoutTemplateIcon,
-  ShoppingBagIcon,
-  SearchIcon } from
+  Bot,
+  Code2,
+  Globe,
+  Smartphone,
+  Cloud,
+  Zap,
+  PenTool,
+  Rocket } from
 'lucide-react';
-const SERVICES = [
+const services = [
 {
-  title: 'Website Development',
-  description:
-  'Custom, responsive websites built with modern frameworks for optimal performance and scale.',
-  icon: CodeIcon
+  icon: Bot,
+  title: 'AI Solutions',
+  features: ['AI Chatbots', 'AI Agents', 'Generative AI', 'LLM Integrations'],
+  color: 'text-primary',
+  bg: 'bg-primary/10'
 },
 {
+  icon: Code2,
+  title: 'Custom Software',
+  features: [
+  'SaaS Platforms',
+  'Enterprise Apps',
+  'CRM Systems',
+  'ERP Solutions'],
+
+  color: 'text-secondary',
+  bg: 'bg-secondary/10'
+},
+{
+  icon: Globe,
+  title: 'Web Development',
+  features: ['Corporate Websites', 'Web Apps', 'E-commerce', 'Portals'],
+  color: 'text-accent',
+  bg: 'bg-accent/10'
+},
+{
+  icon: Smartphone,
+  title: 'Mobile App Dev',
+  features: ['Android', 'iOS', 'Cross-platform', 'PWA'],
+  color: 'text-pink-500',
+  bg: 'bg-pink-500/10'
+},
+{
+  icon: Cloud,
+  title: 'Cloud Solutions',
+  features: ['AWS', 'Azure', 'Google Cloud', 'Cloud Migration'],
+  color: 'text-blue-400',
+  bg: 'bg-blue-400/10'
+},
+{
+  icon: Zap,
+  title: 'Automation',
+  features: ['Workflow Automation', 'CRM Automation', 'BPA', 'RPA'],
+  color: 'text-yellow-500',
+  bg: 'bg-yellow-500/10'
+},
+{
+  icon: PenTool,
   title: 'UI/UX Design',
-  description:
-  'Intuitive and engaging user interfaces that provide seamless experiences across all devices.',
-  icon: PaletteIcon
+  features: ['User Research', 'Wireframing', 'Prototyping', 'Design Systems'],
+  color: 'text-orange-500',
+  bg: 'bg-orange-500/10'
 },
 {
-  title: 'Landing Pages',
-  description:
-  'High-converting landing pages designed specifically to turn your visitors into customers.',
-  icon: LayoutTemplateIcon
-},
-{
-  title: 'E-commerce Setup',
-  description:
-  'Complete online store solutions with secure payments and easy inventory management.',
-  icon: ShoppingBagIcon
-},
-{
-  title: 'SEO Optimization',
-  description:
-  'Technical and on-page SEO to improve your visibility and rank higher on search engines.',
-  icon: SearchIcon
+  icon: Rocket,
+  title: 'Digital Transformation',
+  features: [
+  'Tech Consulting',
+  'Legacy Modernization',
+  'IT Strategy',
+  'Data Analytics'],
+
+  color: 'text-green-500',
+  bg: 'bg-green-500/10'
 }];
 
 export function Services() {
   return (
-    <section id="services" className="py-24 relative">
+    <section id="services" className="py-24 bg-gray-50/50 dark:bg-white/[0.02]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-16">
-          <motion.h2
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0
-            }}
-            viewport={{
-              once: true
-            }}
-            className="text-3xl md:text-4xl font-bold mb-4">
-            
-            Our <span className="text-gradient">Services</span>
-          </motion.h2>
-          <motion.p
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <h2 className="text-sm font-bold text-primary uppercase tracking-widest mb-3">
+            Our Services
+          </h2>
+          <h3 className="text-3xl md:text-4xl font-bold mb-6">
+            Comprehensive Technology Solutions
+          </h3>
+          <p className="text-light dark:text-gray-300 text-lg">
+            We provide end-to-end development and consulting services to help
+            you build, scale, and optimize your digital products.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((service, i) =>
+          <motion.div
+            key={i}
             initial={{
               opacity: 0,
               y: 20
@@ -74,55 +111,32 @@ export function Services() {
               once: true
             }}
             transition={{
-              delay: 0.1
+              duration: 0.5,
+              delay: i * 0.1
             }}
-            className="text-lg text-text-secondary max-w-2xl">
+            className="glass-card p-6 rounded-2xl hover:-translate-y-2 transition-all duration-300 group cursor-pointer">
             
-            Everything you need to launch and grow your digital presence, all in
-            one place.
-          </motion.p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SERVICES.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <motion.div
-                key={service.title}
-                initial={{
-                  opacity: 0,
-                  y: 20
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0
-                }}
-                viewport={{
-                  once: true
-                }}
-                transition={{
-                  delay: index * 0.1
-                }}
-                whileHover={{
-                  y: -5
-                }}
-                className="p-8 rounded-2xl bg-surface border border-border hover:border-accent-start/50 hover:shadow-lg hover:shadow-accent-start/5 transition-all group relative overflow-hidden">
+              <div
+              className={`w-12 h-12 rounded-xl ${service.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+              
+                <service.icon className={`w-6 h-6 ${service.color}`} />
+              </div>
+              <h4 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors">
+                {service.title}
+              </h4>
+              <ul className="space-y-2">
+                {service.features.map((feature, j) =>
+              <li
+                key={j}
+                className="text-sm text-light dark:text-gray-400 flex items-center gap-2">
                 
-                {/* Subtle hover glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-accent-start/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-xl bg-background border border-border flex items-center justify-center mb-6 text-text-primary group-hover:text-accent-start transition-colors">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                  <p className="text-text-secondary leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-              </motion.div>);
-
-          })}
+                    <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></span>
+                    {feature}
+                  </li>
+              )}
+              </ul>
+            </motion.div>
+          )}
         </div>
       </div>
     </section>);

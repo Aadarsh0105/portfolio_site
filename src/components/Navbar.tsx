@@ -1,33 +1,55 @@
-"use client"
-
-import { useEffect, useState } from 'react';
-import { MenuIcon, XIcon, RocketIcon } from 'lucide-react';
-import { ThemeToggle } from './ThemeToggle';
-const NAV_LINKS = [
-{
-  name: 'Home',
-  href: '#home'
-},
-{
-  name: 'About',
-  href: '#about'
-},
-{
-  name: 'Services',
-  href: '#services'
-},
-{
-  name: 'Portfolio',
-  href: '#portfolio'
-},
-{
-  name: 'Pricing',
-  href: '#pricing'
-}];
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ChevronRight, Menu, PhoneIcon, X } from 'lucide-react';
+import Image from 'next/image';
+const navLinks = [
+  {
+    name: 'Home',
+    href: '/#home'
+  },
+  {
+    name: 'About',
+    href: '/#about'
+  },
+  {
+    name: 'Services',
+    href: '/#services'
+  },
+  // {
+  //   name: 'Solutions',
+  //   href: '/#solutions'
+  // },
+  // {
+  //   name: 'Industries',
+  //   href: '/#industries'
+  // },
+  {
+    name: 'Pricing',
+    href: '/#pricing'
+  },
+  // {
+  //   name: 'Case Studies',
+  //   href: '/#case-studies'
+  // },
+  {
+    name: 'Blog',
+    href: '/#blog'
+  },
+  // {
+  //   name: 'Careers',
+  //   href: '/#careers'
+  // },
+  {
+    name: 'Contact',
+    href: '/#contact'
+  }];
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const PHONE_NUMBER = process.env.NEXT_PUBLIC_PHONE_NUMBER;
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -35,89 +57,87 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-border py-3' : 'bg-transparent py-5'}`}>
-      
+      className={`fixed left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'top-0 glass-nav py-3 shadow-sm' : 'top-[40px] sm:top-[44px] bg-white/95 backdrop-blur-md py-5'}`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-accent flex items-center justify-center text-white">
-              <RocketIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            </div>
-            <span className="font-heading font-bold text-xl tracking-tight">
-              Launch<span className="text-gradient">Fast</span>
-            </span>
-          </a>
+          <Link href="/" className="flex items-center gap-2 group">
+            <Image
+              src="/logo1.png"
+              alt="Naxora Technology"
+              width={233}
+              height={64}
+              priority
+              quality={90}
+              className="h-10 w-48 w-auto"
+            />
+          </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            <ul className="flex items-center gap-6">
-              {NAV_LINKS.map((link) =>
-              <li key={link.name}>
-                  <a
-                  href={link.href}
-                  className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors">
-                  
-                    {link.name}
-                  </a>
-                </li>
-              )}
-            </ul>
-            <div className="flex items-center gap-4 border-l border-border pl-4">
-              <ThemeToggle />
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+            {navLinks.map((link) =>
               <a
-                href="#contact"
-                className="px-4 py-2 rounded-full bg-text-primary text-background text-sm font-medium hover:opacity-90 transition-opacity">
-                
-                Get Started
+                key={link.name}
+                href={link.href}
+                className="text-sm font-medium text-light hover:text-primary transition-colors whitespace-nowrap">
+
+                {link.name}
               </a>
-            </div>
+            )}
           </nav>
 
-          {/* Mobile Menu Toggle */}
-          <div className="flex items-center gap-4 md:hidden">
-            <ThemeToggle />
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-text-secondary hover:text-text-primary"
-              aria-label="Toggle menu">
-              
-              {isMobileMenuOpen ?
-              <XIcon className="w-6 h-6" /> :
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center gap-4">
+            <a
+              href={`tel:${PHONE_NUMBER}`}
+              className="btn-primary py-2 px-5 text-sm"
+            >
+              <PhoneIcon className="w-4 h-4 me-2" /> Call Now
+            </a>
+          </div>
 
-              <MenuIcon className="w-6 h-6" />
+          {/* Mobile Menu Button */}
+          <div className="flex items-center gap-4 lg:hidden">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-dark">
+
+              {mobileMenuOpen ?
+                <X className="w-6 h-6" /> :
+
+                <Menu className="w-6 h-6" />
               }
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Nav */}
-      {isMobileMenuOpen &&
-      <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border shadow-lg">
-          <div className="px-4 py-6 space-y-4">
-            <ul className="space-y-4">
-              {NAV_LINKS.map((link) =>
-            <li key={link.name}>
-                  <a
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block text-base font-medium text-text-secondary hover:text-text-primary">
-                
-                    {link.name}
-                  </a>
-                </li>
-            )}
-            </ul>
-            <div className="pt-4 border-t border-border">
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen &&
+        <div className="absolute top-full left-0 right-0 glass-nav border-t border-gray-200/50 shadow-2xl lg:hidden max-h-[80vh] overflow-y-auto">
+          <div className="flex flex-col p-4 space-y-2">
+            {navLinks.map((link) =>
               <a
-              href="#contact"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full text-center px-4 py-3 rounded-xl bg-gradient-accent text-white font-medium">
-              
-                Get Started
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-100 text-sm font-medium transition-colors">
+
+                {link.name}
+                <ChevronRight className="w-4 h-4 opacity-50" />
+              </a>
+            )}
+            <div className="pt-4 flex flex-col gap-3">
+              <a
+                href={`tel:${PHONE_NUMBER}`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="btn-primary w-full justify-center"
+              >
+                <PhoneIcon className="w-4 h-4 me-2" /> Call Now
               </a>
             </div>
           </div>

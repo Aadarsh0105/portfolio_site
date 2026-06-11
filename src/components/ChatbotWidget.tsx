@@ -50,11 +50,6 @@ export function ChatbotWidget({
     []
   );
 
-  useEffect(() => {
-    if (!open) return;
-    setSuggestions(initialSuggestions);
-  }, [open, initialSuggestions]);
-
   const send = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed) return;
