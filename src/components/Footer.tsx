@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowUp } from 'lucide-react';
+import Image from 'next/image';
 
 export function Footer() {
   const scrollToTop = () => {
@@ -15,13 +16,16 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12">
           <div className="col-span-2 lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xl">
-                N
-              </div>
-              <span className="font-heading font-bold text-xl tracking-tight">
-                Nexus<span className="text-primary">AI</span>
-              </span>
+            <Link href="/" className="flex items-center gap-2 group">
+              <Image
+                src="/logo1.png"
+                alt="Naxora Technology"
+                width={233}
+                height={64}
+                priority
+                quality={90}
+                className="h-10 w-48 w-auto"
+              />
             </Link>
             <p className="text-light dark:text-gray-400 text-sm mb-6 max-w-xs">
               Premium technology consulting and development agency specializing
