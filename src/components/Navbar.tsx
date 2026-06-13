@@ -60,7 +60,7 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'top-0 glass-nav py-3 shadow-sm' : 'top-[40px] sm:top-[44px] bg-white/95 backdrop-blur-md py-5'}`}
+      className={`fixed left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'top-0 glass-nav py-3 shadow-sm' : 'top-[84px] sm:top-[44px] bg-white/95 backdrop-blur-md py-5'}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">

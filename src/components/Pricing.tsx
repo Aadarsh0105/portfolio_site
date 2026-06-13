@@ -1,11 +1,13 @@
+"use client";
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, X } from 'lucide-react';
 const plans = [
 {
   name: 'Starter',
-  price: '₹50,000',
-  period: '/month',
+  price: '₹19,999',
+  period: '',
   description:
   'Perfect for small businesses starting their digital transformation journey.',
   features: [
@@ -39,8 +41,8 @@ const plans = [
 },
 {
   name: 'Professional',
-  price: '₹1,50,000',
-  period: '/month',
+  price: '₹39,000',
+  period: '',
   description:
   'Ideal for growing companies needing advanced software and AI integrations.',
   features: [
@@ -74,7 +76,7 @@ const plans = [
 },
 {
   name: 'Enterprise',
-  price: 'Custom',
+  price: '₹59,999',
   period: '',
   description:
   'Tailored solutions for large organizations requiring scalable architecture.',
@@ -172,13 +174,13 @@ export function Pricing() {
                     {feature.included ?
                 <Check className="w-5 h-5 text-green-500 shrink-0" /> :
 
-                <X className="w-5 h-5 text-gray-300 dark:text-gray-600 shrink-0" />
+                <X className="w-5 h-5 text-red-500 shrink-0" />
                 }
                     <span
                   className={
                   feature.included ?
-                  'text-dark dark:text-white font-medium' :
-                  'text-light dark:text-gray-500'
+                  'text-dark font-medium' :
+                  'text-light'
                   }>
                   
                       {feature.name}

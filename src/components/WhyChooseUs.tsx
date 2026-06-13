@@ -8,49 +8,50 @@ import {
   BrainCircuit,
   Maximize,
   ShieldCheck,
-  Clock } from
-'lucide-react';
+  Clock
+} from
+  'lucide-react';
 const features = [
-{
-  icon: Users,
-  title: 'Experienced Team',
-  desc: 'Senior developers and AI specialists.'
-},
-{
-  icon: RefreshCw,
-  title: 'Agile Development',
-  desc: 'Iterative process for faster delivery.'
-},
-{
-  icon: HeadphonesIcon,
-  title: 'Dedicated Support',
-  desc: '24/7 maintenance and monitoring.'
-},
-{
-  icon: Eye,
-  title: 'Transparent Process',
-  desc: 'Clear communication at every step.'
-},
-{
-  icon: BrainCircuit,
-  title: 'AI Expertise',
-  desc: 'Cutting-edge machine learning solutions.'
-},
-{
-  icon: Maximize,
-  title: 'Scalable Solutions',
-  desc: 'Built to grow with your business.'
-},
-{
-  icon: ShieldCheck,
-  title: 'Enterprise Security',
-  desc: 'Bank-grade data protection.'
-},
-{
-  icon: Clock,
-  title: 'On-Time Delivery',
-  desc: 'Strict adherence to project timelines.'
-}];
+  {
+    icon: Users,
+    title: 'Experienced Team',
+    desc: 'Senior developers and AI specialists.'
+  },
+  {
+    icon: RefreshCw,
+    title: 'Agile Development',
+    desc: 'Iterative process for faster delivery.'
+  },
+  {
+    icon: HeadphonesIcon,
+    title: 'Dedicated Support',
+    desc: '24/7 maintenance and monitoring.'
+  },
+  {
+    icon: Clock,
+    title: 'On-Time Delivery',
+    desc: 'Strict adherence to project timelines.'
+  },
+  {
+    icon: Eye,
+    title: 'Transparent Process',
+    desc: 'Clear communication at every step.'
+  },
+  {
+    icon: BrainCircuit,
+    title: 'AI Expertise',
+    desc: 'Cutting-edge machine learning solutions.'
+  },
+  {
+    icon: Maximize,
+    title: 'Scalable Solutions',
+    desc: 'Built to grow with your business.'
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Enterprise Security',
+    desc: 'Bank-grade data protection.'
+  }];
 
 export function WhyChooseUs() {
   return (
@@ -67,25 +68,25 @@ export function WhyChooseUs() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, i) =>
-          <motion.div
-            key={i}
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0
-            }}
-            viewport={{
-              once: true
-            }}
-            transition={{
-              duration: 0.5,
-              delay: i * 0.1
-            }}
-            className="glass-card p-6 rounded-2xl group">
-            
+            <motion.div
+              key={i}
+              initial={{
+                opacity: 0,
+                y: 20
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0
+              }}
+              viewport={{
+                once: true
+              }}
+              transition={{
+                duration: 0.5,
+                delay: i * 0.1
+              }}
+              className="glass-card p-6 rounded-2xl group">
+
               <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-white/5 flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
                 <feature.icon className="w-5 h-5 text-dark text-primary transition-colors" />
               </div>

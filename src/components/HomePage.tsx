@@ -26,20 +26,20 @@ export function HomePage() {
       <main className="flex-grow">
         <Hero />
         {/* <ClientLogos /> */}
-        <About />
         <Services />
         <IndustryExpertise />
         <WhyChooseUs />
         <Process />
+        <About />
         {/* <CaseStudies /> */}
         <TechStack />
         <AIInnovation />
         {/* <Testimonials /> */}
-        <Achievements />
+        {/* <Achievements /> */}
         <Pricing />
         <FAQ />
         <Blog />
-        <Careers />
+        {/* <Careers /> */}
         <Contact />
         <FinalCTA />
       </main>

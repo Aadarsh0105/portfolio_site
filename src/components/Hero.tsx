@@ -6,14 +6,15 @@ import {
   CheckCircle2,
   BarChart3,
   Shield,
-  Zap } from
-'lucide-react';
+  Zap
+} from
+  'lucide-react';
 export function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden bg-white">
-      
+      className="relative min-h-screen flex items-center pt-32 pb-10 overflow-hidden bg-white">
+
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
@@ -37,8 +38,8 @@ export function Hero() {
             transition={{
               duration: 0.6
             }}
-            className="max-w-2xl">
-            
+            className="max-w-2xl mx-auto lg:mx-0">
+
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-card text-sm font-medium mb-6 text-primary">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -116,10 +117,10 @@ export function Hero() {
               duration: 0.8,
               delay: 0.2
             }}
-            className="relative lg:h-[600px] flex items-center justify-center">
-            
+            className="hidden lg:flex relative lg:h-[600px] items-center justify-center">
+
             {/* Main Dashboard Card */}
-            <div className="relative w-full max-w-lg glass-card rounded-2xl p-6 shadow-2xl border-t border-l border-white/40">
+            <div className="relative w-full max-w-lg glass-card rounded-2xl p-4 md:p-6 shadow-2xl border-t border-l border-white/40">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
@@ -138,48 +139,48 @@ export function Hero() {
                 </div>
               </div>
 
-              {/* Mock Graph */}
-              <div className="h-40 w-full flex items-end gap-2 mb-6">
+              {/* Mock Graph - Desktop Only */}
+              <div className="w-full flex h-40 w-full items-end gap-2 mb-6">
                 {[40, 70, 45, 90, 65, 85, 100].map((height, i) =>
-                <motion.div
-                  key={i}
-                  initial={{
-                    height: 0
-                  }}
-                  animate={{
-                    height: `${height}%`
-                  }}
-                  transition={{
-                    duration: 1,
-                    delay: 0.5 + i * 0.1
-                  }}
-                  className="flex-1 bg-gradient-to-t from-primary/20 to-primary rounded-t-sm">
-                </motion.div>
+                  <motion.div
+                    key={i}
+                    initial={{
+                      height: 0
+                    }}
+                    animate={{
+                      height: `${height}%`
+                    }}
+                    transition={{
+                      duration: 1,
+                      delay: 0.5 + i * 0.1
+                    }}
+                    className="flex-1 bg-gradient-to-t from-primary/20 to-primary rounded-t-sm">
+                  </motion.div>
                 )}
               </div>
 
               <div className="space-y-3">
                 {[
-                {
-                  icon: Shield,
-                  text: 'Enterprise Security Active',
-                  color: 'text-secondary'
-                },
-                {
-                  icon: Zap,
-                  text: 'Workflow Automation Running',
-                  color: 'text-accent'
-                }].
-                map((item, i) =>
-                <div
-                  key={i}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
-                  
-                    <item.icon className={`w-4 h-4 ${item.color}`} />
-                    <span className="text-sm font-medium">{item.text}</span>
-                    <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto" />
-                  </div>
-                )}
+                  {
+                    icon: Shield,
+                    text: 'Enterprise Security Active',
+                    color: 'text-secondary'
+                  },
+                  {
+                    icon: Zap,
+                    text: 'Workflow Automation Running',
+                    color: 'text-accent'
+                  }].
+                  map((item, i) =>
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
+
+                      <item.icon className={`w-4 h-4 ${item.color}`} />
+                      <span className="text-sm font-medium">{item.text}</span>
+                      <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto" />
+                    </div>
+                  )}
               </div>
             </div>
 

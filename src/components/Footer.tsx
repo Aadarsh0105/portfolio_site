@@ -1,22 +1,30 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowUp } from 'lucide-react';
 import Image from 'next/image';
+import { ArrowUp, PhoneIcon } from 'lucide-react';
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaXTwitter,
+} from 'react-icons/fa6';
 
 export function Footer() {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   };
 
+  const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
+
   return (
-    <footer className="bg-white dark:bg-navy border-t border-gray-200 dark:border-white/10 pt-16 pb-8 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12">
-          <div className="col-span-2 lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 group">
+    <footer className="bg-white border-t border-gray-200 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <Link href="/" className="flex items-center gap-2 mb-4">
               <Image
                 src="/logo1.png"
                 alt="Naxora Technology"
@@ -24,117 +32,124 @@ export function Footer() {
                 height={64}
                 priority
                 quality={90}
-                className="h-10 w-48 w-auto"
+                className="h-10 w-auto"
               />
             </Link>
-            <p className="text-light dark:text-gray-400 text-sm mb-6 max-w-xs">
+            <p className="text-sm leading-7 text-gray-700 max-w-sm">
               Premium technology consulting and development agency specializing
               in AI solutions and digital transformation.
             </p>
-            <div className="flex items-center gap-4">
-              <a href="#" className="text-light hover:text-primary transition-colors">
-                {/* <Twitter className="w-5 h-5" /> */}
+          </div>
+
+          <div>
+            <h4 className="text-sm font-bold uppercase tracking-widest text-primary mb-4">
+              Useful Links
+            </h4>
+            <ul className="space-y-3 text-sm text-gray-700">
+              <li>
+                <Link href="/about" className="hover:text-primary transition-colors">
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="hover:text-primary transition-colors">
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-primary transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-primary transition-colors">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link href="/pricing" className="hover:text-primary transition-colors">
+                  Pricing
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-bold uppercase tracking-widest text-primary mb-4">
+              Legal Pages
+            </h4>
+            <ul className="space-y-3 text-sm text-gray-700">
+              <li>
+                <Link href="/cookie-policy" className="hover:text-primary transition-colors">
+                  Cookie Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy-policy" className="hover:text-primary transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms-of-service" className="hover:text-primary transition-colors">
+                  Terms of Service
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-bold uppercase tracking-widest text-primary mb-4">
+              Social Media
+            </h4>
+            <div className="flex items-center gap-3 mb-5">
+              <a
+                href="#"
+                aria-label="X"
+                className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
+              >
+                <FaXTwitter className="w-4 h-4" />
               </a>
-              <a href="#" className="text-light hover:text-primary transition-colors">
-                {/* <Linkedin className="w-5 h-5" /> */}
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
+              >
+                <FaLinkedinIn className="w-4 h-4" />
               </a>
-              <a href="#" className="text-light hover:text-primary transition-colors">
-                {/* <Github className="w-5 h-5" /> */}
+              <a
+                href="#"
+                aria-label="Facebook"
+                className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
+              >
+                <FaFacebookF className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
+              >
+                <FaInstagram className="w-4 h-4" />
               </a>
             </div>
-          </div>
 
-          <div>
-            <h4 className="font-bold mb-4">Services</h4>
-            <ul className="space-y-2 text-sm text-light dark:text-gray-400">
-              <li>
-                <a href="/#solutions" className="hover:text-primary transition-colors">
-                  AI Solutions
-                </a>
-              </li>
-              <li>
-                <a href="/#services" className="hover:text-primary transition-colors">
-                  Custom Software
-                </a>
-              </li>
-              <li>
-                <a href="/#services" className="hover:text-primary transition-colors">
-                  Web Development
-                </a>
-              </li>
-              <li>
-                <a href="/#services" className="hover:text-primary transition-colors">
-                  Mobile Apps
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-bold mb-4">Company</h4>
-            <ul className="space-y-2 text-sm text-light dark:text-gray-400">
-              <li>
-                <a href="/#about" className="hover:text-primary transition-colors">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="/#case-studies" className="hover:text-primary transition-colors">
-                  Case Studies
-                </a>
-              </li>
-              <li>
-                <a href="/#careers" className="hover:text-primary transition-colors">
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a href="/#blog" className="hover:text-primary transition-colors">
-                  Blog
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="col-span-2 lg:col-span-2">
-            <h4 className="font-bold mb-4">Subscribe to Newsletter</h4>
-            <p className="text-sm text-light dark:text-gray-400 mb-4">
-              Get the latest insights on AI and tech trends.
-            </p>
-            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-sm"
-              />
-              <button
-                type="submit"
-                className="btn-primary py-2 px-4 text-sm rounded-lg"
-              >
-                Subscribe
-              </button>
-            </form>
+            {phoneNumber ? (
+              <a href={`tel:${phoneNumber}`} className="btn-primary py-2 px-5 text-sm">
+                <PhoneIcon className="w-4 h-4 me-2" /> Call Now
+              </a>
+            ) : null}
           </div>
         </div>
 
-        <div className="pt-8 border-t border-gray-200 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-light dark:text-gray-400">
-            Copyright {new Date().getFullYear()} NexusAI. All rights reserved.
-          </div>
-          <div className="flex items-center gap-6 text-sm text-light dark:text-gray-400">
-            <a href="#" className="hover:text-primary transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-primary transition-colors">
-              Terms of Service
-            </a>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-8 mt-8 border-t border-gray-200">
+          <div className="text-sm text-gray-700">
+            Copyright {new Date().getFullYear()} Naxora Technology. All rights reserved.
           </div>
         </div>
       </div>
 
       <button
         onClick={scrollToTop}
-        className="absolute bottom-8 right-8 p-3 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-dark dark:text-white transition-colors shadow-lg hidden md:block"
+        className="absolute bottom-6 right-6 p-3 rounded-full bg-white border border-gray-200 hover:bg-gray-50 text-gray-800 transition-colors shadow-lg hidden md:block"
         aria-label="Scroll to top"
       >
         <ArrowUp className="w-5 h-5" />

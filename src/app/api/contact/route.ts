@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { getContactCollection } from '@/lib/mongodb';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -9,6 +10,12 @@ type ContactPayload = {
   subject?: string;
   message: string;
   budget?: string;
+};
+
+type ContactDocument = ContactPayload & {
+  createdAt: Date;
+  source: 'portfolio-site';
+  status: 'new';
 };
 
 function isEmail(value: string) {
@@ -180,6 +187,32 @@ export async function POST(request: Request) {
         'X-Contact-From': email
       }
     });
+
+    try {
+      const collection = await getContactCollection();
+      const contactDoc: ContactDocument = {
+        name,
+        email,
+        subject: safeSubject,
+        message,
+        budget,
+        createdAt: new Date(),
+        source: 'portfolio-site',
+        status: 'new'
+      };
+      await collection.insertOne(contactDoc);
+    } catch (mongoError) {
+      const isDev = process.env.NODE_ENV !== 'production';
+      return Response.json(
+        {
+          ok: true,
+          warning: 'Email sent, but MongoDB save failed',
+          ...(isDev && mongoError instanceof Error ? { detail: mongoError.message } : null),
+          ...(isDev ? { messageId: info.messageId, accepted: info.accepted, rejected: info.rejected } : null)
+        },
+        { status: 200 }
+      );
+    }
 
     const isDev = process.env.NODE_ENV !== 'production';
     return Response.json({

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Mail, MapPin, Phone, Send } from 'lucide-react';
@@ -73,17 +75,17 @@ export function Contact() {
                 {
                   icon: Mail,
                   title: 'Email',
-                  detail: 'hello@nexusai.com'
+                  detail: 'contact@naxoratechnology.com'
                 },
                 {
                   icon: Phone,
                   title: 'Phone',
-                  detail: '+1 (555) 123-4567'
+                  detail: '+91 9934435748'
                 },
                 {
                   icon: MapPin,
                   title: 'Office',
-                  detail: '100 Innovation Drive, San Francisco, CA'
+                  detail: 'Vrindavan Nagar, Ayodhya Bypass, Bhopal, 462022'
                 }
               ].map((item) => (
                 <div key={item.title} className="flex items-start gap-4">
@@ -100,28 +102,16 @@ export function Contact() {
           </div>
 
           <motion.div
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0
-            }}
-            viewport={{
-              once: true
-            }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="glass-card p-8 rounded-3xl relative overflow-hidden"
           >
             {isSuccess ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 dark:bg-navy/95 backdrop-blur-sm z-10">
                 <motion.div
-                  initial={{
-                    scale: 0
-                  }}
-                  animate={{
-                    scale: 1
-                  }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4"
                 >
                   <CheckCircle2 className="w-8 h-8 text-green-500" />
@@ -141,7 +131,7 @@ export function Contact() {
                     name="name"
                     required
                     type="text"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
                     placeholder="John Doe"
                   />
                 </div>
@@ -151,7 +141,7 @@ export function Contact() {
                     name="email"
                     required
                     type="email"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
                     placeholder="john@company.com"
                   />
                 </div>
@@ -163,7 +153,7 @@ export function Contact() {
                   <input
                     name="company"
                     type="text"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
                     placeholder="Company Name"
                   />
                 </div>
@@ -171,13 +161,13 @@ export function Contact() {
                   <label className="text-sm font-medium">Budget</label>
                   <select
                     name="budget"
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all appearance-none shadow-sm hover:border-gray-400"
                   >
                     <option value="">Select Budget</option>
-                    <option value="10k-25k">$10k - $25k</option>
-                    <option value="25k-50k">$25k - $50k</option>
-                    <option value="50k-100k">$50k - $100k</option>
-                    <option value="100k+">$100k+</option>
+                    <option value="10000-25000">Rs 10,000 - Rs 25,000</option>
+                    <option value="25000-50000">Rs 25,000 - Rs 50,000</option>
+                    <option value="50000-100000">Rs 50,000 - Rs 1,00,000</option>
+                    <option value="100000+">Rs 1,00,000+</option>
                   </select>
                 </div>
               </div>
@@ -188,7 +178,7 @@ export function Contact() {
                   name="message"
                   required
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all resize-none shadow-sm hover:border-gray-400"
                   placeholder="Tell us about your project..."
                 />
               </div>
@@ -224,7 +214,7 @@ export function Contact() {
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
-                    Get Free Consultation <Send className="w-4 h-4" />
+                    Submit Inquiry <Send className="w-4 h-4" />
                   </span>
                 )}
               </button>
