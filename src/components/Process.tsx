@@ -279,7 +279,7 @@ const steps = [
 ];
 
 export function Process() {
-  return (<section className="py-16 md:py-20 relative overflow-hidden"> <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  return (<section className="pt-10 pb-5 md:pt-16 relative overflow-hidden"> <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     {/* Section Header */}
     <motion.div
       initial={{ opacity: 0, y: 30 }}

@@ -9,7 +9,7 @@ const testimonials = [
   image:
   'https://ui-avatars.com/api/?name=Sarah+Jenkins&background=2563EB&color=fff',
   quote:
-  "NexusAI completely transformed our fraud detection systems. Their AI implementation reduced false positives by 85% and saved us millions annually. The team's expertise is unmatched."
+  "Naxora Technology completely transformed our fraud detection systems. Their AI implementation reduced false positives by 85% and saved us millions annually. The team's expertise is unmatched."
 },
 {
   name: 'David Chen',

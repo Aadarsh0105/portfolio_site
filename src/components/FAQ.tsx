@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
@@ -30,8 +32,8 @@ const faqs = [
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   return (
-    <section className="py-24">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="pt-10 pb-5 md:pt-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-sm font-bold text-primary uppercase tracking-widest mb-3">
             FAQ

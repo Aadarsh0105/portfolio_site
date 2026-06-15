@@ -9,7 +9,8 @@ import {
   Cloud,
   Zap,
   PenTool,
-  Rocket
+  Rocket,
+  Search
 } from
   'lucide-react';
 const services = [
@@ -47,6 +48,18 @@ const services = [
     bg: 'bg-secondary/10'
   },
   {
+    icon: Search,
+    title: 'SEO Optimization',
+    features: [
+      'Technical SEO',
+      'On-Page SEO',
+      'Keyword Research',
+      'Google Rankings'
+    ],
+    color: 'text-indigo-500',
+    bg: 'bg-indigo-500/10'
+  },
+  {
     icon: Bot,
     title: 'AI Solutions',
     features: ['AI Chatbots', 'AI Agents', 'Generative AI', 'LLM Integrations'],
@@ -78,11 +91,12 @@ const services = [
 
     color: 'text-green-500',
     bg: 'bg-green-500/10'
-  }];
+  }
+];
 
 export function Services() {
   return (
-    <section id="services" className="py-24 bg-gray-50/50 dark:bg-white/[0.02]">
+    <section id="services" className="pt-10 pb-5 md:pt-16 bg-gray-50/50 dark:bg-white/[0.02]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-sm font-bold text-primary uppercase tracking-widest mb-3">

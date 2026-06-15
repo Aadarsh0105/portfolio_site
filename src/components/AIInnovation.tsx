@@ -35,7 +35,7 @@ const aiFeatures = [
 
 export function AIInnovation() {
   return (
-    <section id="solutions" className="py-24 bg-navy text-white relative overflow-hidden">
+    <section id="solutions" className="py-10 md:py-16 bg-navy text-white relative overflow-hidden">
       {/* Background Glows */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full mix-blend-screen filter blur-[100px] opacity-50"></div>
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/20 rounded-full mix-blend-screen filter blur-[100px] opacity-50"></div>

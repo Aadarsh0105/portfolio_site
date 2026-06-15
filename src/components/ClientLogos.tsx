@@ -2,7 +2,7 @@ import React from 'react';
 const logos = [
 'Acme Corp',
 'GlobalTech',
-'Nexus Industries',
+'Naxora Technology',
 'Quantum AI',
 'Stellar Systems',
 'Apex Solutions',

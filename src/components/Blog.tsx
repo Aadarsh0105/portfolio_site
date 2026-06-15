@@ -8,7 +8,7 @@ export function Blog() {
   // Only show the first 3 posts on the home page
   const recentPosts = blogPosts.slice(0, 3);
   return (
-    <section id="blog" className="py-24 bg-gray-50/50 dark:bg-white/[0.02]">
+    <section id="blog" className="pt-10 pb-5 md:pt-16 bg-gray-50/50 dark:bg-white/[0.02]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl">

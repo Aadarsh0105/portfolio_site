@@ -102,21 +102,22 @@ export function Footer() {
               Social Media
             </h4>
             <div className="flex items-center gap-3 mb-5">
-              <a
+              {/* <a
                 href="#"
                 aria-label="X"
                 className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
               >
                 <FaXTwitter className="w-4 h-4" />
-              </a>
+              </a> */}
               <a
-                href="#"
+                href="https://www.linkedin.com/company/naxoratechnology"
                 aria-label="LinkedIn"
+                target='blank'
                 className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
               >
                 <FaLinkedinIn className="w-4 h-4" />
               </a>
-              <a
+              {/* <a
                 href="#"
                 aria-label="Facebook"
                 className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
@@ -129,7 +130,7 @@ export function Footer() {
                 className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
               >
                 <FaInstagram className="w-4 h-4" />
-              </a>
+              </a> */}
             </div>
 
             {phoneNumber ? (

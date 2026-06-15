@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/seo";
-import Script from "next/script";
+import OrganizationSchema from "@/schema/OrganizationSchema";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -85,27 +85,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-
-    name: "Naxora Technology",
-
-    url: "https://naxoratechnology.com",
-
-    logo: "https://naxoratechnology.com/logo1.png",
-
-    email: "contact@naxoratechnology.com",
-
-    telephone: process.env.NEXT_PUBLIC_PHONE_NUMBER,
-
-    sameAs: [
-      "https://linkedin.com/company/naxora-technology",
-      "https://instagram.com/naxoratechnology",
-      "https://facebook.com/naxoratechnology",
-      "https://x.com/naxoratech",
-    ],
-  };
   return (
     <html
       lang="en"
@@ -113,13 +92,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-white text-dark">
         {children}
-        <Script
-          id="organization-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
-          }}
-        />
+        <OrganizationSchema />
       </body>
     </html>
   );

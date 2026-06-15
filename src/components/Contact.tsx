@@ -55,7 +55,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-gray-50/50 dark:bg-white/[0.02]">
+    <section id="contact" className="pt-10 pb-5 md:pt-16 bg-gray-50/50 dark:bg-white/[0.02]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16">
           <div>

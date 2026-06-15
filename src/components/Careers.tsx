@@ -48,7 +48,7 @@ export function Careers() {
               Careers
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-6">
-              Join the Nexus Team
+              Join the Naxora Team
             </h3>
             <p className="text-light dark:text-gray-300 mb-8 text-lg leading-relaxed">
               We're always looking for talented engineers, designers, and

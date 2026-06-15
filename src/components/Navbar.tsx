@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight, Menu, PhoneIcon, X } from 'lucide-react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+
 const navLinks = [
   {
     name: 'Home',
-    href: '/#home'
+    href: '/'
   },
   {
     name: 'About',
-    href: '/#about'
+    href: '/about'
   },
   {
     name: 'Services',
-    href: '/#services'
+    href: '/services'
   },
   // {
   //   name: 'Solutions',
@@ -25,7 +27,7 @@ const navLinks = [
   // },
   {
     name: 'Pricing',
-    href: '/#pricing'
+    href: '/pricing'
   },
   // {
   //   name: 'Case Studies',
@@ -33,7 +35,7 @@ const navLinks = [
   // },
   {
     name: 'Blog',
-    href: '/#blog'
+    href: '/blog'
   },
   // {
   //   name: 'Careers',
@@ -41,10 +43,16 @@ const navLinks = [
   // },
   {
     name: 'Contact',
-    href: '/#contact'
+    href: '/contact'
+  },
+  {
+    name: 'FAQs',
+    href: '/faq'
   }];
 
 export function Navbar() {
+  const pathname = usePathname();
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -80,13 +88,16 @@ export function Navbar() {
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) =>
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium text-light hover:text-primary transition-colors whitespace-nowrap">
-
+                className={`text-sm font-medium transition-colors whitespace-nowrap ${pathname === link.href
+                  ? 'text-primary'
+                  : 'text-light hover:text-primary'
+                  }`}
+              >
                 {link.name}
-              </a>
+              </Link>
             )}
           </nav>
 
@@ -121,15 +132,17 @@ export function Navbar() {
         <div className="absolute top-full left-0 right-0 glass-nav border-t border-gray-200/50 shadow-2xl lg:hidden max-h-[80vh] overflow-y-auto">
           <div className="flex flex-col p-4 space-y-2">
             {navLinks.map((link) =>
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-100 text-sm font-medium transition-colors">
-
-                {link.name}
+                className={`flex items-center justify-between p-3 rounded-lg text-sm font-medium transition-colors ${pathname === link.href
+                    ? 'bg-primary/10 text-primary'
+                    : 'hover:bg-gray-100 text-light'
+                  }`}
+              > 
                 <ChevronRight className="w-4 h-4 opacity-50" />
-              </a>
+              </Link>
             )}
             <div className="pt-4 flex flex-col gap-3">
               <a

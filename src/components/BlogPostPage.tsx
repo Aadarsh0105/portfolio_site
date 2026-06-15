@@ -3,13 +3,21 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Calendar, Clock, User } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Calendar,
+  Clock,
+  User,
+} from "lucide-react";
 import { blogPosts } from "@/data/blogPosts";
 import { SiteShell } from "./SiteShell";
 
 export function BlogPostPage({ slug }: { slug: string }) {
   const post = blogPosts.find((item) => item.slug === slug);
-  const relatedPosts = blogPosts.filter((item) => item.slug !== slug).slice(0, 2);
+  const relatedPosts = blogPosts
+    .filter((item) => item.slug !== slug)
+    .slice(0, 2);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -21,9 +29,11 @@ export function BlogPostPage({ slug }: { slug: string }) {
         {!post ? (
           <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center">
             <h1 className="text-4xl font-bold mb-4">Post Not Found</h1>
+
             <p className="text-light dark:text-gray-400 mb-8">
               The article you are looking for does not exist or has been moved.
             </p>
+
             <Link href="/" className="btn-primary">
               Return Home
             </Link>
@@ -35,15 +45,46 @@ export function BlogPostPage({ slug }: { slug: string }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
+              {/* Breadcrumb */}
+              <nav
+                aria-label="Breadcrumb"
+                className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mb-6"
+              >
+                <Link
+                  href="/"
+                  className="hover:text-primary transition-colors"
+                >
+                  Home
+                </Link>
+
+                <span>/</span>
+
+                <Link
+                  href="/blog"
+                  className="hover:text-primary transition-colors"
+                >
+                  Blog
+                </Link>
+
+                <span>/</span>
+
+                <span className="text-primary truncate max-w-[250px]">
+                  {post.title}
+                </span>
+              </nav>
+
+              {/* Back Button */}
               <Link
-                href="/#blog"
+                href="/blog"
                 className="inline-flex items-center text-sm font-medium text-light hover:text-primary transition-colors mb-8"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Blog
               </Link>
 
-              <div className={`inline-flex px-3 py-1 rounded-full text-xs font-bold mb-6 ${post.color}`}>
+              <div
+                className={`inline-flex px-3 py-1 rounded-full text-xs font-bold mb-6 ${post.color}`}
+              >
                 {post.category}
               </div>
 
@@ -56,17 +97,23 @@ export function BlogPostPage({ slug }: { slug: string }) {
                   <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center">
                     <User className="w-4 h-4" />
                   </div>
+
                   <div>
                     <div className="font-bold text-dark dark:text-white">
                       {post.author.name}
                     </div>
-                    <div className="text-xs">{post.author.role}</div>
+
+                    <div className="text-xs">
+                      {post.author.role}
+                    </div>
                   </div>
                 </div>
+
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   {post.date}
                 </div>
+
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   {post.readTime}
@@ -75,6 +122,7 @@ export function BlogPostPage({ slug }: { slug: string }) {
 
               <div className="w-full h-64 md:h-80 rounded-3xl mb-12 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 glass-card flex items-center justify-center relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMTI4LCAxMjgsIDEyOCwgMC4xKSIvPjwvc3ZnPg==')] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
+
                 <h2 className="text-3xl md:text-4xl font-bold text-dark/30 dark:text-white/30 text-center px-4 relative z-10">
                   {post.category} Insights
                 </h2>
@@ -86,7 +134,9 @@ export function BlogPostPage({ slug }: { slug: string }) {
                   .split("\n\n")
                   .map((paragraph, index) => {
                     const text = paragraph.trim();
+
                     if (!text) return null;
+
                     if (text.startsWith("##")) {
                       return (
                         <h2
@@ -97,6 +147,7 @@ export function BlogPostPage({ slug }: { slug: string }) {
                         </h2>
                       );
                     }
+
                     return <p key={index}>{text}</p>;
                   })}
               </div>
@@ -108,7 +159,10 @@ export function BlogPostPage({ slug }: { slug: string }) {
               viewport={{ once: true }}
               className="mt-20 pt-12 border-t border-gray-200 dark:border-white/10"
             >
-              <h3 className="text-2xl font-bold mb-8">Related Articles</h3>
+              <h3 className="text-2xl font-bold mb-8">
+                Related Articles
+              </h3>
+
               <div className="grid md:grid-cols-2 gap-6">
                 {relatedPosts.map((relatedPost) => (
                   <Link
@@ -116,17 +170,22 @@ export function BlogPostPage({ slug }: { slug: string }) {
                     href={`/blog/${relatedPost.slug}`}
                     className="glass-card rounded-2xl p-6 group cursor-pointer hover:-translate-y-1 transition-all duration-300 flex flex-col"
                   >
-                    <div className={`inline-flex self-start px-3 py-1 rounded-full text-xs font-bold mb-3 ${relatedPost.color}`}>
+                    <div
+                      className={`inline-flex self-start px-3 py-1 rounded-full text-xs font-bold mb-3 ${relatedPost.color}`}
+                    >
                       {relatedPost.category}
                     </div>
+
                     <h4 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
                       {relatedPost.title}
                     </h4>
+
                     <div className="flex items-center justify-between pt-4 mt-auto">
                       <span className="text-xs text-light font-medium flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {relatedPost.readTime}
                       </span>
+
                       <ArrowRight className="w-4 h-4 text-primary opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                     </div>
                   </Link>
@@ -138,10 +197,13 @@ export function BlogPostPage({ slug }: { slug: string }) {
               <h3 className="text-2xl font-bold mb-4">
                 Ready to implement these strategies?
               </h3>
+
               <p className="text-light dark:text-gray-400 mb-6">
-                Let&apos;s discuss how our team can help you achieve your business goals.
+                Let&apos;s discuss how our team can help you achieve your
+                business goals.
               </p>
-              <Link href="/#contact" className="btn-primary">
+
+              <Link href="/contact" className="btn-primary">
                 Book a Free Consultation
               </Link>
             </div>
@@ -151,3 +213,4 @@ export function BlogPostPage({ slug }: { slug: string }) {
     </SiteShell>
   );
 }
+

@@ -21,7 +21,7 @@ const PROJECTS = [
 },
 {
   id: 3,
-  title: 'Nexus Brand Identity',
+  title: 'Naxora Brand Identity',
   category: 'Branding',
   image:
   'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=2194&auto=format&fit=crop'

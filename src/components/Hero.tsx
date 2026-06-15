@@ -13,7 +13,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center pt-32 pb-10 overflow-hidden bg-white">
+      className="relative min-h-screen flex items-center pt-20 pb-0 md:pt-24 md:pb-0 overflow-hidden bg-white">
 
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none">

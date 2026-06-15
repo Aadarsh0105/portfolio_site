@@ -35,7 +35,7 @@ export function FinalCTA() {
             </span>
           </h2>
           <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-            Join hundreds of forward-thinking companies that trust Nexus to
+            Join hundreds of forward-thinking companies that trust Naxora Technology to
             build their digital future.
           </p>
 

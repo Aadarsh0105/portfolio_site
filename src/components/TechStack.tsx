@@ -112,7 +112,7 @@ export function TechStack() {
   return (
     <section
       id="tech-stack"
-      className="py-20 md:py-24 relative overflow-hidden"
+      className="pt-10 pb-5 md:pt-16 relative overflow-hidden"
     >
       {/* Background Blur */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
