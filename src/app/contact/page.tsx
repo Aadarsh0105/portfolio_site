@@ -34,7 +34,7 @@ export default function ContactPage() {
     <>
       <LocalBusinessSchema />
       <SiteShell>
-        <main className="bg-white text-dark">
+        <main className="bg-white text-dark pt-12">
           <Contact />
         </main>
       </SiteShell>

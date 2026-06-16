@@ -48,7 +48,7 @@ export default function ServicesPage() {
       <ServiceSchema />
 
       <SiteShell>
-        <main className="bg-white text-dark">
+        <main className="bg-white text-dark pt-12">
           <Services />
         </main>
       </SiteShell>

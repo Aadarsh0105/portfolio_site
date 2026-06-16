@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   return (
     <SiteShell>
-      <main className="bg-white text-dark">
+      <main className="bg-white text-dark pt-12">
         <Pricing />
       </main>
     </SiteShell>

@@ -65,7 +65,7 @@ export function Contact() {
             <h3 className="text-3xl md:text-4xl font-bold mb-6">
               Let&apos;s Build Something Amazing Together
             </h3>
-            <p className="text-light dark:text-gray-300 mb-10 text-lg">
+            <p className="text-light dark:text-gray-400 mb-10 text-lg">
               Ready to transform your business? Fill out the form and our team
               will get back to you within 24 hours to schedule a discovery call.
             </p>

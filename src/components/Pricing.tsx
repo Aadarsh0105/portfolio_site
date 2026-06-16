@@ -121,7 +121,7 @@ export function Pricing() {
           <h3 className="text-3xl md:text-4xl font-bold mb-6">
             Transparent Pricing for Every Stage
           </h3>
-          <p className="text-light dark:text-gray-300 text-lg">
+          <p className="text-light dark:text-gray-400 text-lg">
             Choose the perfect plan to accelerate your business growth with our
             expert technology solutions.
           </p>

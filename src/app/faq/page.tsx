@@ -34,7 +34,7 @@ export default function FaqPage() {
         <>
             <FaqSchema />
             <SiteShell>
-                <main className="bg-white text-dark">
+                <main className="bg-white text-dark pt-12">
                     <FAQ />
                 </main>
             </SiteShell>

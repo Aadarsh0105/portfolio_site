@@ -129,7 +129,7 @@ export function Navbar() {
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen &&
-        <div className="absolute top-full left-0 right-0 glass-nav border-t border-gray-200/50 shadow-2xl lg:hidden max-h-[80vh] overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 bg-white backdrop-blur-md border-t border-gray-200/50 shadow-2xl lg:hidden max-h-[80vh] overflow-y-auto">
           <div className="flex flex-col p-4 space-y-2">
             {navLinks.map((link) =>
               <Link
@@ -138,9 +138,10 @@ export function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center justify-between p-3 rounded-lg text-sm font-medium transition-colors ${pathname === link.href
                     ? 'bg-primary/10 text-primary'
-                    : 'hover:bg-gray-100 text-light'
+                    : 'hover:bg-gray-100 text-dark'
                   }`}
-              > 
+              >
+                <span>{link.name}</span>
                 <ChevronRight className="w-4 h-4 opacity-50" />
               </Link>
             )}

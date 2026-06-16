@@ -62,7 +62,7 @@ export function IndustryExpertise() {
               Tailored Solutions For Every Sector
             </h3>
           </div>
-          <p className="text-light dark:text-gray-300 max-w-md">
+          <p className="text-light dark:text-gray-400 max-w-md">
             We understand the unique challenges of different industries and
             build specialized solutions that drive real business value.
           </p>

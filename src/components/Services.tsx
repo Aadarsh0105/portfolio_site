@@ -105,7 +105,7 @@ export function Services() {
           <h3 className="text-3xl md:text-4xl font-bold mb-6">
             Comprehensive Technology Solutions
           </h3>
-          <p className="text-light dark:text-gray-300 text-lg">
+          <p className="text-light dark:text-gray-400 text-lg">
             We provide end-to-end development and consulting services to help
             you build, scale, and optimize your digital products.
           </p>

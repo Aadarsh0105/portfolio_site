@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   return (
     <SiteShell>
-      <main className="bg-white text-dark">
+      <main className="bg-white text-dark pt-12">
         <Blog />
       </main>
     </SiteShell>
