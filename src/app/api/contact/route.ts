@@ -46,6 +46,15 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: 'Invalid JSON' }, { status: 400 });
   }
 
+  console.log('NODE_ENV:', process.env.NODE_ENV);
+
+  console.log({
+    SMTP_HOST: process.env.SMTP_HOST,
+    SMTP_USER: process.env.SMTP_USER,
+    SMTP_FROM: process.env.SMTP_FROM,
+    CONTACT_TO: process.env.CONTACT_TO,
+  });
+
   const name = (payload.name ?? '').trim();
   const email = (payload.email ?? '').trim();
   const subject = (payload.subject ?? '').trim();
@@ -142,17 +151,16 @@ export async function POST(request: Request) {
                 </div>
               </td>
             </tr>
-            ${
-              budget
-                ? `<tr><td style="height:10px;"></td></tr>
+            ${budget
+      ? `<tr><td style="height:10px;"></td></tr>
             <tr>
               <td style="padding:10px 12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8f9fb;">
                 <div style="font-size:12px;color:#64748b;">Budget</div>
                 <div style="font-size:14px;font-weight:600;color:#0f172a;">${escapeHtml(budget)}</div>
               </td>
             </tr>`
-                : ''
-            }
+      : ''
+    }
           </table>
 
           <div style="border:1px solid #e2e8f0;border-radius:12px;background:#ffffff;">
@@ -237,8 +245,8 @@ export async function POST(request: Request) {
       {
         ok: true,
         warning: 'Data saved, but email failed',
-        ...(isDev ? { detail: mailErrorMessage } : null),
-        ...(isDev && mailInfo ? mailInfo : null),
+        detail: mailErrorMessage,
+        mailInfo,
       },
       { status: 200 }
     );
@@ -250,11 +258,11 @@ export async function POST(request: Request) {
       error: 'Failed to submit contact form',
       ...(isDev
         ? {
-            detail: {
-              mail: mailErrorMessage,
-              mongo: mongoErrorMessage,
-            },
-          }
+          detail: {
+            mail: mailErrorMessage,
+            mongo: mongoErrorMessage,
+          },
+        }
         : null),
     },
     { status: 500 }
