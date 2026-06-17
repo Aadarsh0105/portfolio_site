@@ -171,10 +171,36 @@ export async function POST(request: Request) {
   </body>
 </html>`;
 
-  try {
-    // Helps catch misconfig early (bad host/port/auth). Harmless in prod.
-    await transporter.verify();
+  let mongoSaved = false;
+  let mongoErrorMessage: string | undefined;
 
+  try {
+    const collection = await getContactCollection();
+    const contactDoc: ContactDocument = {
+      name,
+      email,
+      subject: safeSubject,
+      message,
+      budget,
+      createdAt: new Date(),
+      source: 'portfolio-site',
+      status: 'new',
+    };
+    await collection.insertOne(contactDoc);
+    mongoSaved = true;
+  } catch (mongoError) {
+    mongoErrorMessage = mongoError instanceof Error ? mongoError.message : 'MongoDB save failed';
+  }
+
+  let mailInfo: {
+    messageId: string;
+    accepted: Array<string | { address: string; name?: string }> | undefined;
+    rejected: Array<string | { address: string; name?: string }> | undefined;
+  } | null = null;
+  let mailErrorMessage: string | undefined;
+
+  try {
+    await transporter.verify();
     const info = await transporter.sendMail({
       from: SMTP_FROM,
       to: CONTACT_TO,
@@ -184,50 +210,53 @@ export async function POST(request: Request) {
       html,
       headers: {
         'X-Contact-Form': 'portfolio-site',
-        'X-Contact-From': email
-      }
+        'X-Contact-From': email,
+      },
     });
 
-    try {
-      const collection = await getContactCollection();
-      const contactDoc: ContactDocument = {
-        name,
-        email,
-        subject: safeSubject,
-        message,
-        budget,
-        createdAt: new Date(),
-        source: 'portfolio-site',
-        status: 'new'
-      };
-      await collection.insertOne(contactDoc);
-    } catch (mongoError) {
-      const isDev = process.env.NODE_ENV !== 'production';
-      return Response.json(
-        {
-          ok: true,
-          warning: 'Email sent, but MongoDB save failed',
-          ...(isDev && mongoError instanceof Error ? { detail: mongoError.message } : null),
-          ...(isDev ? { messageId: info.messageId, accepted: info.accepted, rejected: info.rejected } : null)
-        },
-        { status: 200 }
-      );
-    }
+    mailInfo = {
+      messageId: info.messageId,
+      accepted: info.accepted,
+      rejected: info.rejected,
+    };
+  } catch (mailError) {
+    mailErrorMessage = mailError instanceof Error ? mailError.message : 'Failed to send email';
+  }
 
-    const isDev = process.env.NODE_ENV !== 'production';
+  const isDev = process.env.NODE_ENV !== 'production';
+
+  if (mongoSaved && !mailErrorMessage) {
     return Response.json({
       ok: true,
-      ...(isDev ? { messageId: info.messageId, accepted: info.accepted, rejected: info.rejected } : null)
+      ...(isDev && mailInfo ? mailInfo : null),
     });
-  } catch (err) {
-    const isDev = process.env.NODE_ENV !== 'production';
+  }
+
+  if (mongoSaved && mailErrorMessage) {
     return Response.json(
       {
-        ok: false,
-        error: 'Failed to send email',
-        ...(isDev && err instanceof Error ? { detail: err.message } : null)
+        ok: true,
+        warning: 'Data saved, but email failed',
+        ...(isDev ? { detail: mailErrorMessage } : null),
+        ...(isDev && mailInfo ? mailInfo : null),
       },
-      { status: 500 }
+      { status: 200 }
     );
   }
+
+  return Response.json(
+    {
+      ok: false,
+      error: 'Failed to submit contact form',
+      ...(isDev
+        ? {
+            detail: {
+              mail: mailErrorMessage,
+              mongo: mongoErrorMessage,
+            },
+          }
+        : null),
+    },
+    { status: 500 }
+  );
 }

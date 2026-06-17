@@ -6,7 +6,7 @@ import { Check, X } from 'lucide-react';
 const plans = [
 {
   name: 'Starter',
-  price: '₹19,999',
+  price: '₹14,999',
   period: '',
   description:
   'Perfect for small businesses starting their digital transformation journey.',
@@ -41,7 +41,7 @@ const plans = [
 },
 {
   name: 'Professional',
-  price: '₹39,000',
+  price: '₹29,000',
   period: '',
   description:
   'Ideal for growing companies needing advanced software and AI integrations.',
