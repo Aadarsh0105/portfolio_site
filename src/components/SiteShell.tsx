@@ -11,7 +11,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
       <div className="min-h-screen flex flex-col bg-white text-dark">
-        <AnnouncementBar />
+        {/* <AnnouncementBar /> */}
         <Navbar />
         {children}
         <Footer />

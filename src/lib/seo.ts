@@ -17,5 +17,5 @@ export const siteConfig = {
   ],
 
   email: "contact@naxoratechnology.com",
-  phone: "+919934435748",
+  phone: "+919232784935",
 };

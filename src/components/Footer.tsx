@@ -20,22 +20,22 @@ export function Footer() {
   const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
 
   return (
-    <footer className="bg-white border-t border-gray-200 relative">
+    <footer className="bg-[#0f172a] border-t border-white/10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
               <Image
-                src="/logo1.png"
+                src="/logo2.png"
                 alt="Naxora Technology"
-                width={233}
+                width={210}
                 height={64}
                 priority
                 quality={90}
                 className="h-10 w-auto"
               />
             </Link>
-            <p className="text-sm leading-7 text-gray-700 max-w-sm">
+            <p className="text-sm leading-7 text-gray-400 max-w-sm">
               Premium technology consulting and development agency specializing
               in AI solutions and digital transformation.
             </p>
@@ -45,7 +45,7 @@ export function Footer() {
             <h4 className="text-sm font-bold uppercase tracking-widest text-primary mb-4">
               Useful Links
             </h4>
-            <ul className="space-y-3 text-sm text-gray-700">
+            <ul className="space-y-3 text-sm text-gray-400">
               <li>
                 <Link href="/about" className="hover:text-primary transition-colors">
                   About
@@ -78,7 +78,7 @@ export function Footer() {
             <h4 className="text-sm font-bold uppercase tracking-widest text-primary mb-4">
               Legal Pages
             </h4>
-            <ul className="space-y-3 text-sm text-gray-700">
+            <ul className="space-y-3 text-sm text-gray-400">
               <li>
                 <Link href="/cookie-policy" className="hover:text-primary transition-colors">
                   Cookie Policy
@@ -113,21 +113,21 @@ export function Footer() {
                 href="https://www.linkedin.com/company/naxoratechnology"
                 aria-label="LinkedIn"
                 target='blank'
-                className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
+                className="w-10 h-10 rounded-full border border-gray-200 bg-gray-300 hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
               >
                 <FaLinkedinIn className="w-4 h-4" />
               </a>
               {/* <a
                 href="#"
                 aria-label="Facebook"
-                className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
+                className="w-10 h-10 rounded-full border border-gray-200 bg-gray-300 hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
               >
                 <FaFacebookF className="w-4 h-4" />
               </a>
               <a
                 href="#"
                 aria-label="Instagram"
-                className="w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
+                className="w-10 h-10 rounded-full border border-gray-200 bg-gray-300 hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
               >
                 <FaInstagram className="w-4 h-4" />
               </a> */}
@@ -142,19 +142,19 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-8 mt-8 border-t border-gray-200">
-          <div className="text-sm text-gray-700">
+          <div className="text-xs text-gray-500">
             Copyright {new Date().getFullYear()} Naxora Technology. All rights reserved.
           </div>
         </div>
       </div>
 
-      <button
+      {/* <button
         onClick={scrollToTop}
         className="absolute bottom-6 right-6 p-3 rounded-full bg-white border border-gray-200 hover:bg-gray-50 text-gray-800 transition-colors shadow-lg hidden md:block"
         aria-label="Scroll to top"
       >
         <ArrowUp className="w-5 h-5" />
-      </button>
+      </button> */}
     </footer>
   );
 }

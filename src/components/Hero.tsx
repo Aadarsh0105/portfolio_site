@@ -1,234 +1,227 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import {
-  ArrowRight,
-  Play,
-  CheckCircle2,
-  BarChart3,
-  Shield,
-  Zap
-} from
-  'lucide-react';
+import { ArrowRight, Calendar, Zap, Shield, Headset, CheckCircle, Code2, Rocket } from 'lucide-react';
+import Image from 'next/image';
 export function Hero() {
   return (
-    <section
-      id="home"
-      className="relative flex items-start pt-24 sm:pt-28 md:pt-30 pb-0 overflow-hidden bg-white">
+    <section className="relative w-full min-h-screen overflow-hidden bg-gradient-to-b from-white via-[#F8FAFC] to-[#E8ECFF] flex items-center pt-20 lg:pt-24 pb-5">
+      {/* Background — right-anchored flowing strands like the reference */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Soft color tint on the right */}
+        <div className="absolute top-0 right-0 w-[70%] h-full bg-gradient-to-l from-[#DCE4FF]/80 via-[#E9EDFF]/40 to-transparent"></div>
 
-      {/* Background Effects */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-secondary/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-1/3 w-96 h-96 bg-accent/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMTI4LCAxMjgsIDEyOCwgMC4xKSIvPjwvc3ZnPg==')] [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
+        {/* Flowing line waves anchored to the right edge */}
+        <svg
+          className="absolute top-0 right-0 h-full w-[75%] max-w-none"
+          viewBox="0 0 800 900"
+          preserveAspectRatio="xMaxYMid slice"
+          xmlns="http://www.w3.org/2000/svg">
+
+          <defs>
+            <linearGradient id="strandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.55" />
+              <stop offset="50%" stopColor="#6366F1" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.35" />
+            </linearGradient>
+          </defs>
+          {/* A bundle of nearly-parallel curves sweeping from top-center to bottom-right */}
+          {Array.from({
+            length: 26
+          }).map((_, i) => {
+            const o = i * 13;
+            return (
+              <path
+                key={i}
+                d={`M${120 + o},-20 C${260 + o},${180 + o * 0.6} ${180 + o},${420 + o * 0.5} ${340 + o},${560 + o * 0.4} C${480 + o},${690 + o * 0.3} ${420 + o},${820} ${600 + o},${940}`}
+                fill="none"
+                stroke="url(#strandGrad)"
+                strokeWidth="1"
+                opacity={0.18 + i % 6 * 0.05} />);
+
+
+          })}
+        </svg>
+
+        {/* Faint dotted grid, lower-center like the reference */}
+        <svg
+          className="absolute bottom-[8%] left-[42%] w-44 h-28 opacity-60"
+          xmlns="http://www.w3.org/2000/svg">
+
+          <defs>
+            <pattern
+              id="heroDots"
+              x="0"
+              y="0"
+              width="14"
+              height="14"
+              patternUnits="userSpaceOnUse">
+
+              <circle cx="2" cy="2" r="1.4" fill="#A5B4FC" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#heroDots)" />
+        </svg>
+
+        {/* Faint geometric accents */}
+        <div className="absolute top-[18%] right-[8%] w-2.5 h-2.5 rounded-full border border-blue-300/60"></div>
+        <div className="absolute top-[24%] right-[26%] w-4 h-4 rotate-45 border border-indigo-300/50"></div>
+        <div className="absolute top-[16%] right-[18%] w-1.5 h-1.5 rounded-full bg-purple-300/60"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          {/* Left Content */}
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            animate={{
-              opacity: 1,
-              y: 0
-            }}
-            transition={{
-              duration: 0.6
-            }}
-            className="max-w-2xl mx-auto lg:mx-0">
-
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-card text-sm font-medium mb-6 text-primary">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 gap-12 lg:gap-8 items-center">
+        <div className="grid lg:grid-cols-12">
+          {/* LEFT COLUMN: Content */}
+          <div className="lg:col-span-6 flex flex-col items-start gap-6 lg:gap-8">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-slate-100">
+              <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+              <span className="text-sm font-semibold text-blue-600">
+                Your Trusted Technology Partner
               </span>
-              Enterprise AI & Software Agency
             </div>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.1] mb-6">
-              Build AI-Powered <br />
-              <span className="text-gradient">Digital Products</span> <br />
-              That Scale
+            {/* Heading */}
+            <h1 className="max-w-[700px] text-3xl md:text-4xl lg:text-5xl font-black leading-[1.02] tracking-[-0.04em] text-slate-900">
+              Custom Web & Mobile <br className="hidden md:block" />
+              Solutions That <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500">
+                Drive Business Growth
+              </span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-light mb-8 leading-relaxed max-w-xl">
-              We help startups, enterprises, and growing businesses automate
-              operations, develop custom software, build AI solutions, and
-              accelerate growth through innovative technology.
+            {/* Paragraph */}
+            <p className="text-md md:text-lg text-slate-600 max-w-[540px] leading-relaxed">
+              We help startups, enterprises and growing businesses build scalable
+              websites, mobile apps and digital products that accelerate growth
+              and create real impact.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <a href="#contact" className="btn-primary group">
+            {/* Mobile Mockup */}
+            <div className="lg:hidden relative w-full flex justify-center mt-2 mb-4">
+              <Image
+                src="/ChatGPT_Image_Jun_18,_2026,_12_12_11_PM.png"
+                alt="Custom web and mobile application development"
+                width={900}
+                height={700}
+                priority
+                className="w-full max-w-[420px] h-auto object-contain"
+              />
+
+              {/* Floating Code Chip */}
+              <div className="absolute top-4 left-4 bg-white p-2 rounded-2xl shadow-lg -rotate-12">
+                <Code2 className="w-5 h-5 text-purple-600" />
+              </div>
+
+              {/* Floating Rocket Chip */}
+              <div className="absolute bottom-4 right-4 bg-white p-2 rounded-2xl shadow-lg rotate-12">
+                <Rocket className="w-5 h-5 text-blue-600" />
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-2">
+              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold text-base transition-all shadow-[0_8px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_25px_rgba(37,99,235,0.4)]">
                 Start Your Project
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </a>
-              {/* <a href="#case-studies" className="btn-secondary group">
-                <Play className="w-4 h-4 mr-2 group-hover:text-primary transition-colors" />
-                View Portfolio
-              </a> */}
+                <ArrowRight className="w-5 h-5" />
+              </button>
+              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-800 px-6 py-3 rounded-full font-semibold text-base transition-all shadow-[0_2px_10px_rgba(0,0,0,0.05)] border border-slate-200 hover:shadow-[0_4px_15px_rgba(0,0,0,0.08)]">
+                <Calendar className="w-5 h-5 text-slate-600" />
+                Book Free Consultation
+              </button>
             </div>
+          </div>
 
-            {/* Trust Badges */}
-            {/* <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-gray-200">
-              {[
-              {
-                label: 'Projects',
-                value: '500+'
-              },
-              {
-                label: 'Global Clients',
-                value: '100+'
-              },
-              {
-                label: 'Experience',
-                value: '10+ Yrs'
-              },
-              {
-                label: 'Client Rating',
-                value: '4.9/5'
-              }].
-              map((stat, i) =>
-              <div key={i}>
-                  <div className="text-2xl font-bold text-dark">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs text-light font-medium uppercase tracking-wider mt-1">
-                    {stat.label}
-                  </div>
-                </div>
-              )}
-            </div> */}
-          </motion.div>
-
-          {/* Right Visuals - Abstract Dashboard Mockup */}
-          <motion.div
-            initial={{
-              opacity: 0,
-              scale: 0.95
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1
-            }}
-            transition={{
-              duration: 0.8,
-              delay: 0.2
-            }}
-            className="hidden lg:flex relative lg:h-[600px] items-center justify-center">
-
-            {/* Main Dashboard Card */}
-            <div className="relative w-full max-w-lg glass-card rounded-2xl p-4 md:p-6 shadow-2xl border-t border-l border-white/40">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                    <BarChart3 className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold">AI Analytics Engine</div>
-                    <div className="text-xs text-light">
-                      Real-time processing
-                    </div>
-                  </div>
-                </div>
-                <div className="px-2 py-1 rounded bg-green-100 text-green-600 text-xs font-medium flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>{' '}
-                  Active
-                </div>
-              </div>
-
-              {/* Mock Graph - Desktop Only */}
-              <div className="w-full flex h-40 w-full items-end gap-2 mb-6">
-                {[40, 70, 45, 90, 65, 85, 100].map((height, i) =>
-                  <motion.div
-                    key={i}
-                    initial={{
-                      height: 0
-                    }}
-                    animate={{
-                      height: `${height}%`
-                    }}
-                    transition={{
-                      duration: 1,
-                      delay: 0.5 + i * 0.1
-                    }}
-                    className="flex-1 bg-gradient-to-t from-primary/20 to-primary rounded-t-sm">
-                  </motion.div>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                {[
-                  {
-                    icon: Shield,
-                    text: 'Enterprise Security Active',
-                    color: 'text-secondary'
-                  },
-                  {
-                    icon: Zap,
-                    text: 'Workflow Automation Running',
-                    color: 'text-accent'
-                  }].
-                  map((item, i) =>
-                    <div
-                      key={i}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
-
-                      <item.icon className={`w-4 h-4 ${item.color}`} />
-                      <span className="text-sm font-medium">{item.text}</span>
-                      <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto" />
-                    </div>
-                  )}
+          {/* RIGHT COLUMN: Product Mockup */}
+          <div className="hidden lg:flex lg:col-span-6 relative w-full items-center justify-center mt-12 lg:mt-0">
+            {/* Floating Chip: Code */}
+            <div className="absolute top-[2%] left-[2%] z-30 bg-white p-3 lg:p-4 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] transform -rotate-12 animate-[bounce_6s_ease-in-out_infinite]">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+                <Code2 className="w-5 h-5 lg:w-6 lg:h-6 text-purple-600" />
               </div>
             </div>
 
-            {/* Floating Elements */}
-            {/* <motion.div
-              animate={{
-                y: [-10, 10, -10]
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 4,
-                ease: 'easeInOut'
-              }}
-              className="absolute -right-8 top-20 glass-card p-4 rounded-xl shadow-xl hidden md:block">
-              
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-accent" />
-                </div>
-                <div>
-                  <div className="text-xs text-light">Efficiency</div>
-                  <div className="text-sm font-bold">+340%</div>
-                </div>
+            {/* Floating Chip: Rocket */}
+            <div className="absolute -bottom-[6%] right-[4%] z-30 bg-white p-3 lg:p-4 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] transform rotate-12 animate-[bounce_5s_ease-in-out_infinite_reverse]">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                <Rocket className="w-5 h-5 lg:w-6 lg:h-6 text-blue-600" />
               </div>
-            </motion.div> */}
+            </div>
 
-            {/* <motion.div
-              animate={{
-                y: [10, -10, 10]
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 5,
-                ease: 'easeInOut'
-              }}
-              className="absolute -left-8 bottom-20 glass-card p-4 rounded-xl shadow-xl hidden md:block">
-              
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-secondary" />
+            {/* Mockup image */}
+            <Image src="/ChatGPT_Image_Jun_18,_2026,_12_12_11_PM.png" alt="Custom web and mobile application development"
+              width={1200} height={900} priority className="relative z-10 w-full h-auto
+            object-contain drop-shadow-[0_30px_60px_rgba(59,130,246,0.18)]"/>
+
+          </div>
+        </div>
+
+        {/* Full Width Trust Bar */}
+        <div className="mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-white p-3 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-2xl bg-blue-50 flex items-center justify-center">
+                  <Zap className="h-7 w-7 text-blue-600" />
                 </div>
                 <div>
-                  <div className="text-xs text-light">Threats Blocked</div>
-                  <div className="text-sm font-bold">99.9%</div>
+                  <h3 className="text-md font-semibold text-slate-900">
+                    Fast Delivery
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    On-time execution.
+                  </p>
                 </div>
               </div>
-            </motion.div> */}
-          </motion.div>
+            </div>
+
+            <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-white p-3 hover:shadow-lg transition-all">
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 rounded-2xl bg-green-50 flex items-center justify-center">
+                  <Shield className="h-7 w-7 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-md font-semibold text-slate-900">
+                    Secure & Scalable
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    Built for growth.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-white p-3 hover:shadow-lg transition-all">
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 rounded-2xl bg-purple-50 flex items-center justify-center">
+                  <Headset className="h-7 w-7 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="text-md font-semibold text-slate-900">
+                    Dedicated Support
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    Direct communication.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-white p-3 hover:shadow-lg transition-all">
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 rounded-2xl bg-cyan-50 flex items-center justify-center">
+                  <CheckCircle className="h-7 w-7 text-cyan-600" />
+                </div>
+                <div>
+                  <h3 className="text-md font-semibold text-slate-900">
+                    Transparent Pricing
+                  </h3>
+                  <p className="text-sm text-slate-500">
+                    No hidden costs.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </section>);
