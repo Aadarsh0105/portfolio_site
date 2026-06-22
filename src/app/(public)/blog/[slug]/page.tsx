@@ -1,8 +1,8 @@
 import { BlogPostPage } from "@/components/BlogPostPage";
 import BlogSchema from "@/schema/BlogSchema";
+import BreadcrumbSchema from "@/schema/BreadcrumbSchema";
 import { blogPosts } from "@/data/blogPosts";
 import { Metadata } from "next";
-import BreadcrumbSchema from "@/schema/BreadcrumbSchema";
 
 export async function generateMetadata({
   params,
@@ -11,7 +11,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
 
-  const post = blogPosts.find((p) => p.slug === slug);
+  const post = blogPosts.find(
+    (p) => p.slug === slug
+  );
 
   if (!post) {
     return {
@@ -20,31 +22,31 @@ export async function generateMetadata({
   }
 
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: post.metaTitle || post.title,
 
-    keywords: [
-      post.category,
-      "AI",
-      "Software Development",
-      "Naxora Technology",
-    ],
+    description: post.metaDescription,
 
     alternates: {
       canonical: `https://naxoratechnology.com/blog/${slug}`,
     },
 
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: post.metaTitle || post.title,
+      description: post.metaDescription,
       url: `https://naxoratechnology.com/blog/${slug}`,
       type: "article",
+      images: [
+        {
+          url: post.coverImage,
+        },
+      ],
     },
 
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
+      title: post.metaTitle || post.title,
+      description: post.metaDescription,
+      images: [post.coverImage],
     },
   };
 }
@@ -56,7 +58,9 @@ export default async function BlogPage({
 }) {
   const { slug } = await params;
 
-  const post = blogPosts.find((p) => p.slug === slug);
+  const post = blogPosts.find(
+    (p) => p.slug === slug
+  );
 
   if (!post) {
     return <BlogPostPage slug={slug} />;
@@ -66,14 +70,16 @@ export default async function BlogPage({
     <>
       <BlogSchema
         title={post.title}
-        description={post.excerpt}
+        description={post.metaDescription}
         slug={post.slug}
-        datePublished={post.date}
+        datePublished={ post.createdAt.toISOString() }
       />
+
       <BreadcrumbSchema
         title={post.title}
         slug={post.slug}
       />
+
       <BlogPostPage slug={slug} />
     </>
   );
