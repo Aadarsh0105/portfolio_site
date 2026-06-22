@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# src
+/src/app/nxr-admin-portal-9x7k
+/src/app/api
+
 # production
 /build
 

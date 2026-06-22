@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowUp, PhoneIcon } from 'lucide-react';
+import { PhoneIcon } from 'lucide-react';
 import {
   FaFacebookF,
   FaInstagram,
@@ -117,20 +117,30 @@ export function Footer() {
               >
                 <FaLinkedinIn className="w-4 h-4" />
               </a>
-              {/* <a
-                href="#"
+              <a
+                href="https://www.facebook.com/naxoratechnology/"
                 aria-label="Facebook"
+                target='blank'
                 className="w-10 h-10 rounded-full border border-gray-200 bg-gray-300 hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
               >
                 <FaFacebookF className="w-4 h-4" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/naxoratechnology/"
                 aria-label="Instagram"
+                target='blank'
                 className="w-10 h-10 rounded-full border border-gray-200 bg-gray-300 hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
               >
                 <FaInstagram className="w-4 h-4" />
-              </a> */}
+              </a>
+              <a
+                href="https://x.com/naxoratech"
+                aria-label="Instagram"
+                target='blank'
+                className="w-10 h-10 rounded-full border border-gray-200 bg-gray-300 hover:bg-gray-50 text-gray-800 flex items-center justify-center transition-colors"
+              >
+                <FaXTwitter className="w-4 h-4" />
+              </a>
             </div>
 
             {phoneNumber ? (

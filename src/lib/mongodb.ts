@@ -1,4 +1,4 @@
-import { MongoClient, type Db, type Collection } from 'mongodb';
+import { MongoClient, type Collection, type Db } from "mongodb";
 
 let client: MongoClient | undefined;
 let clientPromise: Promise<MongoClient> | undefined;
@@ -11,7 +11,7 @@ declare global {
 function getMongoUri() {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
-    throw new Error('MONGODB_URI is not configured');
+    throw new Error("MONGODB_URI is not configured");
   }
   return uri;
 }
@@ -22,7 +22,8 @@ function getClientPromise() {
   }
 
   const uri = getMongoUri();
-  if (process.env.NODE_ENV === 'development') {
+
+  if (process.env.NODE_ENV === "development") {
     if (!global._mongoClientPromise) {
       client = new MongoClient(uri);
       global._mongoClientPromise = client.connect();
@@ -36,20 +37,20 @@ function getClientPromise() {
   return clientPromise;
 }
 
-export async function getMongoDb(): Promise<Db> {
+export async function connectDB(): Promise<Db> {
   const connectedClient = await getClientPromise();
   const dbName = process.env.MONGODB_DB;
   if (!dbName) {
-    throw new Error('MONGODB_DB is not configured');
+    throw new Error("MONGODB_DB is not configured");
   }
   return connectedClient.db(dbName);
 }
 
 export async function getContactCollection(): Promise<Collection> {
-  const db = await getMongoDb();
+  const db = await connectDB();
   const collectionName = process.env.MONGODB_COLLECTION;
   if (!collectionName) {
-    throw new Error('MONGODB_COLLECTION is not configured');
+    throw new Error("MONGODB_COLLECTION is not configured");
   }
   return db.collection(collectionName);
 }

@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { getContactCollection } from '@/lib/mongodb';
+import { contactsCollection } from "@/lib/collections";
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -176,7 +176,7 @@ export async function POST(request: Request) {
   let mongoErrorMessage: string | undefined;
 
   try {
-    const collection = await getContactCollection();
+    const collection = await contactsCollection();
     const contactDoc: ContactDocument = {
       name,
       email,

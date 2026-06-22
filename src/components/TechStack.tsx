@@ -94,6 +94,7 @@ const techData: Record<string, TechCategory> = {
     description:
       "Powerful third-party platforms, payment gateways, hosting providers, and communication services integrated into modern applications.",
     technologies: [
+      { name: "WordPress", logo: "/tech/wordpress.svg", size: 60 },
       { name: "Firebase", logo: "/tech/firebase.svg", size: 60 },
       { name: "Twilio", logo: "/tech/twilio.svg", size: 60 },
       { name: "Razorpay", logo: "/tech/razorpay.svg", size: 100 },

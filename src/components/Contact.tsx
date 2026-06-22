@@ -80,7 +80,7 @@ export function Contact() {
                 {
                   icon: Phone,
                   title: 'Phone',
-                  detail: '+91 9934435748'
+                  detail: '+91 9232784935'
                 },
                 {
                   icon: MapPin,

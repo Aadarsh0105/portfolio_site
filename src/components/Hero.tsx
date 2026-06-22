@@ -118,14 +118,14 @@ export function Hero() {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-2">
-              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold text-base transition-all shadow-[0_8px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_25px_rgba(37,99,235,0.4)]">
+              <a href="#contact" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold text-base transition-all shadow-[0_8px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_10px_25px_rgba(37,99,235,0.4)]">
                 Start Your Project
                 <ArrowRight className="w-5 h-5" />
-              </button>
-              <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-800 px-6 py-3 rounded-full font-semibold text-base transition-all shadow-[0_2px_10px_rgba(0,0,0,0.05)] border border-slate-200 hover:shadow-[0_4px_15px_rgba(0,0,0,0.08)]">
+              </a>
+              <a href="#contact" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-800 px-6 py-3 rounded-full font-semibold text-base transition-all shadow-[0_2px_10px_rgba(0,0,0,0.05)] border border-slate-200 hover:shadow-[0_4px_15px_rgba(0,0,0,0.08)]">
                 <Calendar className="w-5 h-5 text-slate-600" />
                 Book Free Consultation
-              </button>
+              </a>
             </div>
           </div>
 

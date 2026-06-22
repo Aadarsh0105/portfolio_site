@@ -4,30 +4,46 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
 const faqs = [
-{
-  q: 'How long does development take?',
-  a: 'Project timelines vary based on complexity. A simple web application might take 4-6 weeks, while a complex enterprise AI solution could take 3-6 months. We provide detailed timelines during the discovery phase.'
-},
-{
-  q: 'What industries do you serve?',
-  a: 'We have deep expertise across Healthcare, Fintech, Real Estate, E-commerce, Logistics, and SaaS. However, our technology solutions are adaptable and we frequently partner with businesses in other sectors.'
-},
-{
-  q: 'Do you provide support after launch?',
-  a: 'Yes, we offer comprehensive maintenance and support packages. This includes 24/7 monitoring, security updates, bug fixes, and continuous performance optimization to ensure your product scales smoothly.'
-},
-{
-  q: 'Can you build custom AI solutions?',
-  a: 'Absolutely. We specialize in building custom AI agents, integrating LLMs (like OpenAI and Claude), developing predictive analytics models, and creating automated workflows tailored to your specific business needs.'
-},
-{
-  q: 'What technologies do you use?',
-  a: 'We use modern, scalable tech stacks including React, Next.js, Node.js, Python, AWS, and leading AI frameworks. We select the best tools for each specific project rather than forcing a one-size-fits-all approach.'
-},
-{
-  q: 'What are your pricing models?',
-  a: 'We offer flexible engagement models: Fixed-price contracts for well-defined projects, Time & Materials for agile development with evolving requirements, and Dedicated Team models for long-term partnerships.'
-}];
+  {
+    q: "How much does a website or application cost?",
+    a: "Project costs depend on scope, features, integrations, and complexity. Small business websites typically start from ₹15,000, while custom web applications, mobile apps, and enterprise platforms are quoted based on requirements. Contact us for a free project estimate."
+  },
+
+  {
+    q: "How long does it take to complete a project?",
+    a: "Timelines vary based on project scope. Business websites generally take 2–6 weeks, while custom web applications, mobile apps, and SaaS platforms can take 1–4 months or more. We provide a clear roadmap and delivery timeline before development begins."
+  },
+
+  {
+    q: "Do you develop both web and mobile applications?",
+    a: "Yes. We build modern websites, custom web applications, admin dashboards, SaaS platforms, Android apps, iOS apps, and cross-platform mobile applications tailored to your business goals."
+  },
+
+  {
+    q: "Can you integrate AI into existing or new applications?",
+    a: "Absolutely. We develop AI-powered solutions including chatbots, AI agents, workflow automation, document processing, customer support assistants, and integrations with platforms like OpenAI, Claude, and Gemini."
+  },
+
+  {
+    q: "Do you provide maintenance and support after launch?",
+    a: "Yes. We offer ongoing maintenance, bug fixes, performance optimization, security updates, feature enhancements, and technical support to ensure your product continues running smoothly."
+  },
+
+  {
+    q: "Will I own the source code and project assets?",
+    a: "Yes. Once the project is completed and final payment is made, you receive full ownership of the source code, design assets, documentation, and intellectual property unless otherwise agreed."
+  },
+
+  {
+    q: "Can you work with startups as well as established businesses?",
+    a: "Yes. We work with startups, small businesses, growing companies, and enterprises. Whether you need an MVP, a business website, or a large-scale platform, we tailor our approach to your stage and budget."
+  },
+
+  {
+    q: "How do we get started?",
+    a: "Simply contact us through our website and share your requirements. We'll schedule a consultation, understand your goals, recommend the best solution, and provide a project proposal with timelines and pricing."
+  }
+];
 
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);

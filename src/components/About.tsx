@@ -5,11 +5,6 @@ import { motion } from 'framer-motion';
 import { Target, Users, Globe, CheckCircle } from 'lucide-react';
 const highlights = [
   {
-    title: "AI & Automation",
-    description:
-      "Custom AI agents, workflow automation, and business process optimization.",
-  },
-  {
     title: "Web & Mobile Development",
     description:
       "High-performance applications built with modern technologies and best practices.",
@@ -18,6 +13,11 @@ const highlights = [
     title: "SEO & Growth",
     description:
       "Technical SEO, performance optimization, and scalable digital growth strategies.",
+  },
+  {
+    title: "AI & Automation",
+    description:
+      "Custom AI agents, workflow automation, and business process optimization.",
   },
   {
     title: "Long-Term Partnership",
