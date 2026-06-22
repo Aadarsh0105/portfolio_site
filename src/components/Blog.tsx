@@ -3,11 +3,28 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 import { blogPosts } from "@/data/blogPosts";
 
-export function Blog() {
-  const recentPosts = blogPosts.slice(0, 3);
+export type PublicBlogPost = {
+  title: string;
+  slug: string;
+  coverImage?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  status?: string;
+  content?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+};
+
+export function Blog({
+  posts = blogPosts,
+}: {
+  posts?: PublicBlogPost[];
+}) {
+  const recentPosts = posts.slice(0, 3);
+  const showViewAll = posts.length > 3;
 
   return (
     <section
@@ -45,8 +62,8 @@ export function Blog() {
                 className="glass-card rounded-3xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 flex flex-col h-full"
               >
                 <div className="relative h-56 overflow-hidden">
-                  <Image
-                    src={post.coverImage}
+                <Image
+                    src={post.coverImage || "/logo1.png"}
                     alt={post.title}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -60,16 +77,21 @@ export function Blog() {
                   </h4>
 
                   <div className="flex items-center justify-between border-t border-gray-100 dark:border-white/10 pt-4">
-                    <div className="flex items-center gap-4 text-xs text-light font-medium">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        {/* {new Date(post.createdAt).toLocaleDateString()} */}
+                    <div className="flex items-center gap-2 text-xs text-light font-medium">
+                      <Calendar className="w-3 h-3" />
+                      <span>
+                        {post.updatedAt
+                          ? new Date(post.updatedAt).toLocaleString("en-IN", {
+                              dateStyle: "medium",
+                              timeStyle: "short",
+                            })
+                          : post.createdAt
+                            ? new Date(post.createdAt).toLocaleString("en-IN", {
+                                dateStyle: "medium",
+                                timeStyle: "short",
+                              })
+                            : ""}
                       </span>
-
-                      {/* <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {post.readTime}
-                      </span> */}
                     </div>
 
                     <ArrowRight className="w-4 h-4 text-primary opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -79,6 +101,17 @@ export function Blog() {
             </motion.div>
           ))}
         </div>
+
+        {showViewAll ? (
+          <div className="mt-10 flex justify-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 hover:bg-primary/90 transition-colors"
+            >
+              View All Blogs
+            </Link>
+          </div>
+        ) : null}
       </div>
     </section>
   );

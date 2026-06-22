@@ -1,24 +1,33 @@
 "use client";
 
-import { UploadCloud, ImageIcon } from "lucide-react";
-import { useState } from "react";
+import { UploadCloud } from "lucide-react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import type { ChangeEvent } from "react";
 
-export default function ImageUploader() {
-  const [preview, setPreview] = useState<string | null>(null);
+type ImageUploaderProps = {
+  name?: string;
+  initialPreview?: string;
+  onFileChange?: (preview: string) => void;
+};
 
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+export default function ImageUploader({
+  name = "coverImage",
+  initialPreview = "",
+  onFileChange,
+}: ImageUploaderProps) {
+  const [preview, setPreview] = useState<string | null>(initialPreview || null);
+
+  useEffect(() => {
+    setPreview(initialPreview || null);
+  }, [initialPreview]);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
-    const allowed = [
-      "image/png",
-      "image/jpeg",
-      "image/jpg",
-    ];
+    const allowed = ["image/png", "image/jpeg", "image/jpg"];
 
     if (!allowed.includes(file.type)) {
       alert("Only PNG and JPG images are allowed.");
@@ -27,6 +36,7 @@ export default function ImageUploader() {
 
     const url = URL.createObjectURL(file);
     setPreview(url);
+    onFileChange?.(url);
   };
 
   return (
@@ -37,7 +47,7 @@ export default function ImageUploader() {
 
       <label className="border-2 border-dashed border-slate-300 rounded-2xl min-h-72 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition overflow-hidden">
         {preview ? (
-          <div className="relative w-full h-full">
+          <div className="relative w-full min-h-72">
             <Image
               src={preview}
               alt="Preview"
@@ -53,16 +63,17 @@ export default function ImageUploader() {
               Upload Cover Image
             </p>
 
-          <p className="text-sm text-slate-500">
-            PNG or JPG only
-          </p>
-        </>
+            <p className="text-sm text-slate-500">
+              PNG or JPG only
+            </p>
+          </>
         )}
 
         <input
           type="file"
           accept=".png,.jpg,.jpeg"
           onChange={handleFileChange}
+          name={name}
           className="hidden"
         />
       </label>

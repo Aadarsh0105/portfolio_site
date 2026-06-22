@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   FileText,
+  MessageSquareText,
   Settings,
 } from "lucide-react";
 
@@ -20,6 +21,11 @@ const menuItems = [
     name: "Blogs",
     href: "/nxr-admin-portal-9x7k/blogs",
     icon: FileText,
+  },
+  {
+    name: "Enquiries",
+    href: "/nxr-admin-portal-9x7k/contact",
+    icon: MessageSquareText,
   },
   {
     name: "Settings",

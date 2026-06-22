@@ -8,48 +8,39 @@ import {
   ArrowLeft,
   ArrowRight,
   Calendar,
-  Clock,
-  User,
 } from "lucide-react";
 
-import { blogPosts } from "@/data/blogPosts";
 import { SiteShell } from "./SiteShell";
 
-export function BlogPostPage({
-  slug,
-}: {
+type BlogPost = {
+  title: string;
   slug: string;
+  coverImage?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  content: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+};
+
+export function BlogPostPage({
+  post,
+  relatedPosts = [],
+}: {
+  post: BlogPost;
+  relatedPosts?: BlogPost[];
 }) {
-  const post = blogPosts.find(
-    (item) => item.slug === slug
-  );
-
-  const relatedPosts = blogPosts
-    .filter((item) => item.slug !== slug)
-    .slice(0, 2);
-
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  }, [slug]);
-
-  if (!post) {
-    return (
-      <SiteShell>
-        <main className="min-h-screen flex items-center justify-center">
-          Post Not Found
-        </main>
-      </SiteShell>
-    );
-  }
+  }, [post.slug]);
 
   return (
     <SiteShell>
       <main className="flex-grow pt-32 pb-24">
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-
           <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
             <Link href="/">Home</Link>
             <span>/</span>
@@ -72,27 +63,29 @@ export function BlogPostPage({
             {post.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-6 text-sm text-light mb-10">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-light mb-10">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <User className="w-4 h-4" />
-              </div>
-            </div>
-
-            <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              {/* {new Date(post.createdAt).toLocaleDateString()} */}
+              <span>
+                Updated{" "}
+                {post.updatedAt
+                  ? new Date(post.updatedAt).toLocaleString("en-IN", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })
+                  : post.createdAt
+                    ? new Date(post.createdAt).toLocaleString("en-IN", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })
+                    : ""}
+              </span>
             </div>
-
-            {/* <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              {post.readTime}
-            </div> */}
           </div>
 
           <div className="relative h-[300px] md:h-[500px] rounded-3xl overflow-hidden mb-12">
             <Image
-              src={post.coverImage}
+              src={post.coverImage || "/logo1.png"}
               alt={post.title}
               fill
               priority
@@ -101,7 +94,7 @@ export function BlogPostPage({
           </div>
 
           <div
-            className="prose prose-lg max-w-none dark:prose-invert"
+            className="max-w-none text-slate-700 leading-8 [&_h1]:mt-10 [&_h1]:mb-5 [&_h1]:text-4xl [&_h1]:font-bold [&_h1]:leading-tight [&_h1]:text-slate-950 [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:text-slate-950 [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-slate-950 [&_p]:mb-5 [&_p]:text-lg [&_p]:leading-8 [&_ul]:my-6 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-2 [&_blockquote]:my-8 [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-5 [&_blockquote]:italic [&_img]:my-8 [&_img]:rounded-2xl [&_img]:w-full [&_a]:text-primary [&_a]:underline"
             dangerouslySetInnerHTML={{
               __html: post.content,
             }}
@@ -134,7 +127,7 @@ export function BlogPostPage({
                 >
                   <div className="relative h-48">
                     <Image
-                      src={relatedPost.coverImage}
+                      src={relatedPost.coverImage || "/logo1.png"}
                       alt={relatedPost.title}
                       fill
                       className="object-cover"
@@ -142,17 +135,11 @@ export function BlogPostPage({
                   </div>
 
                   <div className="p-5">
-
                     <h4 className="font-bold line-clamp-2 mb-3">
                       {relatedPost.title}
                     </h4>
 
                     <div className="flex items-center justify-between">
-                      {/* <span className="text-xs flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {relatedPost.readTime}
-                      </span> */}
-
                       <ArrowRight className="w-4 h-4 text-primary" />
                     </div>
                   </div>
