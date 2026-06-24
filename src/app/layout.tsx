@@ -88,7 +88,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${plusJakartaSans.variable} h-full antialiased light`}
     >
-      <head>
+      <body className="min-h-full flex flex-col bg-white text-dark">
         {/* Google Analytics + Google Ads */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-SVDQE17NV9"
@@ -99,7 +99,7 @@ export default function RootLayout({
           {`
             window.dataLayer = window.dataLayer || [];
 
-            function gtag(){
+            function gtag() {
               dataLayer.push(arguments);
             }
 
@@ -108,17 +108,29 @@ export default function RootLayout({
             gtag('js', new Date());
 
             // Google Analytics 4
-            gtag('config', 'G-SVDQE17NV9', {
-              page_path: window.location.pathname,
-            });
+            gtag('config', 'G-SVDQE17NV9');
 
             // Google Ads
             gtag('config', 'AW-18244106024');
           `}
         </Script>
-      </head>
 
-      <body className="min-h-full flex flex-col bg-white text-dark">
+        {/* Microsoft Clarity */}
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){
+                (c[a].q=c[a].q||[]).push(arguments);
+              };
+              t=l.createElement(r);
+              t.async=1;
+              t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];
+              y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "xbvdfgmjii");
+          `}
+        </Script>
+
         {children}
 
         <OrganizationSchema />
