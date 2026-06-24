@@ -1,18 +1,138 @@
 [
   {
-    "keywords": ["price", "cost", "fees", "pricing", "plan", "plans"],
-    "answer": "Our pricing starts from $10/month. If you share your requirements, I can suggest the best plan.",
-    "suggestions": ["View plans", "Contact sales", "Share requirements"]
+    "keywords": [
+      "price",
+      "cost",
+      "pricing",
+      "fees",
+      "plan",
+      "plans",
+      "package",
+      "packages",
+      "quote"
+    ],
+    "answer": "Our pricing depends on the scope, features, and complexity of your project. We offer flexible solutions for startups, small businesses, and enterprises. Share your requirements and our team will recommend the most suitable option.",
+    "suggestions": [
+      "Website Development",
+      "Mobile App Development",
+      "Get a Custom Quote"
+    ]
   },
   {
-    "keywords": ["refund", "cancel", "cancellation", "money back"],
-    "answer": "Refunds are available within 7 days of purchase. Tell me your order email and I’ll guide you.",
-    "suggestions": ["Refund policy", "Talk to support", "Cancel subscription"]
+    "keywords": [
+      "website",
+      "web development",
+      "web app",
+      "website cost"
+    ],
+    "answer": "We build modern, high-performance websites, web applications, and business platforms tailored to your goals. Costs vary based on design, features, integrations, and project requirements.",
+    "suggestions": [
+      "Website Packages",
+      "Request a Proposal",
+      "Talk to an Expert"
+    ]
   },
   {
-    "keywords": ["login", "signin", "sign in", "log in", "account"],
-    "answer": "Click the Login button on the top right. If you can’t access your account, try resetting your password.",
-    "suggestions": ["Reset password", "Create account", "Contact support"]
+    "keywords": [
+      "mobile app",
+      "android",
+      "ios",
+      "flutter",
+      "react native",
+      "app development"
+    ],
+    "answer": "We develop scalable mobile applications for Android, iOS, and cross-platform environments using modern technologies like Flutter and React Native.",
+    "suggestions": [
+      "App Development Services",
+      "Get a Quote",
+      "Book a Consultation"
+    ]
+  },
+  {
+    "keywords": [
+      "ai",
+      "artificial intelligence",
+      "chatbot",
+      "automation",
+      "agent",
+      "agents",
+      "llm"
+    ],
+    "answer": "We help businesses implement AI-powered solutions including custom chatbots, AI agents, workflow automation, document processing, and intelligent business applications.",
+    "suggestions": [
+      "AI Solutions",
+      "AI Agent Development",
+      "Schedule a Discovery Call"
+    ]
+  },
+  {
+    "keywords": [
+      "support",
+      "help",
+      "contact",
+      "customer service"
+    ],
+    "answer": "Our team is here to help. You can contact us through the contact form, email us directly, or schedule a consultation to discuss your requirements.",
+    "suggestions": [
+      "Contact Us",
+      "Book a Call",
+      "Send a Message"
+    ]
+  },
+  {
+    "keywords": [
+      "refund",
+      "refunds",
+      "cancel",
+      "cancellation",
+      "money back"
+    ],
+    "answer": "Refund and cancellation requests are reviewed according to the terms of the project or service agreement. Please contact our team with your project details and we will assist you.",
+    "suggestions": [
+      "Contact Support",
+      "Refund Policy",
+      "Project Assistance"
+    ]
+  },
+  {
+    "keywords": [
+      "login",
+      "signin",
+      "sign in",
+      "account",
+      "portal"
+    ],
+    "answer": "You can access your account through the login page. If you're experiencing issues, try resetting your password or contact our support team for assistance.",
+    "suggestions": [
+      "Reset Password",
+      "Contact Support",
+      "Login Help"
+    ]
+  },
+  {
+    "keywords": [
+      "services",
+      "what do you do",
+      "offerings"
+    ],
+    "answer": "Naxora Technology provides Web Development, Mobile App Development, AI Solutions, Cloud Services, UI/UX Design, SaaS Development, Automation Solutions, and Custom Software Development.",
+    "suggestions": [
+      "Web Development",
+      "AI Solutions",
+      "View All Services"
+    ]
+  },
+  {
+    "keywords": [
+      "company",
+      "about",
+      "who are you"
+    ],
+    "answer": "Naxora Technology is a software development company focused on building modern web applications, mobile apps, AI-powered solutions, and scalable digital products for businesses worldwide.",
+    "suggestions": [
+      "About Us",
+      "Our Services",
+      "Contact Team"
+    ]
   }
 ]
-

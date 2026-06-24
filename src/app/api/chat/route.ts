@@ -56,12 +56,18 @@ export async function POST(request: Request) {
     }
   }
 
-  if (!best || bestScore === 0) {
+  if (!best || bestScore < 2) {
     return Response.json({
       ok: true,
       answer:
-        "I can help with pricing, refunds/cancellation, and login. What would you like to know?",
-      suggestions: ['Pricing', 'Refund policy', 'Login help']
+        "I’m sorry, I couldn’t fully understand your request. I can assist with our services, pricing, AI solutions, web development, mobile applications, project consultations, and support inquiries. Could you provide a little more detail?",
+      suggestions: [
+        "Web Development",
+        "Mobile Apps",
+        "AI Solutions",
+        "Pricing",
+        "Contact Team"
+      ]
     });
   }
 

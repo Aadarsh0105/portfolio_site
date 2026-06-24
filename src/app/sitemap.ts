@@ -1,12 +1,18 @@
 import { MetadataRoute } from "next";
-import { blogPosts } from "@/data/blogPosts";
+import { blogsCollection } from "@/lib/collections";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://naxoratechnology.com";
 
-  const blogUrls = blogPosts.map((post) => ({
+  const blogs = await blogsCollection();
+  const posts = await blogs
+    .find({ status: "published" })
+    .sort({ updatedAt: -1, createdAt: -1 })
+    .toArray();
+
+  const blogUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(),
+    lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));

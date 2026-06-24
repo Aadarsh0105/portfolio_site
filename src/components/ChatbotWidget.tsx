@@ -28,7 +28,7 @@ export function ChatbotWidget({
     {
       id: uid(),
       role: 'bot',
-      text: 'Hi! How can I help you today?'
+      text: '👋 Welcome to Naxora Technology. I can help with our services, pricing, AI solutions, web development, mobile apps, project consultations, and support inquiries. How can I assist you today?'
     }
   ]);
 
@@ -46,7 +46,7 @@ export function ChatbotWidget({
   }, [open, messages.length]);
 
   const initialSuggestions = useMemo(
-    () => ['Pricing', 'Refund policy', 'Login help'],
+    () => ["Web Development", "Mobile Apps", "AI Solutions", "Pricing", "Contact Team"],
     []
   );
 
@@ -79,7 +79,7 @@ export function ChatbotWidget({
           {
             id: uid(),
             role: 'bot',
-            text: 'Sorry — I had trouble answering that. Please try again.'
+            text: "Apologies, I’m currently unable to process your request. Please try again in a moment or contact our team directly."
           }
         ]);
         setSuggestions(initialSuggestions);
@@ -97,7 +97,7 @@ export function ChatbotWidget({
         {
           id: uid(),
           role: 'bot',
-          text: 'Network error. Please try again.'
+          text: "Unable to connect right now. Please check your connection or try again shortly."
         }
       ]);
       setSuggestions(initialSuggestions);
@@ -105,6 +105,13 @@ export function ChatbotWidget({
       setPending(false);
     }
   };
+
+  useEffect(() => {
+    containerRef.current?.scrollTo({
+      top: containerRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages]);
 
   return (
     <AnimatePresence>
@@ -136,7 +143,7 @@ export function ChatbotWidget({
               </button>
             </div>
 
-            <div ref={containerRef} className="max-h-[45vh] overflow-auto p-4 space-y-3">
+            <div ref={containerRef} className="max-h-[60vh] overflow-auto p-4 space-y-3">
               {messages.map((m) => (
                 <div
                   key={m.id}

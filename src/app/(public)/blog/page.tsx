@@ -67,11 +67,7 @@ async function getPublishedBlogs(page = 1, limit = 12): Promise<BlogApiResponse>
   };
 }
 
-export default async function BlogPage() {
-  return await BlogListPage({ searchParams: {} as Record<string, string | string[] | undefined> });
-}
-
-export async function BlogListPage({
+export default async function BlogPage({
   searchParams,
 }: {
   searchParams?: Record<string, string | string[] | undefined>;
@@ -84,24 +80,11 @@ export async function BlogListPage({
   const limit = 6;
   const { data: posts, total } = await getPublishedBlogs(page, limit);
   const totalPages = Math.max(Math.ceil(total / limit), 1);
-  const showViewAll = total > 3;
 
   return (
     <SiteShell>
       <main className="bg-white text-dark pt-12">
         <Blog posts={posts} />
-        {showViewAll ? (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-            <div className="flex justify-center">
-              <Link
-                href="/blog"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 hover:bg-primary/90 transition-colors"
-              >
-                View All Blogs
-              </Link>
-            </div>
-          </div>
-        ) : null}
 
         {totalPages > 1 ? (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
