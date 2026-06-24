@@ -88,23 +88,39 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${plusJakartaSans.variable} h-full antialiased light`}
     >
-      <body className="min-h-full flex flex-col bg-white text-dark">
-        {/* Google Ads Tag */}
+      <head>
+        {/* Google Analytics + Google Ads */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-18244106024"
+          src="https://www.googletagmanager.com/gtag/js?id=G-SVDQE17NV9"
           strategy="afterInteractive"
         />
 
-        <Script id="google-ads-tag" strategy="afterInteractive">
+        <Script id="google-tags" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
+
+            function gtag(){
+              dataLayer.push(arguments);
+            }
+
+            window.gtag = gtag;
+
             gtag('js', new Date());
+
+            // Google Analytics 4
+            gtag('config', 'G-SVDQE17NV9', {
+              page_path: window.location.pathname,
+            });
+
+            // Google Ads
             gtag('config', 'AW-18244106024');
           `}
         </Script>
+      </head>
 
+      <body className="min-h-full flex flex-col bg-white text-dark">
         {children}
+
         <OrganizationSchema />
       </body>
     </html>
