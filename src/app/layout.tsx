@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/seo";
 import OrganizationSchema from "@/schema/OrganizationSchema";
@@ -89,6 +90,9 @@ export default function RootLayout({
       className={`${inter.variable} ${plusJakartaSans.variable} h-full antialiased light`}
     >
       <body className="min-h-full flex flex-col bg-white text-dark">
+        {/* Google Tag Manager */}
+        <GoogleTagManager gtmId="GTM-T7KKLRXR" />
+
         {/* Google Analytics + Google Ads */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-SVDQE17NV9"
