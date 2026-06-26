@@ -27,12 +27,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   keywords: siteConfig.keywords,
 
-  authors: [
-    {
-      name: "Naxora Technology",
-    },
-  ],
-
+  authors: [{ name: "Naxora Technology" }],
   creator: "Naxora Technology",
   publisher: "Naxora Technology",
 
@@ -92,32 +87,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-white text-dark">
         {/* Google Tag Manager */}
         <GoogleTagManager gtmId="GTM-T7KKLRXR" />
-
-        {/* Google Analytics + Google Ads */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-SVDQE17NV9"
-          strategy="afterInteractive"
-        />
-
-        <Script id="google-tags" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-
-            function gtag() {
-              dataLayer.push(arguments);
-            }
-
-            window.gtag = gtag;
-
-            gtag('js', new Date());
-
-            // Google Analytics 4
-            gtag('config', 'G-SVDQE17NV9');
-
-            // Google Ads
-            gtag('config', 'AW-18244106024');
-          `}
-        </Script>
 
         {/* Microsoft Clarity */}
         <Script id="microsoft-clarity" strategy="afterInteractive">
