@@ -46,6 +46,13 @@ export function Contact() {
 
       form.reset();
       setIsSuccess(true);
+      window.dataLayer = window.dataLayer || [];
+
+      window.dataLayer.push({
+        event: "lead_form_submit",
+        value: 1,
+        currency: "INR"
+      });
       setTimeout(() => setIsSuccess(false), 5000);
     } catch {
       setError('Network error. Please try again.');
