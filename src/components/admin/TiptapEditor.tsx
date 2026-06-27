@@ -12,6 +12,7 @@ import {
   Quote,
   Heading1,
   Heading2,
+  Heading3,
   Undo2,
   Redo2,
   ImageIcon,
@@ -31,7 +32,8 @@ export default function TiptapEditor({
     content: value,
     editorProps: {
       attributes: {
-        class: "min-h-[450px] p-6 outline-none prose prose-slate max-w-none",
+        class:
+          "min-h-[450px] p-6 outline-none max-w-none text-slate-700 leading-8 [&_h1]:mt-10 [&_h1]:mb-5 [&_h1]:text-4xl [&_h1]:font-bold [&_h1]:leading-tight [&_h1]:text-slate-950 [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:text-slate-950 [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-slate-950 [&_p]:mb-5 [&_p]:text-lg [&_p]:leading-8 [&_ul]:my-6 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-2 [&_blockquote]:my-8 [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-5 [&_blockquote]:italic [&_img]:my-8 [&_img]:rounded-2xl [&_img]:w-full [&_a]:text-primary [&_a]:underline",
       },
     },
   });
@@ -86,6 +88,13 @@ export default function TiptapEditor({
           className="rounded-lg border border-slate-200 bg-white p-2 text-slate-700 transition-colors hover:border-blue-300 hover:text-blue-600"
         >
           <Heading2 size={18} />
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          className="rounded-lg border border-slate-200 bg-white p-2 text-slate-700 transition-colors hover:border-blue-300 hover:text-blue-600"
+        >
+          <Heading3 size={18} />
         </button>
         <button
           type="button"
@@ -145,7 +154,7 @@ export default function TiptapEditor({
         </button>
       </div>
 
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} className="[&_img]:max-w-full" />
     </div>
   );
 }

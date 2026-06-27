@@ -16,10 +16,14 @@ export default function ImageUploader({
   initialPreview = "",
   onFileChange,
 }: ImageUploaderProps) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://naxoratechnology.com";
   const [preview, setPreview] = useState<string | null>(initialPreview || null);
 
+  const normalizePreview = (value: string) =>
+    value.startsWith("/uploads/") ? `${siteUrl}${value}` : value;
+
   useEffect(() => {
-    setPreview(initialPreview || null);
+    setPreview(initialPreview ? normalizePreview(initialPreview) : null);
   }, [initialPreview]);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +43,8 @@ export default function ImageUploader({
     onFileChange?.(url);
   };
 
+  const isRemote = typeof preview === "string" && /^https?:\/\//i.test(preview);
+
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
       <h3 className="text-lg font-semibold text-slate-950 mb-4">
@@ -52,6 +58,8 @@ export default function ImageUploader({
               src={preview}
               alt="Preview"
               fill
+              sizes="(max-width: 768px) 100vw, 700px"
+              unoptimized={isRemote}
               className="object-cover rounded-2xl"
             />
           </div>

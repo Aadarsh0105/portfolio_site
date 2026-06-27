@@ -30,6 +30,21 @@ export function BlogPostPage({
   post: BlogPost;
   relatedPosts?: BlogPost[];
 }) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+  const getImageProps = (src?: string) => {
+    const rawValue = src || "/logo1.png";
+    const value =
+      rawValue.startsWith("/uploads/")
+        ? `${siteUrl}${rawValue}`
+        : rawValue;
+    const isRemote = /^https?:\/\//i.test(value);
+    return {
+      src: value,
+      unoptimized: isRemote,
+    };
+  };
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -80,10 +95,11 @@ export function BlogPostPage({
 
           <div className="relative h-[300px] md:h-[500px] rounded-3xl overflow-hidden mb-12">
             <Image
-              src={post.coverImage || "/logo1.png"}
+              {...getImageProps(post.coverImage)}
               alt={post.title}
               fill
               priority
+              sizes="(max-width: 768px) 100vw, 800px"
               className="object-cover"
             />
           </div>
@@ -122,9 +138,10 @@ export function BlogPostPage({
                 >
                   <div className="relative h-48">
                     <Image
-                      src={relatedPost.coverImage || "/logo1.png"}
+                      {...getImageProps(relatedPost.coverImage)}
                       alt={relatedPost.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover"
                     />
                   </div>

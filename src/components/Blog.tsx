@@ -23,6 +23,8 @@ export function Blog({
 }: {
   posts?: PublicBlogPost[];
 }) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
   const [remotePosts, setRemotePosts] = useState<PublicBlogPost[]>(
     Array.isArray(posts) ? posts : []
   );
@@ -63,6 +65,19 @@ export function Blog({
 
   const recentPosts = remotePosts.slice(0, 3);
   const showViewAll = remotePosts.length > 3;
+
+  const getImageProps = (src?: string) => {
+    const rawValue = src || "/logo1.png";
+    const value =
+      rawValue.startsWith("/uploads/")
+        ? `${siteUrl}${rawValue}`
+        : rawValue;
+    const isRemote = /^https?:\/\//i.test(value);
+    return {
+      src: value,
+      unoptimized: isRemote,
+    };
+  };
 
   return (
     <section
@@ -109,9 +124,10 @@ export function Blog({
                 >
                   <div className="relative h-56 overflow-hidden">
                     <Image
-                      src={post.coverImage || "/logo1.png"}
+                      {...getImageProps(post.coverImage)}
                       alt={post.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>

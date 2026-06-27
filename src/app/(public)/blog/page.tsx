@@ -73,9 +73,10 @@ async function getPublishedBlogs(page = 1, limit = 12): Promise<BlogApiResponse>
 export default async function BlogPage({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const pageParam = searchParams?.page;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const pageParam = resolvedSearchParams.page;
   const page = Math.max(
     Number(Array.isArray(pageParam) ? pageParam[0] : pageParam ?? "1") || 1,
     1
