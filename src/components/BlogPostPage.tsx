@@ -67,18 +67,13 @@ export function BlogPostPage({
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               <span>
-                Updated{" "}
-                {post.updatedAt
-                  ? new Date(post.updatedAt).toLocaleString("en-IN", {
+                Created{" "}
+                {post.createdAt
+                  ? new Date(post.createdAt).toLocaleString("en-IN", {
                       dateStyle: "medium",
                       timeStyle: "short",
                     })
-                  : post.createdAt
-                    ? new Date(post.createdAt).toLocaleString("en-IN", {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })
-                    : ""}
+                  : ""}
               </span>
             </div>
           </div>

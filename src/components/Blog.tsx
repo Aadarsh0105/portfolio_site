@@ -125,17 +125,12 @@ export function Blog({
                       <div className="flex items-center gap-2 text-xs text-light font-medium">
                         <Calendar className="w-3 h-3" />
                         <span>
-                          {post.updatedAt
-                            ? new Date(post.updatedAt).toLocaleString("en-IN", {
+                          {post.createdAt
+                            ? new Date(post.createdAt).toLocaleString("en-IN", {
                                 dateStyle: "medium",
                                 timeStyle: "short",
                               })
-                            : post.createdAt
-                              ? new Date(post.createdAt).toLocaleString("en-IN", {
-                                  dateStyle: "medium",
-                                  timeStyle: "short",
-                                })
-                              : ""}
+                            : ""}
                         </span>
                       </div>
 

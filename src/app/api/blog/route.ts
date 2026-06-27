@@ -4,6 +4,9 @@ import { verifyAdmin } from "@/lib/admin-auth";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 async function saveUpload(file: File) {
   const uploadsDir = path.join(process.cwd(), "public", "uploads", "blogs");
   await mkdir(uploadsDir, { recursive: true });

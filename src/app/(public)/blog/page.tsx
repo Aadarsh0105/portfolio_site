@@ -5,6 +5,9 @@ import { Metadata } from 'next';
 import { blogsCollection } from '@/lib/collections';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Blog | Naxora Technology",
   description:
