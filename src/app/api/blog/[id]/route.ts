@@ -2,35 +2,64 @@ import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 import { blogsCollection } from "@/lib/collections";
 import { verifyAdmin } from "@/lib/admin-auth";
-import { mkdir, unlink, writeFile } from "fs/promises";
-import path from "path";
+import cloudinary from "@/lib/cloudinary";
 
 async function saveUpload(file: File) {
-  const uploadsDir = path.join(process.cwd(), "public", "uploads", "blogs");
-  await mkdir(uploadsDir, { recursive: true });
-
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const fileName = `${Date.now()}-${safeName}`;
-  const filePath = path.join(uploadsDir, fileName);
   const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(filePath, buffer);
 
-  return `/uploads/blogs/${fileName}`;
+  return await new Promise<{
+    secure_url: string;
+    public_id: string;
+  }>((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: "blogs",
+      },
+      (error, result) => {
+        if (error || !result) {
+          reject(error ?? new Error("Cloudinary upload failed"));
+          return;
+        }
+
+        resolve({
+          secure_url: result.secure_url,
+          public_id: result.public_id,
+        });
+      }
+    );
+
+    uploadStream.end(buffer);
+  });
 }
 
-async function deleteUpload(coverImage?: string | null) {
-  if (!coverImage || !coverImage.startsWith("/uploads/blogs/")) {
-    return;
+function getCloudinaryPublicId(value?: string | null) {
+  if (!value) return "";
+
+  if (value.startsWith("http")) {
+    try {
+      const url = new URL(value);
+      const parts = url.pathname.split("/");
+      const uploadIndex = parts.indexOf("upload");
+      if (uploadIndex === -1) return "";
+      const filePath = parts.slice(uploadIndex + 2).join("/");
+      return filePath.replace(/\.[^.]+$/, "");
+    } catch {
+      return "";
+    }
   }
 
-  const filePath = path.join(process.cwd(), "public", coverImage);
+  return value.replace(/^\/+/, "").replace(/\.[^.]+$/, "");
+}
+
+async function deleteUpload(publicId?: string | null) {
+  const normalizedPublicId = getCloudinaryPublicId(publicId);
+
+  if (!normalizedPublicId) return;
 
   try {
-    await unlink(filePath);
+    await cloudinary.uploader.destroy(normalizedPublicId);
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-      throw error;
-    }
+    console.error("Failed to delete Cloudinary asset:", error);
   }
 }
 
@@ -107,11 +136,18 @@ export async function PUT(
     updatedAt: new Date(),
   };
 
-  if (coverImageFile instanceof File && coverImageFile.size > 0) {
-    updateData.coverImage = await saveUpload(coverImageFile);
-  }
-
   const blogs = await blogsCollection();
+  const existingBlog = await blogs.findOne({
+    _id: new ObjectId(id),
+  });
+
+  if (coverImageFile instanceof File && coverImageFile.size > 0) {
+    const uploadedImage = await saveUpload(coverImageFile);
+    updateData.coverImage = uploadedImage.secure_url;
+    updateData.coverImagePublicId = uploadedImage.public_id;
+
+    await deleteUpload(existingBlog?.coverImagePublicId ?? existingBlog?.coverImage);
+  }
 
   await blogs.updateOne(
     {
@@ -143,7 +179,6 @@ export async function DELETE(
   const { id } = await params;
 
   const blogs = await blogsCollection();
-
   const blog = await blogs.findOne({
     _id: new ObjectId(id),
   });
@@ -155,7 +190,7 @@ export async function DELETE(
     );
   }
 
-  await deleteUpload(blog.coverImage);
+  await deleteUpload(blog.coverImagePublicId ?? blog.coverImage);
 
   await blogs.deleteOne({
     _id: new ObjectId(id),

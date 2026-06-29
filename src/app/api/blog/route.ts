@@ -1,23 +1,37 @@
 import { NextResponse } from "next/server";
 import { blogsCollection } from "@/lib/collections";
 import { verifyAdmin } from "@/lib/admin-auth";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import cloudinary from "@/lib/cloudinary";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 async function saveUpload(file: File) {
-  const uploadsDir = path.join(process.cwd(), "public", "uploads", "blogs");
-  await mkdir(uploadsDir, { recursive: true });
-
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const fileName = `${Date.now()}-${safeName}`;
-  const filePath = path.join(uploadsDir, fileName);
   const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(filePath, buffer);
 
-  return `/uploads/blogs/${fileName}`;
+  return await new Promise<{
+    secure_url: string;
+    public_id: string;
+  }>((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: "blogs",
+      },
+      (error, result) => {
+        if (error || !result) {
+          reject(error ?? new Error("Cloudinary upload failed"));
+          return;
+        }
+
+        resolve({
+          secure_url: result.secure_url,
+          public_id: result.public_id,
+        });
+      }
+    );
+
+    uploadStream.end(buffer);
+  });
 }
 
 export async function POST(req: Request) {
@@ -70,8 +84,11 @@ export async function POST(req: Request) {
     }
 
     let coverImage = "";
+    let coverImagePublicId = "";
     if (coverImageFile instanceof File && coverImageFile.size > 0) {
-      coverImage = await saveUpload(coverImageFile);
+      const uploadedImage = await saveUpload(coverImageFile);
+      coverImage = uploadedImage.secure_url;
+      coverImagePublicId = uploadedImage.public_id;
     }
 
     const blog = {
@@ -81,6 +98,7 @@ export async function POST(req: Request) {
       content,
 
       coverImage,
+      coverImagePublicId,
 
       metaTitle: metaTitle || title,
 
