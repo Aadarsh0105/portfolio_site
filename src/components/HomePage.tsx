@@ -34,7 +34,7 @@ export function HomePage() {
         {/* <CaseStudies /> */}
         <TechStack />
         <AIInnovation />
-        {/* <Testimonials /> */}
+        <Testimonials />
         {/* <Achievements /> */}
         <Pricing />
         <FAQ />

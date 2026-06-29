@@ -141,7 +141,6 @@ export async function GET(req: Request) {
     const data = await blogs
       .find(query)
       .sort({
-        updatedAt: -1,
         createdAt: -1,
       })
       .skip((page - 1) * limit)

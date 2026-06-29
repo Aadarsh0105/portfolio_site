@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { blogsCollection } from "@/lib/collections";
+import { services } from "@/data/services";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://naxoratechnology.com";
@@ -7,14 +8,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogs = await blogsCollection();
   const posts = await blogs
     .find({ status: "published" })
-    .sort({ updatedAt: -1, createdAt: -1 })
+    .sort({ createdAt: -1 })
     .toArray();
 
   const blogUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
     changeFrequency: "monthly" as const,
-    priority: 0.7,
+    priority: 0.8,
+  }));
+
+  const serviceUrls = services.map((service) => ({
+    url: `${baseUrl}/services/${service.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
   }));
 
   return [
@@ -38,6 +46,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+
+    ...serviceUrls,
 
     {
       url: `${baseUrl}/pricing`,

@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 import { blogsCollection } from "@/lib/collections";
 import { verifyAdmin } from "@/lib/admin-auth";
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
 
 async function saveUpload(file: File) {
@@ -16,6 +16,22 @@ async function saveUpload(file: File) {
   await writeFile(filePath, buffer);
 
   return `/uploads/blogs/${fileName}`;
+}
+
+async function deleteUpload(coverImage?: string | null) {
+  if (!coverImage || !coverImage.startsWith("/uploads/blogs/")) {
+    return;
+  }
+
+  const filePath = path.join(process.cwd(), "public", coverImage);
+
+  try {
+    await unlink(filePath);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+      throw error;
+    }
+  }
 }
 
 export async function GET(
@@ -127,6 +143,19 @@ export async function DELETE(
   const { id } = await params;
 
   const blogs = await blogsCollection();
+
+  const blog = await blogs.findOne({
+    _id: new ObjectId(id),
+  });
+
+  if (!blog) {
+    return NextResponse.json(
+      { message: "Not Found" },
+      { status: 404 }
+    );
+  }
+
+  await deleteUpload(blog.coverImage);
 
   await blogs.deleteOne({
     _id: new ObjectId(id),
