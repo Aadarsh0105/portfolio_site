@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { CheckCircle2, Mail, MapPin, Phone, Send } from 'lucide-react';
 
 export function Contact() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +48,7 @@ export function Contact() {
 
       form.reset();
       setIsSuccess(true);
+      const body = await response.json().catch(() => null);
       window.dataLayer = window.dataLayer || [];
 
       window.dataLayer.push({
@@ -53,7 +56,8 @@ export function Contact() {
         value: 1,
         currency: "INR"
       });
-      setTimeout(() => setIsSuccess(false), 5000);
+      const refid = body?.refid ? String(body.refid) : "";
+      router.push(refid ? `/thank-you?refid=${encodeURIComponent(refid)}` : "/thank-you");
     } catch {
       setError('Network error. Please try again.');
     } finally {

@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { contactsCollection } from "@/lib/collections";
+import { ObjectId } from "mongodb";
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -174,6 +175,7 @@ export async function POST(request: Request) {
 
   let mongoSaved = false;
   let mongoErrorMessage: string | undefined;
+  let contactDocId: string | undefined;
 
   try {
     const collection = await contactsCollection();
@@ -187,7 +189,8 @@ export async function POST(request: Request) {
       source: 'portfolio-site',
       status: 'new',
     };
-    await collection.insertOne(contactDoc);
+    const result = await collection.insertOne(contactDoc);
+    contactDocId = result.insertedId instanceof ObjectId ? result.insertedId.toString() : String(result.insertedId);
     mongoSaved = true;
   } catch (mongoError) {
     mongoErrorMessage = mongoError instanceof Error ? mongoError.message : 'MongoDB save failed';
@@ -229,6 +232,7 @@ export async function POST(request: Request) {
   if (mongoSaved && !mailErrorMessage) {
     return Response.json({
       ok: true,
+      refid: contactDocId,
       ...(isDev && mailInfo ? mailInfo : null),
     });
   }
@@ -238,6 +242,7 @@ export async function POST(request: Request) {
       {
         ok: true,
         warning: 'Data saved, but email failed',
+        refid: contactDocId,
         detail: mailErrorMessage,
         mailInfo,
       },
