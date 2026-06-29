@@ -56,7 +56,8 @@ export function Contact() {
       //   value: 1,
       //   currency: "INR"
       // });
-      router.push("/thank-you");
+      // router.push("/thank-you");
+      window.location.href = "/thank-you"
     } catch {
       setError('Network error. Please try again.');
     } finally {
