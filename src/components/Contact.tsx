@@ -8,7 +8,7 @@ import { CheckCircle2, Mail, MapPin, Phone, Send } from 'lucide-react';
 export function Contact() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  // const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,15 +47,15 @@ export function Contact() {
       }
 
       form.reset();
-      setIsSuccess(true);
-      const body = await response.json().catch(() => null);
-      window.dataLayer = window.dataLayer || [];
+      // setIsSuccess(true);
+      // const body = await response.json().catch(() => null);
+      // window.dataLayer = window.dataLayer || [];
 
-      window.dataLayer.push({
-        event: "lead_form_submit",
-        value: 1,
-        currency: "INR"
-      });
+      // window.dataLayer.push({
+      //   event: "lead_form_submit",
+      //   value: 1,
+      //   currency: "INR"
+      // });
       router.push("/thank-you");
     } catch {
       setError('Network error. Please try again.');
@@ -117,7 +117,7 @@ export function Contact() {
             viewport={{ once: true }}
             className="glass-card p-8 rounded-3xl relative overflow-hidden"
           >
-            {isSuccess ? (
+            {/* {isSuccess ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 dark:bg-navy/95 backdrop-blur-sm z-10">
                 <motion.div
                   initial={{ scale: 0 }}
@@ -131,7 +131,7 @@ export function Contact() {
                   We&apos;ll be in touch shortly to discuss your project.
                 </p>
               </div>
-            ) : null}
+            ) : null} */}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
