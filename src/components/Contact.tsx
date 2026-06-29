@@ -56,8 +56,7 @@ export function Contact() {
         value: 1,
         currency: "INR"
       });
-      const refid = body?.refid ? String(body.refid) : "";
-      router.push(refid ? `/thank-you?refid=${encodeURIComponent(refid)}` : "/thank-you");
+      router.push("/thank-you");
     } catch {
       setError('Network error. Please try again.');
     } finally {
