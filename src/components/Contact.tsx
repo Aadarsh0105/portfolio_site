@@ -2,14 +2,19 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { CheckCircle2, Mail, MapPin, Phone, Send } from 'lucide-react';
+// import { useRouter } from 'next/navigation';
+import { Mail, MapPin, Phone, Send } from 'lucide-react';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export function Contact() {
-  const router = useRouter();
+  // const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const requiredFieldMessage = "Please fill out this field.";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,13 +29,26 @@ export function Contact() {
     const message = String(data.get('message') ?? '').trim();
 
     const payload = {
-      name: String(data.get('name') ?? '').trim(),
-      email: String(data.get('email') ?? '').trim(),
-      budget: String(data.get('budget') ?? '').trim(),
-      subject: company ? `Project inquiry from ${company}` : 'Project inquiry',
-      message: company ? `Company: ${company}\n\n${message}` : message
+      name: String(data.get("name") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      mobile: phone,
+      budget: String(data.get("budget") ?? "").trim(),
+      subject: company ? `Project inquiry from ${company}` : "Project inquiry",
+      message: `Phone: +${phone} Company: ${company} ${message}`,
     };
+    if (!phone.trim()) {
+      setPhoneError(requiredFieldMessage);
+      setIsSubmitting(false);
+      return;
+    }
 
+    if (phone.replace(/\D/g, "").length < 10) {
+      setPhoneError("Please enter a valid mobile number.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    setPhoneError("");
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -140,12 +158,56 @@ export function Contact() {
                   <label className="text-sm font-medium">Name *</label>
                   <input
                     name="name"
-                    required
                     type="text"
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
+                    required
+                    minLength={2}
+                    maxLength={60}
                     placeholder="John Doe"
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
+                    onInvalid={(e) =>
+                      e.currentTarget.setCustomValidity(requiredFieldMessage)
+                    }
+                    onInput={(e) => e.currentTarget.setCustomValidity("")}
                   />
                 </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">
+                    Mobile Number <span className="text-red-500">*</span>
+                  </label>
+
+                  <PhoneInput
+                    country="in"
+                    enableSearch
+                    value={phone}
+                    onChange={(value) => {
+                      setPhone(value);
+                      setPhoneError("");
+                    }}
+                    inputProps={{
+                      required: true,
+                      name: "phone",
+                      onInvalid: (e: React.InvalidEvent<HTMLInputElement>) => {
+                        e.currentTarget.setCustomValidity(requiredFieldMessage);
+                      },
+                      onInput: (e: React.FormEvent<HTMLInputElement>) => {
+                        e.currentTarget.setCustomValidity("");
+                      },
+                    }}
+                    containerClass="w-full"
+                    inputClass="!w-full !h-[52px] !rounded-xl !border !border-gray-300 !pl-16 !text-sm focus:!border-primary"
+                    buttonClass="!border-gray-300 !rounded-l-xl"
+                    dropdownClass="!text-sm"
+                  />
+
+                  {phoneError && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {phoneError}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-1">
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium">Email *</label>
                   <input
@@ -154,6 +216,10 @@ export function Contact() {
                     type="email"
                     className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
                     placeholder="john@company.com"
+                    onInvalid={(e) =>
+                      e.currentTarget.setCustomValidity(requiredFieldMessage)
+                    }
+                    onInput={(e) => e.currentTarget.setCustomValidity("")}
                   />
                 </div>
               </div>
@@ -191,6 +257,10 @@ export function Contact() {
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all resize-none shadow-sm hover:border-gray-400"
                   placeholder="Tell us about your project..."
+                  onInvalid={(e) =>
+                    e.currentTarget.setCustomValidity(requiredFieldMessage)
+                  }
+                  onInput={(e) => e.currentTarget.setCustomValidity("")}
                 />
               </div>
 
@@ -238,3 +308,7 @@ export function Contact() {
     </section>
   );
 }
+
+
+
+

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
@@ -13,6 +13,13 @@ export function ServiceDetail({
 }: {
   slug: string;
 }) {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant", // or "smooth"
+    });
+  }, [slug]);
+
   const service = services.find((item) => item.slug === slug);
 
   if (!service) {
@@ -24,8 +31,8 @@ export function ServiceDetail({
   const gradient = service.gradient ?? "from-blue-500 to-cyan-400";
 
   return (
-    <main className="py-10">
-      <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
+    <main className="py-5">
+      <section className="relative overflow-hidden pt-12 pb-12 lg:pt-20 lg:pb-20">
         <div className="absolute inset-0 bg-slate-50" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
         <div className="pointer-events-none absolute right-0 top-0 h-[800px] w-[800px] -translate-y-12 translate-x-1/3 opacity-40">
@@ -118,12 +125,13 @@ export function ServiceDetail({
       {service.stats ? (
         <section className="border-y border-slate-100 bg-white py-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 gap-8 divide-x divide-slate-100 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 divide-y divide-slate-100 sm:grid-cols-2 sm:divide-y-0 sm:divide-x md:grid-cols-3">
               {service.stats.map((stat, idx) => (
-                <div key={idx} className={`px-4 ${idx === 0 ? "pl-0" : ""} ${idx === 2 ? "hidden md:block" : ""}`}>
+                <div key={idx} className={`px-4 py-6 text-center ${idx === 0 ? "pl-0" : ""}`}>
                   <p className={`bg-clip-text text-3xl font-bold text-transparent bg-gradient-to-br sm:text-4xl ${gradient}`}>
                     {stat.value}
                   </p>
+
                   <p className="mt-2 text-sm font-medium uppercase tracking-wider text-slate-500">
                     {stat.label}
                   </p>
@@ -337,11 +345,10 @@ export function ServiceDetail({
                         {faq.question}
                       </span>
                       <span
-                        className={`rounded-full border p-1 transition-colors ${
-                          isOpen
-                            ? "border-primary bg-primary text-white"
-                            : "border-gray-300 text-light dark:border-gray-600"
-                        }`}
+                        className={`rounded-full border p-1 transition-colors ${isOpen
+                          ? "border-primary bg-primary text-white"
+                          : "border-gray-300 text-light dark:border-gray-600"
+                          }`}
                       >
                         {isOpen ? (
                           <Minus className="h-4 w-4" />

@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
 type ContactPayload = {
   name: string;
   email: string;
+  mobile?: string;
   subject?: string;
   message: string;
   budget?: string;
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
   
   const name = (payload.name ?? '').trim();
   const email = (payload.email ?? '').trim();
+  const mobile = (payload.mobile ?? '').trim();
   const subject = (payload.subject ?? '').trim();
   const message = (payload.message ?? '').trim();
   const budget = (payload.budget ?? '').trim();
@@ -100,6 +102,7 @@ export async function POST(request: Request) {
   const text = [
     `Name: ${name}`,
     `Email: ${email}`,
+    mobile ? `Mobile: ${mobile}` : undefined,
     budget ? `Budget: ${budget}` : undefined,
     `Submitted: ${formatDateTime()}`,
     '',
@@ -145,6 +148,17 @@ export async function POST(request: Request) {
               </td>
             </tr>
             ${
+              mobile
+                ? `<tr><td style="height:10px;"></td></tr>
+            <tr>
+              <td style="padding:10px 12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8f9fb;">
+                <div style="font-size:12px;color:#64748b;">Mobile</div>
+                <div style="font-size:14px;font-weight:600;color:#0f172a;">${escapeHtml(mobile)}</div>
+              </td>
+            </tr>`
+                : ''
+            }
+            ${
               budget
                 ? `<tr><td style="height:10px;"></td></tr>
             <tr>
@@ -182,6 +196,7 @@ export async function POST(request: Request) {
     const contactDoc: ContactDocument = {
       name,
       email,
+      mobile,
       subject: safeSubject,
       message,
       budget,
@@ -266,3 +281,4 @@ export async function POST(request: Request) {
     { status: 500 }
   );
 }
+

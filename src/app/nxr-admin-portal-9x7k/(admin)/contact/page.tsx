@@ -9,6 +9,7 @@ type Enquiry = {
   id?: string;
   name?: string;
   email?: string;
+  mobile?: string;
   subject?: string;
   message?: string;
   budget?: string;
@@ -72,6 +73,7 @@ export default function EnquiriesPage() {
       const haystack = [
         row.name,
         row.email,
+        row.mobile,
         row.subject,
         row.message,
         row.budget,
@@ -261,3 +263,5 @@ function InfoCard({
     </div>
   );
 }
+
+

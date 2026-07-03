@@ -17,14 +17,6 @@ export function FloatingActions() {
 
   const actions = [
     {
-      label: "WhatsApp",
-      href: `https://wa.me/${WHATSAPP_NUMBER}`,
-      type: "whatsapp" as const,
-      bg: "bg-[#25D366]",
-      hover: "hover:bg-[#20ba5a]",
-      ring: "bg-[#25D366]/40",
-    },
-    {
       label: "Call us",
       href: `tel:${PHONE_NUMBER}`,
       type: "phone" as const,
@@ -32,6 +24,14 @@ export function FloatingActions() {
       bg: "bg-gradient-accent",
       hover: "hover:opacity-90",
       ring: "bg-accent-start/40",
+    },
+    {
+      label: "WhatsApp",
+      href: `https://wa.me/${WHATSAPP_NUMBER}`,
+      type: "whatsapp" as const,
+      bg: "bg-[#25D366]",
+      hover: "hover:bg-[#20ba5a]",
+      ring: "bg-[#25D366]/40",
     },
   ];
 
@@ -90,18 +90,18 @@ export function FloatingActions() {
               />
 
               <span
-                className={`relative w-12 h-12 rounded-full ${action.bg} ${action.hover} text-white flex items-center justify-center shadow-lg transition-all`}
+                className={`relative w-14 h-14 rounded-full ${action.bg} ${action.hover} text-white flex items-center justify-center shadow-lg transition-all`}
               >
                 {action.type === "whatsapp" ? (
                   <Image
                     src="/whatsapp.svg"
                     alt="WhatsApp"
-                    width={22}
-                    height={22}
-                    className="brightness-0 invert"
+                    width={30}
+                    height={30}
+                    className="w-[28px] h-[28px] brightness-0 invert"
                   />
                 ) : (
-                  <PhoneIcon className="w-5 h-5" />
+                  <PhoneIcon className="w-6 h-6" />
                 )}
               </span>
             </span>
@@ -126,8 +126,8 @@ export function FloatingActions() {
           <span className="relative">
             <span className="absolute inset-0 rounded-full bg-sky-500/40 animate-ping opacity-50" />
 
-            <span className="relative w-12 h-12 rounded-full bg-sky-500 hover:bg-sky-600 text-white flex items-center justify-center shadow-lg transition-all">
-              <MessageSquareTextIcon className="w-5 h-5" />
+            <span className="relative w-14 h-14 rounded-full bg-sky-500 hover:bg-sky-600 text-white flex items-center justify-center shadow-lg transition-all">
+              <MessageSquareTextIcon className="w-6 h-6" />
             </span>
           </span>
         </motion.button>
