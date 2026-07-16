@@ -10,9 +10,12 @@ type Enquiry = {
   name?: string;
   email?: string;
   mobile?: string;
+  company?: string;
+  businessType?: string;
   subject?: string;
   message?: string;
   budget?: string;
+  source?: string;
   status?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -33,23 +36,30 @@ export default function EnquiriesPage() {
   const [rows, setRows] = useState<Enquiry[]>([]);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<Enquiry | null>(null);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const fetchEnquiries = async () => {
+  const fetchEnquiries = async (nextPage: number) => {
     setLoading(true);
     try {
-      const response = await fetch("/api/admin/contact?limit=100", {
+      const response = await fetch(`/api/admin/contact?page=${nextPage}&limit=${pageSize}`, {
         cache: "no-store",
       });
       const data = await response.json();
       setRows(Array.isArray(data?.data) ? data.data : []);
+      setTotal(typeof data?.total === "number" ? data.total : 0);
+      setTotalPages(typeof data?.totalPages === "number" ? Math.max(data.totalPages, 1) : 1);
+      setPage(typeof data?.page === "number" ? data.page : nextPage);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    void fetchEnquiries();
-  }, []);
+    void fetchEnquiries(page);
+  }, [page, pageSize]);
 
   const normalizedRows = useMemo(
     () =>
@@ -74,10 +84,13 @@ export default function EnquiriesPage() {
         row.name,
         row.email,
         row.mobile,
+        row.company,
+        row.businessType,
         row.subject,
         row.message,
         row.budget,
         row.status,
+        row.source,
       ]
         .filter(Boolean)
         .join(" ")
@@ -108,7 +121,7 @@ export default function EnquiriesPage() {
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search enquiries..."
+              placeholder="Search this page of enquiries..."
               className="h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-slate-900 outline-none transition focus:border-blue-300 focus:bg-white"
             />
           </div>
@@ -122,16 +135,17 @@ export default function EnquiriesPage() {
             <p className="text-sm text-slate-500">Latest submissions appear first.</p>
           </div>
           <div className="text-sm text-slate-500">
-            {loading ? "Loading..." : `${filteredRows.length} records`}
+            {loading ? "Loading..." : `${total} records`}
           </div>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px]">
+          <table className="w-full min-w-[1050px]">
             <thead className="bg-white">
               <tr className="border-b border-slate-200 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                 <th className="px-6 py-4">Name</th>
                 <th className="px-6 py-4">Email</th>
+                <th className="px-6 py-4">Mobile</th>
                 <th className="px-6 py-4">Subject</th>
                 <th className="px-6 py-4">Budget</th>
                 <th className="px-6 py-4">Date</th>
@@ -142,7 +156,7 @@ export default function EnquiriesPage() {
             <tbody className="divide-y divide-slate-200">
               {loading ? (
                 <tr>
-                  <td className="px-6 py-12 text-center text-slate-500" colSpan={6}>
+                  <td className="px-6 py-12 text-center text-slate-500" colSpan={7}>
                     <span className="inline-flex items-center gap-2">
                       <Loader2 className="h-4 w-4 animate-spin" />
                       Loading enquiries...
@@ -152,23 +166,26 @@ export default function EnquiriesPage() {
               ) : filteredRows.length ? (
                 filteredRows.map((row) => (
                   <tr key={row.id} className="transition-colors hover:bg-slate-50/80">
-                    <td className="px-6 py-5">
+                    <td className="px-6 py-5 align-top">
                       <div className="font-semibold text-slate-950">{row.name || "--"}</div>
                       <div className="mt-1 text-sm text-slate-500">{row.status || "new"}</div>
                     </td>
-                    <td className="px-6 py-5 text-sm text-slate-600">
+                    <td className="px-6 py-5 align-top text-sm text-slate-600">
                       {row.email || "--"}
                     </td>
-                    <td className="px-6 py-5 text-sm text-slate-600">
+                    <td className="px-6 py-5 align-top text-sm text-slate-600">
+                      {row.mobile || "--"}
+                    </td>
+                    <td className="px-6 py-5 align-top text-sm text-slate-600">
                       {row.subject || "--"}
                     </td>
-                    <td className="px-6 py-5 text-sm text-slate-600">
+                    <td className="px-6 py-5 align-top text-sm text-slate-600">
                       {row.budget || "--"}
                     </td>
-                    <td className="px-6 py-5 text-sm text-slate-600">
+                    <td className="px-6 py-5 align-top text-sm text-slate-600">
                       {formatDateTime(row.updatedAt || row.createdAt)}
                     </td>
-                    <td className="px-6 py-5">
+                    <td className="px-6 py-5 align-top">
                       <button
                         type="button"
                         onClick={() => setSelected(row)}
@@ -182,7 +199,7 @@ export default function EnquiriesPage() {
                 ))
               ) : (
                 <tr>
-                  <td className="px-6 py-12 text-center text-slate-500" colSpan={6}>
+                  <td className="px-6 py-12 text-center text-slate-500" colSpan={7}>
                     No enquiries found.
                   </td>
                 </tr>
@@ -192,15 +209,39 @@ export default function EnquiriesPage() {
         </div>
       </section>
 
+      <section className="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white px-6 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <div className="text-sm text-slate-500">
+          Page {page} of {totalPages}
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setPage((current) => Math.max(current - 1, 1))}
+            disabled={loading || page <= 1}
+            className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            onClick={() => setPage((current) => Math.min(current + 1, totalPages))}
+            disabled={loading || page >= totalPages}
+            className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      </section>
+
       {selected ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 px-4 py-8">
-          <div className="relative w-full max-w-2xl overflow-hidden rounded-3xl bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-              <div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 sm:p-6">
+          <div className="relative flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
+            <div className="flex items-start justify-between gap-4 border-b border-slate-200 px-6 py-4">
+              <div className="min-w-0">
                 <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-600">
                   Enquiry Details
                 </p>
-                <h3 className="mt-1 text-xl font-semibold text-slate-950">
+                <h3 className="mt-1 truncate text-xl font-semibold text-slate-950">
                   {selected.name || "Contact submission"}
                 </h3>
               </div>
@@ -208,33 +249,39 @@ export default function EnquiriesPage() {
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200"
                 aria-label="Close enquiry details"
               >
                 <X size={18} />
               </button>
             </div>
 
-            <div className="space-y-5 px-6 py-6">
-              <div className="grid gap-4 md:grid-cols-2">
-                <InfoCard label="Name" value={selected.name} />
-                <InfoCard label="Email" value={selected.email} icon={<Mail size={16} />} />
-                <InfoCard label="Subject" value={selected.subject} />
-                <InfoCard label="Budget" value={selected.budget} />
-              </div>
-
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                  Message
+            <div className="flex-1 overflow-y-auto px-6 py-6">
+              <div className="space-y-5">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <InfoCard label="Name" value={selected.name} />
+                  <InfoCard label="Email" value={selected.email} icon={<Mail size={16} />} />
+                  <InfoCard label="Mobile" value={selected.mobile} />
+                  <InfoCard label="Company" value={selected.company} />
+                  <InfoCard label="Business Type" value={selected.businessType} />
+                  <InfoCard label="Subject" value={selected.subject} />
+                  <InfoCard label="Budget" value={selected.budget} />
+                  <InfoCard label="Status" value={selected.status} />
+                  <InfoCard label="Source" value={selected.source} />
+                  <InfoCard label="Created" value={formatDateTime(selected.createdAt)} />
+                  <InfoCard label="Updated" value={formatDateTime(selected.updatedAt)} />
                 </div>
-                <p className="whitespace-pre-wrap text-sm leading-7 text-slate-700">
-                  {selected.message || "--"}
-                </p>
-              </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <InfoCard label="Created" value={formatDateTime(selected.createdAt)} />
-                <InfoCard label="Updated" value={formatDateTime(selected.updatedAt)} />
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                    Message
+                  </div>
+                  <div className="max-h-[38vh] overflow-y-auto rounded-xl bg-white/70 p-4 text-sm leading-7 text-slate-700 shadow-inner">
+                    <p className="whitespace-pre-wrap break-words">
+                      {selected.message || "--"}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -259,9 +306,7 @@ function InfoCard({
         {icon}
         {label}
       </div>
-      <div className="text-sm font-medium text-slate-900">{value || "--"}</div>
+      <div className="break-words text-sm font-medium leading-6 text-slate-900">{value || "--"}</div>
     </div>
   );
 }
-
-

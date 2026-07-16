@@ -1,7 +1,16 @@
+import dns from "node:dns";
 import { MongoClient, type Collection, type Db } from "mongodb";
 
 let client: MongoClient | undefined;
 let clientPromise: Promise<MongoClient> | undefined;
+
+const DNS_SERVERS = ["1.1.1.1", "8.8.8.8"];
+
+function ensureDnsServers() {
+  if (process.env.MONGODB_URI?.startsWith("mongodb+srv://")) {
+    dns.setServers(DNS_SERVERS);
+  }
+}
 
 declare global {
   // eslint-disable-next-line no-var
@@ -16,6 +25,20 @@ function getMongoUri() {
   return uri;
 }
 
+function createClientPromise(uri: string) {
+  ensureDnsServers();
+  client = new MongoClient(uri);
+
+  return client.connect().catch((error) => {
+    if (process.env.NODE_ENV === "development") {
+      global._mongoClientPromise = undefined;
+    }
+    clientPromise = undefined;
+    client = undefined;
+    throw error;
+  });
+}
+
 function getClientPromise() {
   if (clientPromise) {
     return clientPromise;
@@ -25,15 +48,13 @@ function getClientPromise() {
 
   if (process.env.NODE_ENV === "development") {
     if (!global._mongoClientPromise) {
-      client = new MongoClient(uri);
-      global._mongoClientPromise = client.connect();
+      global._mongoClientPromise = createClientPromise(uri);
     }
     clientPromise = global._mongoClientPromise;
     return clientPromise;
   }
 
-  client = new MongoClient(uri);
-  clientPromise = client.connect();
+  clientPromise = createClientPromise(uri);
   return clientPromise;
 }
 

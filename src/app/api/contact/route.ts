@@ -4,14 +4,15 @@ import { ObjectId } from "mongodb";
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-
 type ContactPayload = {
   name: string;
+  mobile: string;
   email: string;
-  mobile?: string;
+  company: string;
+  businessType: string;
+  budget: string;
   subject?: string;
   message: string;
-  budget?: string;
 };
 
 type ContactDocument = ContactPayload & {
@@ -48,18 +49,25 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: 'Invalid JSON' }, { status: 400 });
   }
 
-  
+
   const name = (payload.name ?? '').trim();
   const email = (payload.email ?? '').trim();
   const mobile = (payload.mobile ?? '').trim();
+  const company = (payload.company ?? "").trim();
+  const businessType = (payload.businessType ?? "").trim();
   const subject = (payload.subject ?? '').trim();
   const message = (payload.message ?? '').trim();
   const budget = (payload.budget ?? '').trim();
 
-  if (!name || !email || !message) {
+  if (!name || !mobile || !email || !company || !businessType || !budget || !message) {
     return Response.json(
-      { ok: false, error: 'Missing required fields' },
-      { status: 400 }
+      {
+        ok: false,
+        error: "Missing required fields",
+      },
+      {
+        status: 400,
+      }
     );
   }
 
@@ -101,90 +109,187 @@ export async function POST(request: Request) {
   const safeSubject = subject || 'New contact form submission';
   const text = [
     `Name: ${name}`,
+    `Mobile: ${mobile}`,
     `Email: ${email}`,
-    mobile ? `Mobile: ${mobile}` : undefined,
-    budget ? `Budget: ${budget}` : undefined,
+    `Company: ${company}`,
+    `Business Type: ${businessType}`,
+    `Budget: ${budget}`,
     `Submitted: ${formatDateTime()}`,
-    '',
-    'Message:',
-    message
+    "",
+    "Message:",
+    message,
   ]
     .filter(Boolean)
-    .join('\n');
+    .join("\n");
 
-  const html = `<!doctype html>
+  const html = `<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>${escapeHtml(safeSubject)}</title>
-  </head>
-  <body style="margin:0;padding:0;background:#f6f7fb;font-family:Arial,Helvetica,sans-serif;color:#0f172a;">
-    <div style="max-width:640px;margin:0 auto;padding:24px;">
-      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;">
-        <div style="padding:18px 20px;background:linear-gradient(90deg,#3b82f6,#8b5cf6);color:#ffffff;">
-          <div style="font-size:14px;opacity:.95;">Portfolio Contact</div>
-          <div style="font-size:18px;font-weight:700;margin-top:2px;">${escapeHtml(safeSubject)}</div>
-        </div>
-        <div style="padding:20px;">
-          <div style="font-size:14px;color:#475569;margin-bottom:14px;">
-            New contact form submission received on <strong style="color:#0f172a;">${escapeHtml(formatDateTime())}</strong>.
-          </div>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(safeSubject)}</title>
+</head>
 
-          <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin-bottom:16px;">
-            <tr>
-              <td style="padding:10px 12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8f9fb;">
-                <div style="font-size:12px;color:#64748b;">Name</div>
-                <div style="font-size:14px;font-weight:600;color:#0f172a;">${escapeHtml(name)}</div>
-              </td>
-            </tr>
-            <tr><td style="height:10px;"></td></tr>
-            <tr>
-              <td style="padding:10px 12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8f9fb;">
-                <div style="font-size:12px;color:#64748b;">Email</div>
-                <div style="font-size:14px;font-weight:600;color:#0f172a;">
-                  <a href="mailto:${escapeHtml(email)}" style="color:#2563eb;text-decoration:none;">${escapeHtml(email)}</a>
-                </div>
-              </td>
-            </tr>
-            ${
-              mobile
-                ? `<tr><td style="height:10px;"></td></tr>
-            <tr>
-              <td style="padding:10px 12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8f9fb;">
-                <div style="font-size:12px;color:#64748b;">Mobile</div>
-                <div style="font-size:14px;font-weight:600;color:#0f172a;">${escapeHtml(mobile)}</div>
-              </td>
-            </tr>`
-                : ''
-            }
-            ${
-              budget
-                ? `<tr><td style="height:10px;"></td></tr>
-            <tr>
-              <td style="padding:10px 12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8f9fb;">
-                <div style="font-size:12px;color:#64748b;">Budget</div>
-                <div style="font-size:14px;font-weight:600;color:#0f172a;">${escapeHtml(budget)}</div>
-              </td>
-            </tr>`
-                : ''
-            }
-          </table>
+<body style="margin:0;padding:30px;background:#f3f6fb;font-family:Arial,Helvetica,sans-serif;">
 
-          <div style="border:1px solid #e2e8f0;border-radius:12px;background:#ffffff;">
-            <div style="padding:10px 12px;border-bottom:1px solid #e2e8f0;background:#f8f9fb;font-size:12px;color:#64748b;">
-              Message
-            </div>
-            <div style="padding:12px;font-size:14px;line-height:1.5;white-space:pre-wrap;">${escapeHtml(message)}</div>
-          </div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:700px;margin:auto;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid #e5e7eb;">
 
-          <div style="margin-top:16px;font-size:12px;color:#94a3b8;">
-            You can reply directly to this email to respond to <strong>${escapeHtml(name)}</strong>.
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+<!-- Header -->
+<tr>
+<td style="padding:35px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#ffffff;">
+
+<div style="font-size:14px;opacity:.9;">
+Naxora Technology
+</div>
+
+<h1 style="margin:10px 0 5px;font-size:28px;font-weight:bold;">
+New Contact Form Submission
+</h1>
+
+<p style="margin:0;font-size:15px;opacity:.9;">
+A new enquiry has been submitted through your website.
+</p>
+
+</td>
+</tr>
+
+<!-- Body -->
+<tr>
+<td style="padding:30px;">
+
+<p style="margin-top:0;margin-bottom:25px;color:#475569;font-size:15px;">
+A visitor has submitted the contact form. Below are the enquiry details.
+</p>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+
+<tr>
+<td style="padding:14px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;">
+<div style="font-size:12px;color:#64748b;">Name</div>
+<div style="font-size:15px;font-weight:600;color:#0f172a;margin-top:4px;">
+${escapeHtml(name)}
+</div>
+</td>
+</tr>
+
+<tr><td style="height:12px;"></td></tr>
+
+<tr>
+<td style="padding:14px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;">
+<div style="font-size:12px;color:#64748b;">Mobile Number</div>
+<div style="font-size:15px;font-weight:600;color:#0f172a;margin-top:4px;">
+${escapeHtml(mobile)}
+</div>
+</td>
+</tr>
+
+<tr><td style="height:12px;"></td></tr>
+
+<tr>
+<td style="padding:14px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;">
+<div style="font-size:12px;color:#64748b;">Email Address</div>
+<div style="font-size:15px;font-weight:600;margin-top:4px;">
+<a href="mailto:${escapeHtml(email)}" style="color:#2563eb;text-decoration:none;">
+${escapeHtml(email)}
+</a>
+</div>
+</td>
+</tr>
+
+<tr><td style="height:12px;"></td></tr>
+
+<tr>
+<td style="padding:14px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;">
+<div style="font-size:12px;color:#64748b;">Company / Organisation</div>
+<div style="font-size:15px;font-weight:600;color:#0f172a;margin-top:4px;">
+${escapeHtml(company)}
+</div>
+</td>
+</tr>
+
+<tr><td style="height:12px;"></td></tr>
+
+<tr>
+<td style="padding:14px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;">
+<div style="font-size:12px;color:#64748b;">Type of Business</div>
+<div style="font-size:15px;font-weight:600;color:#0f172a;margin-top:4px;">
+${escapeHtml(businessType)}
+</div>
+</td>
+</tr>
+
+<tr><td style="height:12px;"></td></tr>
+
+<tr>
+<td style="padding:14px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;">
+<div style="font-size:12px;color:#64748b;">Estimated Budget</div>
+<div style="font-size:15px;font-weight:600;color:#0f172a;margin-top:4px;">
+${escapeHtml(budget)}
+</div>
+</td>
+</tr>
+
+<tr><td style="height:12px;"></td></tr>
+
+<tr>
+<td style="padding:14px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;">
+<div style="font-size:12px;color:#64748b;">Submitted On</div>
+<div style="font-size:15px;font-weight:600;color:#0f172a;margin-top:4px;">
+${escapeHtml(formatDateTime())}
+</div>
+</td>
+</tr>
+
+</table>
+
+<!-- Message -->
+
+<div style="margin-top:28px;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;">
+
+<div style="padding:14px 18px;background:#f8fafc;border-bottom:1px solid #e2e8f0;font-size:13px;font-weight:bold;color:#475569;">
+Project Details / Message
+</div>
+
+<div style="padding:20px;font-size:15px;line-height:1.8;color:#334155;white-space:pre-wrap;">
+${escapeHtml(message)}
+</div>
+
+</div>
+
+<!-- CTA -->
+
+<div style="text-align:center;margin-top:35px;">
+
+<a href="mailto:${escapeHtml(email)}"
+style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:600;">
+Reply to ${escapeHtml(name)}
+</a>
+
+</div>
+
+<!-- Footer -->
+
+<hr style="margin:35px 0 20px;border:none;border-top:1px solid #e2e8f0;">
+
+<p style="margin:0;font-size:13px;color:#64748b;text-align:center;line-height:1.7;">
+
+This enquiry was submitted from the
+<strong>Naxora Technology</strong>
+website contact form.
+
+<br><br>
+
+Generated automatically on
+<strong>${escapeHtml(formatDateTime())}</strong>
+
+</p>
+
+</td>
+</tr>
+
+</table>
+
+</body>
 </html>`;
 
   let mongoSaved = false;
@@ -195,14 +300,16 @@ export async function POST(request: Request) {
     const collection = await contactsCollection();
     const contactDoc: ContactDocument = {
       name,
-      email,
       mobile,
+      email,
+      company,
+      businessType,
+      budget,
       subject: safeSubject,
       message,
-      budget,
       createdAt: new Date(),
-      source: 'portfolio-site',
-      status: 'new',
+      source: "portfolio-site",
+      status: "new",
     };
     const result = await collection.insertOne(contactDoc);
     contactDocId = result.insertedId instanceof ObjectId ? result.insertedId.toString() : String(result.insertedId);
@@ -265,20 +372,40 @@ export async function POST(request: Request) {
     );
   }
 
+  if (!mongoSaved && mailInfo) {
+    return Response.json(
+      {
+        ok: true,
+        warning: 'Email sent, but database save failed',
+        ...(isDev
+          ? {
+              detail: {
+                mail: mailErrorMessage,
+                mongo: mongoErrorMessage,
+              },
+              mailInfo,
+            }
+          : null),
+      },
+      { status: 200 }
+    );
+  }
+
   return Response.json(
     {
       ok: false,
       error: 'Failed to submit contact form',
       ...(isDev
         ? {
-            detail: {
-              mail: mailErrorMessage,
-              mongo: mongoErrorMessage,
-            },
-          }
+          detail: {
+            mail: mailErrorMessage,
+            mongo: mongoErrorMessage,
+          },
+        }
         : null),
     },
     { status: 500 }
   );
 }
+
 

@@ -1,83 +1,174 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-// import { useRouter } from 'next/navigation';
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
 export function Contact() {
-  // const router = useRouter();
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [phone, setPhone] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const requiredFieldMessage = "Please fill out this field.";
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const initialCaptcha = "NAX24B";
+  const generateCaptcha = () => {
+    const chars =
+      "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+
+    return Array.from({ length: 6 }, () =>
+      chars[Math.floor(Math.random() * chars.length)]
+    ).join("");
+  };
+
+  const buildCaptchaStyle = (text: string) =>
+    text.split("").map((char, index) => {
+      const seed = char.charCodeAt(0) + index * 17;
+      return {
+        rotate: (seed % 25) - 12,
+        size: 20 + (seed % 5),
+      };
+    });
+
+  const buildCaptchaDots = (text: string) =>
+    Array.from({ length: 20 }, (_, index) => {
+      const seed = text.charCodeAt(index % text.length) + index * 29;
+      return {
+        left: `${(seed * 37) % 100}%`,
+        top: `${(seed * 53) % 100}%`,
+      };
+    });
+
+  const [captcha, setCaptcha] = useState(initialCaptcha);
+  const [captchaInput, setCaptchaInput] = useState("");
+  const [captchaStyle, setCaptchaStyle] = useState(() =>
+    buildCaptchaStyle(initialCaptcha)
+  );
+  const [captchaDots, setCaptchaDots] = useState(() =>
+    buildCaptchaDots(initialCaptcha)
+  );
+  const refreshCaptcha = () => {
+    const nextCaptcha = generateCaptcha();
+    setCaptcha(nextCaptcha);
+    setCaptchaStyle(buildCaptchaStyle(nextCaptcha));
+    setCaptchaDots(buildCaptchaDots(nextCaptcha));
+    setCaptchaInput("");
+  };
+
+  useEffect(() => {
+    refreshCaptcha();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (isSubmitting) return;
 
     setError(null);
+    setErrors({});
     setIsSubmitting(true);
 
     const form = e.currentTarget;
     const data = new FormData(form);
-    const company = String(data.get('company') ?? '').trim();
-    const message = String(data.get('message') ?? '').trim();
+
+    const name = String(data.get("name") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const company = String(data.get("company") ?? "").trim();
+    const businessType = String(data.get("businessType") ?? "").trim();
+    const budget = String(data.get("budget") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+
+    const newErrors: Record<string, string> = {};
+
+    if (captchaInput.trim() !== captcha) {
+      newErrors.captcha = "Verification code is incorrect.";
+    }
+
+    // Name
+    if (!name) {
+      newErrors.name = "Please enter your name.";
+    } else if (name.length < 2) {
+      newErrors.name = "Name must contain at least 2 characters.";
+    }
+
+    // Mobile
+    if (!phone.trim()) {
+      newErrors.phone = "Please enter your mobile number.";
+    } else if (phone.replace(/\D/g, "").length < 10) {
+      newErrors.phone = "Please enter a valid mobile number.";
+    }
+
+    // Email
+    if (!email) {
+      newErrors.email = "Please enter your email address.";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+
+    // Company
+    if (!company) {
+      newErrors.company = "Please enter your company / organisation.";
+    }
+
+    // Business Type
+    if (!businessType) {
+      newErrors.businessType = "Please select your business type.";
+    }
+
+    // Budget
+    if (!budget) {
+      newErrors.budget = "Please select your budget.";
+    }
+
+    // Message
+    if (!message) {
+      newErrors.message = "Please enter your project details.";
+    } else if (message.length < 30) {
+      newErrors.message =
+        "Message must contain at least 30 characters.";
+    }
+
+    // Stop if validation failed
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setIsSubmitting(false);
+      return;
+    }
 
     const payload = {
-      name: String(data.get("name") ?? "").trim(),
-      email: String(data.get("email") ?? "").trim(),
+      name,
       mobile: phone,
-      budget: String(data.get("budget") ?? "").trim(),
-      subject: company ? `Project inquiry from ${company}` : "Project inquiry",
-      message: `Phone: +${phone} Company: ${company} ${message}`,
+      email,
+      company,
+      businessType,
+      budget,
+      subject: "Project Inquiry",
+      message,
     };
-    if (!phone.trim()) {
-      setPhoneError(requiredFieldMessage);
-      setIsSubmitting(false);
-      return;
-    }
 
-    if (phone.replace(/\D/g, "").length < 10) {
-      setPhoneError("Please enter a valid mobile number.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    setPhoneError("");
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         const body = await response.json().catch(() => null);
-        setError(body?.error ?? 'Something went wrong. Please try again.');
+        setError(body?.error ?? "Something went wrong. Please try again.");
         return;
       }
 
       form.reset();
-      // setIsSuccess(true);
-      // const body = await response.json().catch(() => null);
-      // window.dataLayer = window.dataLayer || [];
-
-      // window.dataLayer.push({
-      //   event: "lead_form_submit",
-      //   value: 1,
-      //   currency: "INR"
-      // });
-      // router.push("/thank-you");
-      window.location.href = "/thank-you"
+      setPhone("");
+      setErrors({});
+      refreshCaptcha();
+      window.location.href = "/thank-you";
     } catch {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -91,9 +182,21 @@ export function Contact() {
             <h2 className="text-sm font-bold text-primary uppercase tracking-widest mb-3">
               Contact Us
             </h2>
-            <h3 className="text-3xl md:text-4xl font-bold mb-6">
-              Let&apos;s Build Something Amazing Together
+            <h3 className="text-3xl md:text-4xl font-bold leading-tight">
+
+              Let's Build Something Amazing Together
+
             </h3>
+
+            <p className="mt-4 text-lg font-semibold text-primary">
+
+              Professional Website & Software Development
+
+              starting from just
+
+              ₹14,999
+
+            </p>
             <p className="text-light dark:text-gray-400 mb-10 text-lg">
               Ready to transform your business? Fill out the form and our team
               will get back to you within 24 hours to schedule a discovery call.
@@ -134,44 +237,41 @@ export function Contact() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="glass-card p-8 rounded-3xl relative overflow-hidden"
-          >
-            {/* {isSuccess ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 dark:bg-navy/95 backdrop-blur-sm z-10">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4"
-                >
-                  <CheckCircle2 className="w-8 h-8 text-green-500" />
-                </motion.div>
-                <h4 className="text-2xl font-bold mb-2">Message Sent!</h4>
-                <p className="text-light text-center px-6">
-                  We&apos;ll be in touch shortly to discuss your project.
-                </p>
-              </div>
-            ) : null} */}
+            className="glass-card p-5 rounded-3xl relative overflow-hidden">
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Name *</label>
+                <div className="space-y-1">
+                  <label className="text-[14px] font-normal">Name *</label>
                   <input
                     name="name"
                     type="text"
-                    required
                     minLength={2}
                     maxLength={60}
                     placeholder="John Doe"
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
-                    onInvalid={(e) =>
-                      e.currentTarget.setCustomValidity(requiredFieldMessage)
-                    }
-                    onInput={(e) => e.currentTarget.setCustomValidity("")}
+                    className="w-full px-3 py-2 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      setErrors(prev => ({
+                        ...prev,
+                        name:
+                          value.length === 0
+                            ? "Please enter your name."
+                            : value.length < 2
+                              ? "Name must contain at least 2 characters."
+                              : "",
+                      }));
+                    }}
                   />
+                  {errors.name && (
+                    <p className="text-xs text-red-500">
+                      {errors.name}
+                    </p>
+                  )}
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium">
+                <div className="space-y-1">
+                  <label className="text-[14px] font-normal">
                     Mobile Number <span className="text-red-500">*</span>
                   </label>
 
@@ -181,64 +281,129 @@ export function Contact() {
                     value={phone}
                     onChange={(value) => {
                       setPhone(value);
-                      setPhoneError("");
+
+                      const digits = value.replace(/\D/g, "");
+
+                      setErrors(prev => ({
+                        ...prev,
+                        phone:
+                          digits.length === 0
+                            ? "Please enter your mobile number."
+                            : digits.length < 10
+                              ? "Please enter a valid mobile number."
+                              : "",
+                      }));
                     }}
-                    inputProps={{
-                      required: true,
-                      name: "phone",
-                      onInvalid: (e: React.InvalidEvent<HTMLInputElement>) => {
-                        e.currentTarget.setCustomValidity(requiredFieldMessage);
-                      },
-                      onInput: (e: React.FormEvent<HTMLInputElement>) => {
-                        e.currentTarget.setCustomValidity("");
-                      },
-                    }}
+                    inputProps={{ name: "phone" }}
                     containerClass="w-full"
-                    inputClass="!w-full !h-[52px] !rounded-xl !border !border-gray-300 !pl-16 !text-sm focus:!border-primary"
+                    inputClass="!w-full !h-[42px] !rounded-xl !border !border-gray-300 !pl-12 !text-[14px] shadow-sm focus:!border-primary"
                     buttonClass="!border-gray-300 !rounded-l-xl"
                     dropdownClass="!text-sm"
                   />
 
-                  {phoneError && (
-                    <p className="text-sm text-red-500 mt-1">
-                      {phoneError}
+                  {errors.phone && (
+                    <p className="text-xs text-red-500">
+                      {errors.phone}
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-1">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Email *</label>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[14px] font-normal">Email *</label>
                   <input
                     name="email"
-                    required
                     type="email"
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
                     placeholder="john@company.com"
-                    onInvalid={(e) =>
-                      e.currentTarget.setCustomValidity(requiredFieldMessage)
-                    }
-                    onInput={(e) => e.currentTarget.setCustomValidity("")}
+                    className="w-full px-3 py-2 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      setErrors(prev => ({
+                        ...prev,
+                        email:
+                          value.length === 0
+                            ? "Please enter your email address."
+                            : !emailRegex.test(value)
+                              ? "Please enter a valid email address."
+                              : "",
+                      }));
+                    }}
                   />
+                  {errors.email && (
+                    <p className="text-xs text-red-500">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[14px] font-normal">Company / Organisation *</label>
+                  <input
+                    name="company"
+                    type="text"
+                    placeholder="Company Name"
+                    className="w-full px-3 py-2 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
+                    onChange={(e) => {
+                      setErrors(prev => ({
+                        ...prev,
+                        company: e.target.value.trim()
+                          ? ""
+                          : "Please enter your company / organisation.",
+                      }));
+                    }}
+                  />
+                  {errors.company && (
+                    <p className="text-xs text-red-500">
+                      {errors.company}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Company</label>
-                  <input
-                    name="company"
-                    type="text"
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all shadow-sm hover:border-gray-400"
-                    placeholder="Company Name"
-                  />
+                <div className="space-y-1">
+                  <label className="text-[14px] font-normal">
+                    Type of Business *
+                  </label>
+                  <select
+                    name="businessType"
+                    className="w-full px-3 py-2 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all appearance-none shadow-sm hover:border-gray-400"
+                    onChange={(e) => {
+                      setErrors(prev => ({
+                        ...prev,
+                        businessType: e.target.value
+                          ? ""
+                          : "Please select your business type.",
+                      }));
+                    }}
+                  >
+                    <option value="">Select Type of Business</option>
+                    <option value="Startup">Startup</option>
+                    <option value="Services">Services</option>
+                    <option value="Retail / E-commerce">Retail / E-commerce</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  {errors.businessType && (
+                    <p className="text-xs text-red-500">
+                      {errors.businessType}
+                    </p>
+                  )}
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Budget</label>
+                <div className="space-y-1">
+                  <label className="text-[14px] font-normal">Budget *</label>
                   <select
                     name="budget"
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all appearance-none shadow-sm hover:border-gray-400"
+                    className="w-full px-3 py-2 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all appearance-none shadow-sm hover:border-gray-400"
+                    onChange={(e) => {
+                      setErrors(prev => ({
+                        ...prev,
+                        budget: e.target.value
+                          ? ""
+                          : "Please select your budget.",
+                      }));
+                    }}
                   >
                     <option value="">Select Budget</option>
                     <option value="10000-25000">Rs 10,000 - Rs 25,000</option>
@@ -246,28 +411,142 @@ export function Contact() {
                     <option value="50000-100000">Rs 50,000 - Rs 1,00,000</option>
                     <option value="100000+">Rs 1,00,000+</option>
                   </select>
+                  {errors.budget && (
+                    <p className="text-xs text-red-500">
+                      {errors.budget}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium">Message *</label>
+              <div className="space-y-1">
+                <label className="text-[14px] font-normal">Message *</label>
                 <textarea
                   name="message"
-                  required
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all resize-none shadow-sm hover:border-gray-400"
-                  placeholder="Tell us about your project..."
-                  onInvalid={(e) =>
-                    e.currentTarget.setCustomValidity(requiredFieldMessage)
-                  }
-                  onInput={(e) => e.currentTarget.setCustomValidity("")}
+                  rows={3}
+                  className="w-full px-3 py-2 rounded-xl bg-white border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all resize-none shadow-sm hover:border-gray-400"
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    setErrors(prev => ({
+                      ...prev,
+                      message:
+                        value.length === 0
+                          ? "Please enter your project details."
+                          : value.length < 30
+                            ? "Message must contain at least 30 characters."
+                            : "",
+                    }));
+                  }}
                 />
+                {errors.message && (
+                  <p className="text-xs text-red-500">
+                    {errors.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[14px] font-normal">
+                  Human Verification <span className="text-red-500">*</span>
+                </label>
+
+                <div className="flex items-center gap-3">
+
+                  {/* Captcha Image */}
+                  <div className="relative h-10 w-36 overflow-hidden rounded-xl border border-sky-200 bg-gradient-to-br from-cyan-100 via-sky-50 to-white">
+
+                    {/* Background dots */}
+                    <div className="absolute inset-0">
+                      {captchaDots.map((dot, i) => (
+                        <span
+                          key={i}
+                          className="absolute h-1 w-1 rounded-full bg-sky-500/30"
+                          style={{
+                            left: dot.left,
+                            top: dot.top,
+                          }}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Strike-through line */}
+                    <div
+                      className="absolute left-0 top-1/2 h-[2px] w-full bg-sky-500/60"
+                      style={{
+                        transform: "rotate(-10deg)",
+                      }}
+                    />
+
+                    {/* Characters */}
+                    <div className="relative flex h-full items-center justify-center gap-[1px] font-serif font-bold">
+                      {captcha.split("").map((char, i) => (
+                        <span
+                          key={i}
+                          style={{
+                            transform: `rotate(${captchaStyle[i].rotate}deg)`,
+                            fontSize: captchaStyle[i].size,
+                          }}
+                        >
+                          {char}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Input */}
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={captchaInput}
+                    onChange={(e) => {
+                      setCaptchaInput(e.target.value);
+
+                      setErrors((prev) => ({
+                        ...prev,
+                        captcha: "",
+                      }));
+                    }}
+                    placeholder="Code"
+                    className="h-10 w-36 rounded-xl border border-gray-300 px-4 text-center font-mono text-lg tracking-[0.35em] outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+
+                  {/* Refresh */}
+                  <button
+                    type="button"
+                    onClick={refreshCaptcha}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-300 bg-white transition hover:bg-gray-50"
+                    title="Generate new code"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 text-gray-700"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 4v6h6M20 20v-6h-6M20 8A8 8 0 006.3 5.3L4 8m16 8l-2.3 2.7A8 8 0 014 16"
+                      />
+                    </svg>
+                  </button>
+
+                </div>
+
+                {errors.captcha && (
+                  <p className="text-xs text-red-500">
+                    {errors.captcha}
+                  </p>
+                )}
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full btn-primary py-4 mt-2"
+                className="w-full btn-primary py-3 mt-2"
               >
                 {isSubmitting ? (
                   <span className="flex items-center gap-2">
@@ -308,6 +587,7 @@ export function Contact() {
     </section>
   );
 }
+
 
 
 

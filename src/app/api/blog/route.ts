@@ -94,23 +94,16 @@ export async function POST(req: Request) {
     const blog = {
       title,
       slug,
-
       content,
-
       coverImage,
       coverImagePublicId,
-
       metaTitle: metaTitle || title,
-
       metaDescription: metaDescription || "",
-
       status:
         status === "published"
           ? "published"
           : "draft",
-
       author: "Naxora Technology",
-
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -138,15 +131,12 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const status = searchParams.get("status");
+  const page = Math.max(Number(searchParams.get("page") ?? "1") || 1, 1);
+  const limit = Math.max(Number(searchParams.get("limit") ?? "12") || 12, 1);
+
   try {
-    const { searchParams } =
-      new URL(req.url);
-
-    const status =
-      searchParams.get("status");
-    const page = Math.max(Number(searchParams.get("page") ?? "1") || 1, 1);
-    const limit = Math.max(Number(searchParams.get("limit") ?? "12") || 12, 1);
-
     const blogs = await blogsCollection();
 
     const query =
@@ -177,16 +167,19 @@ export async function GET(req: Request) {
         totalPages: Math.ceil(total / limit),
       }
     );
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
       {
         data: [],
-        page: 1,
-        limit: 12,
+        page,
+        limit,
         total: 0,
         totalPages: 0,
+        error: "Failed to load blog posts",
       },
-      { status: 500 }
+      { status: 200 }
     );
   }
 }

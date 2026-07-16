@@ -26,8 +26,12 @@ export async function GET(request: Request) {
   }
 
   const url = new URL(request.url);
-  const page = Math.max(Number(url.searchParams.get("page") || "1"), 1);
-  const limit = Math.min(Math.max(Number(url.searchParams.get("limit") || "20"), 1), 100);
+  const rawPage = Number(url.searchParams.get("page") || "1");
+  const rawLimit = Number(url.searchParams.get("limit") || "20");
+  const page = Number.isFinite(rawPage) ? Math.max(Math.floor(rawPage), 1) : 1;
+  const limit = Number.isFinite(rawLimit)
+    ? Math.min(Math.max(Math.floor(rawLimit), 1), 100)
+    : 20;
   const skip = (page - 1) * limit;
 
   const collection = await contactsCollection();
@@ -41,12 +45,16 @@ export async function GET(request: Request) {
     collection.countDocuments({}),
   ]);
 
+  const totalPages = Math.max(Math.ceil(total / limit), 1);
+
   return NextResponse.json({
     ok: true,
     data: items.map((item) => toPlainContact(item as Record<string, unknown>)),
     page,
     limit,
     total,
-    totalPages: Math.max(Math.ceil(total / limit), 1),
+    totalPages,
+    hasPrevPage: page > 1,
+    hasNextPage: page < totalPages,
   });
 }
