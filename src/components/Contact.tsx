@@ -12,53 +12,53 @@ export function Contact() {
   const [error, setError] = useState<string | null>(null);
   const [phone, setPhone] = useState("");
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const initialCaptcha = "NAX24B";
-  const generateCaptcha = () => {
-    const chars =
-      "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+  // const initialCaptcha = "NAX24B";
+  // const generateCaptcha = () => {
+  //   const chars =
+  //     "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
 
-    return Array.from({ length: 6 }, () =>
-      chars[Math.floor(Math.random() * chars.length)]
-    ).join("");
-  };
+  //   return Array.from({ length: 6 }, () =>
+  //     chars[Math.floor(Math.random() * chars.length)]
+  //   ).join("");
+  // };
 
-  const buildCaptchaStyle = (text: string) =>
-    text.split("").map((char, index) => {
-      const seed = char.charCodeAt(0) + index * 17;
-      return {
-        rotate: (seed % 25) - 12,
-        size: 20 + (seed % 5),
-      };
-    });
+  // const buildCaptchaStyle = (text: string) =>
+  //   text.split("").map((char, index) => {
+  //     const seed = char.charCodeAt(0) + index * 17;
+  //     return {
+  //       rotate: (seed % 25) - 12,
+  //       size: 20 + (seed % 5),
+  //     };
+  //   });
 
-  const buildCaptchaDots = (text: string) =>
-    Array.from({ length: 20 }, (_, index) => {
-      const seed = text.charCodeAt(index % text.length) + index * 29;
-      return {
-        left: `${(seed * 37) % 100}%`,
-        top: `${(seed * 53) % 100}%`,
-      };
-    });
+  // const buildCaptchaDots = (text: string) =>
+  //   Array.from({ length: 20 }, (_, index) => {
+  //     const seed = text.charCodeAt(index % text.length) + index * 29;
+  //     return {
+  //       left: `${(seed * 37) % 100}%`,
+  //       top: `${(seed * 53) % 100}%`,
+  //     };
+  //   });
 
-  const [captcha, setCaptcha] = useState(initialCaptcha);
-  const [captchaInput, setCaptchaInput] = useState("");
-  const [captchaStyle, setCaptchaStyle] = useState(() =>
-    buildCaptchaStyle(initialCaptcha)
-  );
-  const [captchaDots, setCaptchaDots] = useState(() =>
-    buildCaptchaDots(initialCaptcha)
-  );
-  const refreshCaptcha = () => {
-    const nextCaptcha = generateCaptcha();
-    setCaptcha(nextCaptcha);
-    setCaptchaStyle(buildCaptchaStyle(nextCaptcha));
-    setCaptchaDots(buildCaptchaDots(nextCaptcha));
-    setCaptchaInput("");
-  };
+  // const [captcha, setCaptcha] = useState(initialCaptcha);
+  // const [captchaInput, setCaptchaInput] = useState("");
+  // const [captchaStyle, setCaptchaStyle] = useState(() =>
+  //   buildCaptchaStyle(initialCaptcha)
+  // );
+  // const [captchaDots, setCaptchaDots] = useState(() =>
+  //   buildCaptchaDots(initialCaptcha)
+  // );
+  // const refreshCaptcha = () => {
+  //   const nextCaptcha = generateCaptcha();
+  //   setCaptcha(nextCaptcha);
+  //   setCaptchaStyle(buildCaptchaStyle(nextCaptcha));
+  //   setCaptchaDots(buildCaptchaDots(nextCaptcha));
+  //   setCaptchaInput("");
+  // };
 
-  useEffect(() => {
-    refreshCaptcha();
-  }, []);
+  // useEffect(() => {
+  //   refreshCaptcha();
+  // }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -81,9 +81,9 @@ export function Contact() {
 
     const newErrors: Record<string, string> = {};
 
-    if (captchaInput.trim() !== captcha) {
-      newErrors.captcha = "Verification code is incorrect.";
-    }
+    // if (captchaInput.trim() !== captcha) {
+    //   newErrors.captcha = "Verification code is incorrect.";
+    // }
 
     // Name
     if (!name) {
@@ -165,7 +165,7 @@ export function Contact() {
       form.reset();
       setPhone("");
       setErrors({});
-      refreshCaptcha();
+      // refreshCaptcha();
       window.location.href = "/thank-you";
     } catch {
       setError("Network error. Please try again.");
@@ -446,17 +446,14 @@ export function Contact() {
                 )}
               </div>
 
-              <div className="space-y-1">
+              {/* <div className="space-y-1">
                 <label className="text-[14px] font-normal">
                   Human Verification <span className="text-red-500">*</span>
                 </label>
 
                 <div className="flex items-center gap-3">
 
-                  {/* Captcha Image */}
                   <div className="relative h-10 w-36 overflow-hidden rounded-xl border border-sky-200 bg-gradient-to-br from-cyan-100 via-sky-50 to-white">
-
-                    {/* Background dots */}
                     <div className="absolute inset-0">
                       {captchaDots.map((dot, i) => (
                         <span
@@ -470,7 +467,6 @@ export function Contact() {
                       ))}
                     </div>
 
-                    {/* Strike-through line */}
                     <div
                       className="absolute left-0 top-1/2 h-[2px] w-full bg-sky-500/60"
                       style={{
@@ -478,7 +474,6 @@ export function Contact() {
                       }}
                     />
 
-                    {/* Characters */}
                     <div className="relative flex h-full items-center justify-center gap-[1px] font-serif font-bold">
                       {captcha.split("").map((char, i) => (
                         <span
@@ -494,7 +489,6 @@ export function Contact() {
                     </div>
                   </div>
 
-                  {/* Input */}
                   <input
                     type="text"
                     maxLength={6}
@@ -511,7 +505,6 @@ export function Contact() {
                     className="h-10 w-36 rounded-xl border border-gray-300 px-4 text-center font-mono text-lg tracking-[0.35em] outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
 
-                  {/* Refresh */}
                   <button
                     type="button"
                     onClick={refreshCaptcha}
@@ -541,7 +534,7 @@ export function Contact() {
                     {errors.captcha}
                   </p>
                 )}
-              </div>
+              </div> */}
 
               <button
                 type="submit"
