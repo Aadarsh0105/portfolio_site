@@ -83,11 +83,12 @@ export function Hero() {
               Build Your Professional <br className="hidden md:block" />
               Business <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500">
                 Websites </span> and <br />
-              Android & iOS <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500">
-                Mobile App </span><br />
+              Android & iOS 
+              {/* <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500"> */}
+                {/* Mobile App </span><br />
               Starting at <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500">
                 Just ₹ 9,999
-              </span>
+              </span> */}
               {/* Custom Web & Mobile
               Solutions That
               Drive Business Growth */}
