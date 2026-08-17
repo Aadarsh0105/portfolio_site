@@ -1,12 +1,8 @@
 "use client";
 
 import { About } from "./About";
-import { Achievements } from "./Achievements";
 import { AIInnovation } from "./AIInnovation";
-import { Blog } from "./Blog";
-import { Careers } from "./Careers";
-import { CaseStudies } from "./CaseStudies";
-import { ClientLogos } from "./ClientLogos";
+import { Blog } from "./Blog";;
 import { Contact } from "./Contact";
 import { FAQ } from "./FAQ";
 import { FinalCTA } from "./FinalCTA";
@@ -14,6 +10,7 @@ import { Hero } from "./Hero";
 import { IndustryExpertise } from "./IndustryExpertise";
 import { Pricing } from "./Pricing";
 import { Process } from "./Process";
+import ProjectsSlider from "./ProjectsSlider";
 import { Services } from "./Services";
 import { SiteShell } from "./SiteShell";
 import { TechStack } from "./TechStack";
@@ -35,6 +32,7 @@ export function HomePage() {
         <TechStack />
         <AIInnovation />
         <Testimonials />
+        <ProjectsSlider />
         {/* <Achievements /> */}
         <Pricing />
         <FAQ />

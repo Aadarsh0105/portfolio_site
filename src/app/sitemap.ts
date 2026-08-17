@@ -94,6 +94,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
 
     {
+      url: `${baseUrl}/projects`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+
+    {
       url: `${baseUrl}/privacy-policy`,
       lastModified: new Date(),
       priority: 0.3,

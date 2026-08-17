@@ -29,10 +29,10 @@ const navLinks = [
     name: 'Pricing',
     href: '/pricing'
   },
-  // {
-  //   name: 'Case Studies',
-  //   href: '/#case-studies'
-  // },
+  {
+    name: 'Projects',
+    href: '/projects'
+  },
   {
     name: 'Blog',
     href: '/blog'
