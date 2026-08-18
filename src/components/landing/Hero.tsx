@@ -10,8 +10,8 @@ interface HeroProps {
   type: "web" | "app";
 }
 
-const PHONE = process.env.NEXT_PUBLIC_PHONE;
-const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP;
+const PHONE = process.env.NEXT_PUBLIC_PHONE_NUMBER;
+const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
 const DATA = {
   web: {
@@ -123,6 +123,7 @@ function Counter({
 export default function Hero({
   type,
 }: HeroProps) {
+  console.log("sof",PHONE, WHATSAPP)
   const page = DATA[type];
   const [contactOpen, setContactOpen] = useState(false);
   return (

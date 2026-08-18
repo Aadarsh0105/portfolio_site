@@ -29,7 +29,7 @@ export default function ContactModal({
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const PHONE =
-    process.env.NEXT_PUBLIC_PHONE ?? "+919232784935";
+    process.env.NEXT_PUBLIC_PHONE_NUMBER;
 
   /*
    * Prevent background scrolling while modal is open
