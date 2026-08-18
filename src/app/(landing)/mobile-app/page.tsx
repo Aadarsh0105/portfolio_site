@@ -2,7 +2,6 @@ import Features from "@/components/landing/Features";
 import FinalCTA from "@/components/landing/FinalCTA";
 import Hero from "@/components/landing/Hero";
 import Industries from "@/components/landing/Industries";
-import MobileAppPricing from "@/components/landing/MobileAppPricing";
 import Pricing from "@/components/landing/Pricing";
 import Process from "@/components/landing/Process";
 import TechStack from "@/components/landing/TechStack";

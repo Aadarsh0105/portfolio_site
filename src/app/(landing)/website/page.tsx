@@ -5,7 +5,6 @@ import Industries from "@/components/landing/Industries";
 import Pricing from "@/components/landing/Pricing";
 import Process from "@/components/landing/Process";
 import TechStack from "@/components/landing/TechStack";
-import WebsitePricing from "@/components/landing/WebsitePricing";
 import WhyChoose from "@/components/landing/WhyChoose";
 import ProjectsSlider from "@/components/ProjectsSlider";
 
