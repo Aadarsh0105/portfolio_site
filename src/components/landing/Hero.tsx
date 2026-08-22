@@ -123,7 +123,7 @@ function Counter({
 export default function Hero({
   type,
 }: HeroProps) {
-  console.log("sof",PHONE, WHATSAPP)
+  console.log("sof", PHONE, WHATSAPP)
   const page = DATA[type];
   const [contactOpen, setContactOpen] = useState(false);
   return (
@@ -140,13 +140,19 @@ export default function Hero({
             backgroundSize: "60px 60px"
           }} />
         </div>
-        <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-6 pt-10 text-center">
+        <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 pt-5 text-center">
           {/* Logo */}
           <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-            <Image src="/logo2.png" alt="Naxora Technology" width={180} height={60} priority />
+            <Image src="/logo2.png" className="w-30 md:w-35" alt="Naxora Technology" width={120} height={60} priority />
           </motion.div>
+        </div>
+        <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-6 md:pt-5 text-center">
+          {/* Logo */}
+          {/* <motion.div initial="hidden" animate="visible" variants={fadeUp}>
+            <Image src="/logo2.png" alt="Naxora Technology" width={180} height={60} priority />
+          </motion.div> */}
           {/* Offer Badge */}
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .1 }} className="mt-6">
+          <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .1 }} className="mt-3 md:mt-4">
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-5 py-1.5 backdrop-blur-xl">
               <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
               <span className="text-xs font-semibold text-blue-200">
@@ -156,11 +162,11 @@ export default function Hero({
           </motion.div>
           {/* Heading */}
           <motion.h1 initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .2 }}
-            className="mt-8 max-w-5xl text-4xl font-black leading-tight md:text-5xl lg:text-6xl">
+            className="mt-4 md:mt-8 max-w-5xl text-4xl font-black leading-tight md:text-5xl lg:text-6xl">
             {page.title}
           </motion.h1>
           {/* Price */}
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .3 }} className="mt-8">
+          <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .3 }} className="mt-4 md:mt-8">
             <p className="text-sm uppercase tracking-[0.20em] text-blue-300">
               STARTING FROM
             </p>
