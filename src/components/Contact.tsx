@@ -94,7 +94,7 @@ export function Contact() {
     // Mobile
     if (!phone.trim()) {
       newErrors.phone = "Please enter your mobile number.";
-    } else if (phone.replace(/\D/g, "").length < 10) {
+    } else if (!/^\+91\d{10}$/.test(phone)) {
       newErrors.phone = "Please enter a valid mobile number.";
     }
 
@@ -286,7 +286,7 @@ export function Contact() {
                         phone:
                           digits.length === 0
                             ? "Please enter your mobile number."
-                            : digits.length < 10
+                          : !/^\+91\d{10}$/.test(value)
                               ? "Please enter a valid mobile number."
                               : "",
                       }));
@@ -572,4 +572,3 @@ export function Contact() {
     </section>
   );
 }
-
