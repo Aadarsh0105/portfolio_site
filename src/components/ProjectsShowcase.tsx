@@ -11,6 +11,9 @@ import {
   Users,
   ShoppingCart,
   MapPin,
+  CreditCard,
+  QrCode,
+  Search,
 } from "lucide-react";
 
 const projects = [
@@ -72,9 +75,9 @@ const projects = [
     category: "Agriculture Marketplace",
     tagline: "Connecting farmers, buyers & agriculture dealers.",
     description:
-      "A digital agriculture marketplace designed for both B2B and B2C users, helping businesses buy and sell agricultural products while customers discover products and nearby dealers.",
+      "A multilingual Hindi and English agriculture marketplace where agriculture companies can register, add products and sell directly to B2C customers while users discover products and nearby dealers.",
     image: "/agrihitech.png",
-    website: "https://agrihitech-kisan.vercel.app/",
+    website: "https://www.agrihitechkisan.in/",
     accent: "from-green-600 to-emerald-500",
 
     platforms: [
@@ -90,15 +93,17 @@ const projects = [
       "React Native",
       "Node.js",
       "MongoDB",
+      "Razorpay",
     ],
 
     features: [
       "B2B agriculture marketplace",
       "B2C product discovery",
-      "Product buying & selling",
+      "Company registration & product listing",
+      "Direct B2C product selling",
       "Nearest dealer discovery",
-      "Agriculture product details",
-      "Mobile & web experience",
+      "Hindi & English experience",
+      "Razorpay payments",
     ],
 
     stats: [
@@ -116,6 +121,48 @@ const projects = [
         icon: MapPin,
         value: "Nearby",
         label: "Dealer Discovery",
+      },
+    ],
+  },
+
+  {
+    name: "SIPS Fee Management",
+    category: "School Fee Management",
+    tagline: "Simple, secure fee collection for schools and families.",
+    description:
+      "A complete school fee-management platform where admin and accounts teams collect and track fees while students and parents search by mobile number or student ID, review outstanding dues and pay securely.",
+    image: "/sips-fee-management.png",
+    website: "https://sips-xi.vercel.app/",
+    accent: "from-blue-700 to-indigo-500",
+
+    platforms: ["Student Portal", "Admin Panel", "Accounts Panel"],
+
+    technologies: ["Next.js", "Node.js", "MongoDB", "Razorpay", "UPI QR"],
+
+    features: [
+      "Student ID or mobile search",
+      "Outstanding fee and dues lookup",
+      "Admin fee collection",
+      "Dedicated accounts workflow",
+      "Razorpay online payments",
+      "UPI QR code payments",
+    ],
+
+    stats: [
+      {
+        icon: Search,
+        value: "Quick",
+        label: "Student Search",
+      },
+      {
+        icon: CreditCard,
+        value: "Secure",
+        label: "Fee Payments",
+      },
+      {
+        icon: QrCode,
+        value: "UPI",
+        label: "QR Payments",
       },
     ],
   },
@@ -168,6 +215,91 @@ const projects = [
         icon: Users,
         value: "Admin",
         label: "Management",
+      },
+    ],
+  },
+  {
+    name: "Chandrabhaga Academy",
+    category: "Online Learning Platform",
+    tagline: "Complete digital preparation for competitive exams.",
+    description:
+      "An education platform that brings courses, test series, current affairs, notes, notices, previous papers and syllabus resources into one student-focused experience.",
+    image: "/chandrabhaga-academy.png",
+    website: "https://www.chandrabhagaacademy.com/",
+    accent: "from-blue-600 to-orange-500",
+    status: "Live Project",
+
+    platforms: ["Website", "Student Dashboard", "Admin Panel"],
+
+    technologies: ["React", "Next.js", "Node.js", "MongoDB", "Razorpay"],
+
+    features: [
+      "Online courses",
+      "Exam test series",
+      "Current affairs updates",
+      "Study notes and notices",
+      "Previous question papers",
+      "Syllabus resources",
+      "Razorpay payments",
+    ],
+
+    stats: [
+      {
+        icon: Users,
+        value: "Student",
+        label: "Dashboard",
+      },
+      {
+        icon: CheckCircle2,
+        value: "Test",
+        label: "Series",
+      },
+      {
+        icon: Globe,
+        value: "Live",
+        label: "Web Platform",
+      },
+    ],
+  },
+
+  {
+    name: "Bigvora",
+    category: "eCommerce Mobile App",
+    tagline: "A mobile-first shopping experience currently in development.",
+    description:
+      "An eCommerce mobile application being built for product discovery, cart and checkout, secure payments, order management and customer notifications.",
+    accent: "from-violet-600 to-blue-500",
+    status: "In Development",
+    development: true,
+
+    platforms: ["Mobile App", "Admin Panel"],
+
+    technologies: ["React Native", "Node.js", "MongoDB"],
+
+    features: [
+      "Product discovery",
+      "Shopping cart and checkout",
+      "Secure online payments",
+      "Customer order tracking",
+      "Admin product management",
+      "Customer notifications",
+    ],
+
+    stats: [
+      {
+        icon: Smartphone,
+        value: "Mobile",
+        label: "Commerce App",
+      },
+      {
+        icon: ShoppingCart,
+        value: "Online",
+        label: "Shopping",
+      },
+      {
+        icon: CheckCircle2,
+        value: "Under",
+        label: "Development",
       },
     ],
   },
@@ -312,11 +444,21 @@ export default function ProjectsShowcase() {
                     {/* Screenshot */}
 
                     <div className="absolute inset-x-0 bottom-0 top-8 overflow-hidden bg-white sm:top-9">
-                      <img
-                        src={project.image}
-                        alt={`${project.name} project showcase`}
-                        className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.015]"
-                      />
+                      {project.development ? (
+                        <div className="flex h-full flex-col items-center justify-center bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 px-6 text-center text-white">
+                          <Smartphone className="mb-4 h-14 w-14 text-blue-300" />
+                          <span className="text-3xl font-black">Bigvora</span>
+                          <span className="mt-3 text-xs font-bold uppercase tracking-[0.2em] text-blue-300">
+                            In Development
+                          </span>
+                        </div>
+                      ) : (
+                        <img
+                          src={project.image}
+                          alt={`${project.name} project showcase`}
+                          className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.015]"
+                        />
+                      )}
 
                       {/* Bottom fade */}
 
@@ -474,16 +616,22 @@ export default function ProjectsShowcase() {
 
                   {/* Visit Project */}
 
-                  <a
-                    href={project.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex w-fit shrink-0 items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-600/20"
-                  >
-                    Visit Live Project
+                  {project.website ? (
+                    <a
+                      href={project.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex w-fit shrink-0 items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-600/20"
+                    >
+                      Visit Live Project
 
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  ) : (
+                    <span className="inline-flex w-fit shrink-0 items-center justify-center rounded-full bg-slate-100 px-6 py-3 text-sm font-bold text-slate-600">
+                      {project.status}
+                    </span>
+                  )}
                 </div>
               </div>
             </motion.article>

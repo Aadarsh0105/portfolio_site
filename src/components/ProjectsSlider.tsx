@@ -18,11 +18,20 @@ const projects = [
     {
         name: "Agri Hitech Kisan",
         category: "Agriculture Marketplace",
-        description: "A B2B and B2C agriculture marketplace that helps users discover, buy and sell agricultural products while finding nearby dealers.",
+        description: "A multilingual Hindi and English B2B and B2C agriculture marketplace where agriculture companies can register, add products and sell directly to customers.",
         image: "/agrihitech.png",
-        website: "https://agrihitech-kisan.vercel.app/",
-        platforms: ["Website", "Mobile App", "B2B", "B2C"],
-        technologies: ["React", "Next.js", "React Native", "Node.js"],
+        website: "https://www.agrihitechkisan.in/",
+        platforms: ["Website", "Mobile App", "B2B", "B2C", "Hindi & English"],
+        technologies: ["React", "Next.js", "React Native", "Node.js", "Razorpay"],
+    },
+    {
+        name: "SIPS Fee Management",
+        category: "School Fee Management",
+        description: "A school fee-management platform where admin and accounts teams collect fees while students search by mobile number or student ID, check dues and pay securely using Razorpay or UPI QR codes.",
+        image: "/sips-fee-management.png",
+        website: "https://sips-xi.vercel.app/",
+        platforms: ["Student Portal", "Admin Panel", "Accounts Panel"],
+        technologies: ["Next.js", "Node.js", "MongoDB", "Razorpay", "UPI QR"],
     },
     {
         name: "SabziWalah",
@@ -32,6 +41,25 @@ const projects = [
         website: "https://sabziwalah.com/",
         platforms: ["Website", "Admin Panel", "Receptionist Panel"],
         technologies: ["React", "Node.js", "MongoDB"],
+    },
+    {
+        name: "Chandrabhaga Academy",
+        category: "Online Learning Platform",
+        description: "A complete exam preparation platform with courses, test series, current affairs, notes, notices, previous papers and syllabus resources.",
+        image: "/chandrabhaga-academy.png",
+        website: "https://www.chandrabhagaacademy.com/",
+        platforms: ["Website", "Student Dashboard", "Admin Panel"],
+        technologies: ["React", "Next.js", "Node.js", "MongoDB", "Razorpay"],
+        status: "Live Project",
+    },
+    {
+        name: "Bigvora",
+        category: "eCommerce Mobile App",
+        description: "A mobile commerce application for product discovery, cart and checkout, secure payments, order management and customer notifications.",
+        platforms: ["Mobile App", "Admin Panel"],
+        technologies: ["React Native", "Node.js", "MongoDB"],
+        status: "In Development",
+        development: true,
     },
 ];
 
@@ -97,7 +125,15 @@ export default function ProjectsSlider() {
                                             <span className="h-2 w-2 rounded-full bg-green-400" />
                                             <div className="ml-2 h-3 flex-1 rounded-full bg-white/10" />
                                         </div>
-                                        <img src={project.image} alt={`${project.name} project`} className="h-full w-full object-cover object-top pt-7 transition-transform duration-700 group-hover:scale-[1.04]" />
+                                        {project.development ? (
+                                            <div className="flex h-full flex-col items-center justify-center bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 px-6 pt-7 text-center text-white">
+                                                <Smartphone className="mb-3 h-10 w-10 text-blue-300" />
+                                                <span className="text-2xl font-black">Bigvora</span>
+                                                <span className="mt-2 text-xs font-bold uppercase tracking-widest text-blue-300">In Development</span>
+                                            </div>
+                                        ) : (
+                                            <img src={project.image} alt={`${project.name} project`} className="h-full w-full object-cover object-top pt-7 transition-transform duration-700 group-hover:scale-[1.04]" />
+                                        )}
                                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent opacity-70" />
                                         <div className="absolute bottom-4 left-4">
                                             <span className="rounded-full border border-white/20 bg-black/40 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-md">
@@ -131,10 +167,16 @@ export default function ProjectsSlider() {
                                                 </span>
                                             ))}
                                         </div>
-                                        <a href={project.website} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-blue-600 transition-colors hover:text-blue-700">
-                                            View Project
-                                            <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                                        </a>
+                                        {project.website ? (
+                                            <a href={project.website} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-blue-600 transition-colors hover:text-blue-700">
+                                                View Project
+                                                <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                                            </a>
+                                        ) : (
+                                            <span className="mt-6 inline-flex text-sm font-bold text-blue-600">
+                                                {project.status}
+                                            </span>
+                                        )}
                                     </div>
                                 </motion.article>
                             ))}
