@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import { CountryPhoneInput } from "./CountryPhoneInput";
 
 export function Contact() {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -275,9 +274,7 @@ export function Contact() {
                     Mobile Number <span className="text-red-500">*</span>
                   </label>
 
-                  <PhoneInput
-                    country="in"
-                    enableSearch
+                  <CountryPhoneInput
                     value={phone}
                     onChange={(value) => {
                       setPhone(value);
@@ -294,11 +291,6 @@ export function Contact() {
                               : "",
                       }));
                     }}
-                    inputProps={{ name: "phone" }}
-                    containerClass="w-full"
-                    inputClass="!w-full !h-[42px] !rounded-xl !border !border-gray-300 !pl-12 !text-[14px] shadow-sm focus:!border-primary"
-                    buttonClass="!border-gray-300 !rounded-l-xl"
-                    dropdownClass="!text-sm"
                   />
 
                   {errors.phone && (
@@ -580,8 +572,4 @@ export function Contact() {
     </section>
   );
 }
-
-
-
-
 

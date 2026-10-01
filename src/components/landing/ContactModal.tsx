@@ -9,8 +9,7 @@ import {
   Send,
   X,
 } from "lucide-react";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import { CountryPhoneInput } from "../CountryPhoneInput";
 
 interface ContactModalProps {
   open: boolean;
@@ -349,9 +348,7 @@ export default function ContactModal({
                       Mobile Number *
                     </label>
 
-                    <PhoneInput
-                      country="in"
-                      enableSearch
+                    <CountryPhoneInput
                       value={phone}
                       onChange={(value) => {
                         setPhone(value);
@@ -369,13 +366,6 @@ export default function ContactModal({
                                 : "",
                         }));
                       }}
-                      inputProps={{
-                        name: "phone",
-                      }}
-                      containerClass="w-full"
-                      inputClass="!w-full !h-[42px] !rounded-xl !border !border-gray-300 !pl-12 !text-[14px] shadow-sm focus:!border-blue-500"
-                      buttonClass="!border-gray-300 !rounded-l-xl"
-                      dropdownClass="!text-sm"
                     />
 
                     {errors.phone && (
