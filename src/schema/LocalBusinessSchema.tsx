@@ -1,4 +1,5 @@
 import Script from "next/script";
+import { siteConfig } from "@/lib/seo";
 
 export default function LocalBusinessSchema() {
   const schema = {
@@ -13,7 +14,7 @@ export default function LocalBusinessSchema() {
 
     image: "https://naxoratechnology.com/logo1.png",
 
-    telephone: process.env.NEXT_PUBLIC_PHONE_NUMBER,
+    telephone: siteConfig.phone,
 
     email: "contact@naxoratechnology.com",
 
@@ -25,15 +26,29 @@ export default function LocalBusinessSchema() {
       addressCountry: "IN",
     },
 
-    areaServed: "Worldwide",
+    areaServed: [
+      {
+        "@type": "City",
+        name: "Bhopal",
+      },
+      {
+        "@type": "Country",
+        name: "India",
+      },
+    ],
 
     priceRange: "$$",
 
-    sameAs: [],
+    sameAs: [
+      "https://www.linkedin.com/company/naxoratechnology",
+      "https://www.facebook.com/naxoratechnology/",
+      "https://www.instagram.com/naxoratechnology/",
+      "https://x.com/naxoratech",
+    ],
 
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: process.env.NEXT_PUBLIC_PHONE_NUMBER,
+      telephone: siteConfig.phone,
       contactType: "customer service",
       email: "contact@naxoratechnology.com",
       availableLanguage: ["English", "Hindi"],

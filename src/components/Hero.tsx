@@ -80,11 +80,9 @@ export function Hero() {
 
             {/* Heading */}
             <h1 className="max-w-[700px] text-3xl md:text-4xl lg:text-5xl font-black leading-[1.05] tracking-[-0.05em] text-slate-900">
-              Build Your Professional <br className="hidden md:block" />
-              Business <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500">
-                Websites </span> and <br />
-              Android & iOS <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500">
-                 Mobile App </span>
+              Web, Mobile App & <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500">
+                AI Development </span> for <br className="hidden md:block" />
+              Growing Businesses
                 {/*<br />
               Starting at <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500">
                 Just ₹ 9,999

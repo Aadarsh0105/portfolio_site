@@ -1,3 +1,5 @@
+import { siteConfig } from "@/lib/seo";
+
 export default function OrganizationSchema() {
   const schema = {
     "@context": "https://schema.org",
@@ -7,13 +9,13 @@ export default function OrganizationSchema() {
     url: "https://naxoratechnology.com",
     logo: "https://naxoratechnology.com/logo1.png",
     email: "contact@naxoratechnology.com",
-    telephone: process.env.NEXT_PUBLIC_PHONE_NUMBER,
+    telephone: siteConfig.phone,
     sameAs: [
       "https://www.linkedin.com/company/naxoratechnology",
-    //   "https://instagram.com/naxoratechnology",
-    //   "https://facebook.com/naxoratechnology",
-    //   "https://x.com/naxoratechnology"
-    ]
+      "https://www.facebook.com/naxoratechnology/",
+      "https://www.instagram.com/naxoratechnology/",
+      "https://x.com/naxoratech",
+    ],
   };
 
   return (
