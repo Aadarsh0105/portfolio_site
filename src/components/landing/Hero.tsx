@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
-import { Rocket, Phone, MessageCircle, ShieldCheck, Clock3, Star, ChevronDown, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Rocket,
+  Phone,
+  MessageCircle,
+  ArrowUpRight,
+  Check,
+} from "lucide-react";
+
 import ContactModal from "./ContactModal";
 
 interface HeroProps {
@@ -16,55 +23,79 @@ const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 const DATA = {
   web: {
     badge: "Professional Website Development",
-    title: "Professional Business Website",
-    subtitle: "Build a modern, SEO-friendly and lightning-fast business website that converts visitors into customers.",
+    eyebrow: "01 / WEBSITE SOLUTIONS",
+
+    title: "Give Your Business",
+    highlight: "A Better Website.",
+
+    subtitle:
+      "Get a modern, mobile-friendly website that showcases your business, builds customer trust and helps you get more enquiries.",
+
     price: "₹9,999",
-    heroImage: "/logo2.png",
+    priceLabel: "WEBSITE DEVELOPMENT",
+
+    priceDescription:
+      "Everything you need to get your business online.",
+
+    priceNote:
+      "Let's create a website for your business.",
+
+    primaryCTA: "Build My Website",
+    secondaryCTA: "Talk to Our Team",
+
+    benefits: [
+      "Custom Website Design",
+      "Mobile Friendly",
+      "SEO Ready",
+    ],
+
+    background: "#EFF8FF",
+    accentBg: "#FFFFFF",
+    accentBorder: "#D8E9FF",
+    decoration: "#D5EAFE",
+    highlightColor: "#2563EB",
   },
+
   app: {
     badge: "Android & iOS App Development",
-    title: "Professional Mobile App",
-    subtitle: "Launch your Android & iOS application with beautiful UI, secure backend and premium performance.",
+    eyebrow: "02 / MOBILE APP SOLUTIONS",
+
+    title: "Turn Your Idea",
+    highlight: "Into a Mobile App.",
+
+    subtitle:
+      "Build your own Android and iPhone app with an easy-to-use design, useful features and a connected backend.",
+
     price: "₹14,999",
-    heroImage: "/logo2.png",
+    priceLabel: "MOBILE APP DEVELOPMENT",
+
+    priceDescription:
+      "Start turning your business idea into a mobile app.",
+
+    priceNote:
+      "Let's discuss the app you want to build.",
+
+    primaryCTA: "Build My App",
+    secondaryCTA: "Discuss Your Idea",
+
+    benefits: [
+      "Android & iOS",
+      "Easy-to-Use Design",
+      "Custom Backend",
+    ],
+
+    background: "#EAF3FF",
+    accentBg: "#FFFFFF",
+    accentBorder: "#C9DFFF",
+    decoration: "#C8E1FF",
+    highlightColor: "#1677D2",
   },
 } as const;
-
-const TRUST = [
-  "SEO Ready",
-  "Fast Delivery",
-  "Admin Panel",
-  "Premium UI",
-  "Lifetime Support",
-];
-
-const STATS = [
-  {
-    value: 10,
-    suffix: "+",
-    title: "Projects",
-  },
-  {
-    value: 7,
-    suffix: " Days",
-    title: "Delivery",
-  },
-  {
-    value: 100,
-    suffix: "%",
-    title: "Satisfaction",
-  },
-  {
-    value: 30,
-    suffix: " Min",
-    title: "Response",
-  },
-];
 
 const fadeUp = {
   hidden: {
     opacity: 0,
-    y: 30,
+    y: 20,
   },
 
   visible: {
@@ -73,182 +104,483 @@ const fadeUp = {
   },
 };
 
-const container = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-function Counter({
-  value,
-  suffix = "",
-}: {
-  value: number;
-  suffix?: string;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const visible = useInView(ref, {
-    once: true,
-  });
-
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!visible) return;
-    let current = 0;
-    const duration = 1500;
-    const step = value / (duration / 16);
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= value) {
-        current = value;
-        clearInterval(timer);
-      }
-      setCount(Math.floor(current));
-    }, 16);
-    return () => clearInterval(timer);
-  }, [visible, value]);
-
-  return (
-    <span ref={ref}>
-      {count}
-      {suffix}
-    </span>
-  );
-}
-
-export default function Hero({
-  type,
-}: HeroProps) {
-  console.log("sof", PHONE, WHATSAPP)
+export default function Hero({ type }: HeroProps) {
   const page = DATA[type];
+
   const [contactOpen, setContactOpen] = useState(false);
+
   return (
     <>
-      <section className="relative overflow-hidden bg-[#050816] text-white">
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute left-1/2 top-[-280px] h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[170px]" />
-          <div className="absolute -left-48 top-48 h-[420px] w-[420px] rounded-full bg-cyan-500/10 blur-[140px]" />
-          <div className="absolute -right-48 bottom-0 h-[420px] w-[420px] rounded-full bg-indigo-600/20 blur-[150px]" />
-          <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px)",
-            backgroundSize: "60px 60px"
-          }} />
-        </div>
-        <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 pt-5 text-center">
-          {/* Logo */}
-          <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-            <Image src="/logo2.png" className="w-30 md:w-35" alt="Naxora Technology" width={120} height={60} priority />
-          </motion.div>
-        </div>
-        <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-6 md:pt-5 text-center">
-          {/* Logo */}
-          {/* <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-            <Image src="/logo2.png" alt="Naxora Technology" width={180} height={60} priority />
-          </motion.div> */}
-          {/* Offer Badge */}
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .1 }} className="mt-3 md:mt-4">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-5 py-1.5 backdrop-blur-xl">
-              <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-xs font-semibold text-blue-200">
-                {page.badge}
-              </span>
-            </div>
-          </motion.div>
-          {/* Heading */}
-          <motion.h1 initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .2 }}
-            className="mt-4 md:mt-8 max-w-5xl text-4xl font-black leading-tight md:text-5xl lg:text-6xl">
-            {page.title}
-          </motion.h1>
-          {/* Price */}
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .3 }} className="mt-4 md:mt-8">
-            <p className="text-sm uppercase tracking-[0.20em] text-blue-300">
-              STARTING FROM
-            </p>
-            <h2 className="mt-3 bg-gradient-to-r from-cyan-300 via-blue-400 to-blue-600 bg-clip-text text-6xl font-black text-transparent drop-shadow-[0_0_60px_rgba(37,99,235,.55)] md:text-[120px]">
-              {page.price}
-            </h2>
-          </motion.div>
-          {/* Subtitle */}
-          <motion.p initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .4 }}
-            className="mt-5 max-w-3xl text-md leading-6 text-slate-300 md:text-lg">
-            {page.subtitle}
-          </motion.p>
-          {/* Trust */}
-          <motion.div variants={container} initial="hidden" animate="visible" className="mt-10 flex flex-wrap justify-center gap-3">
-            {TRUST.map((item) => (
-              <motion.div key={item} variants={fadeUp}
-                className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur-xl">
-                <CheckCircle2 size={16} className="text-green-400" />
-                <span className="text-sm text-slate-200">
-                  {item}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
-          {/* CTA */}
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .55 }} className="mt-12 flex flex-col gap-4 sm:flex-row">
-            <button type="button" onClick={() => setContactOpen(true)}
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 px-6 py-3 text-lg font-bold text-white shadow-[0_20px_60px_rgba(37,99,235,.4)] transition-all hover:scale-105 active:scale-95">
-              <Rocket className="mr-2 h-5 w-5" />
-              Start your Project
-            </button>
-            <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full border border-green-500/40 bg-green-500/10 px-6 py-3 text-lg font-semibold text-green-300 transition-all hover:bg-green-600 hover:text-white">
-              <MessageCircle className="mr-2 h-5 w-5" />
-              WhatsApp Now
-            </a>
-          </motion.div>
-          {/* Trust Line */}
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: .65 }}
-            className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-slate-400">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-green-400" />
-              Free Consultation
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock3 className="h-4 w-4 text-blue-400" />
-              Response within 30 Minutes
-            </div>
-          </motion.div>
+      <section
+        className="relative flex min-h-[650px] flex-col overflow-hidden px-5"
+        style={{
+          backgroundColor: page.background,
+        }}
+      >
+        {/* =================================
+            BACKGROUND PATTERNS
+        ================================= */}
 
-          <div className="mt-10 grid w-full max-w-5xl grid-cols-2 gap-8 border-t border-white/10 pt-6 md:grid-cols-4">
-            {STATS.map((item) => (
-              <div key={item.title} className="text-center">
-                <h3 className="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-4xl font-black text-transparent">
-                  <Counter value={item.value} suffix={item.suffix} />
-                </h3>
-                <p className="mt-2 text-xs uppercase tracking-[0.3em] text-slate-500">
-                  {item.title}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+
+          {/* WEBSITE: Architectural Grid */}
+          {type === "web" && (
+            <>
+              <div
+                className="absolute inset-0 opacity-[0.20]"
+                style={{
+                  backgroundImage: `
+                    linear-gradient(to right, #93BDF2 1px, transparent 1px),
+                    linear-gradient(to bottom, #93BDF2 1px, transparent 1px)
+                  `,
+                  backgroundSize: "58px 58px",
+                  maskImage:
+                    "radial-gradient(ellipse at center, black 10%, transparent 85%)",
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse at center, black 10%, transparent 85%)",
+                }}
+              />
+
+              {/* Soft blue background lighting */}
+              <div
+                className="absolute -left-48 -top-48 h-[480px] w-[480px] rounded-full opacity-50 blur-[110px]"
+                style={{
+                  backgroundColor: "#D5EAFE",
+                }}
+              />
+
+              <div
+                className="absolute -bottom-52 -right-48 h-[500px] w-[500px] rounded-full opacity-50 blur-[120px]"
+                style={{
+                  backgroundColor: "#C8E5FF",
+                }}
+              />
+
+              {/* Architectural circular outlines */}
+              <div
+                className="absolute -left-64 top-1/2 h-[580px] w-[580px] -translate-y-1/2 rounded-full border opacity-40"
+                style={{
+                  borderColor: "#93BDF2",
+                }}
+              />
+
+            </>
+          )}
+
+          {/* MOBILE APP: Dot Matrix */}
+          {type === "app" && (
+            <>
+              <div
+                className="absolute inset-0 opacity-[0.22]"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(#62A5E8 1.2px, transparent 1.2px)",
+                  backgroundSize: "25px 25px",
+                  maskImage:
+                    "radial-gradient(ellipse at center, black 10%, transparent 85%)",
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse at center, black 10%, transparent 85%)",
+                }}
+              />
+
+              {/* Soft blue lighting */}
+              <div
+                className="absolute -left-48 -top-48 h-[480px] w-[480px] rounded-full opacity-50 blur-[110px]"
+                style={{
+                  backgroundColor: "#C8E1FF",
+                }}
+              />
+
+              <div
+                className="absolute -bottom-52 -right-48 h-[500px] w-[500px] rounded-full opacity-50 blur-[120px]"
+                style={{
+                  backgroundColor: "#BEDAFF",
+                }}
+              />
+
+              {/* Orbital Pattern */}
+              <svg
+                className="absolute -right-36 -top-32 h-[560px] w-[560px] opacity-40"
+                viewBox="0 0 550 550"
+                fill="none"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="275"
+                  cy="275"
+                  r="110"
+                  stroke="#70A8E8"
+                  strokeWidth="1"
+                />
+
+                <circle
+                  cx="275"
+                  cy="275"
+                  r="175"
+                  stroke="#70A8E8"
+                  strokeWidth="1"
+                />
+
+                <circle
+                  cx="275"
+                  cy="275"
+                  r="240"
+                  stroke="#70A8E8"
+                  strokeWidth="1"
+                />
+
+                <circle
+                  cx="430"
+                  cy="180"
+                  r="5"
+                  fill="#1677D2"
+                />
+
+                <circle
+                  cx="125"
+                  cy="360"
+                  r="4"
+                  fill="#1677D2"
+                />
+              </svg>
+            </>
+          )}
+
+        </div>
+
+        {/* =================================
+            HEADER / LOGO
+        ================================= */}
+
+        <header className="relative z-20 mx-auto w-full max-w-6xl pt-5 md:pt-6">
+          <div className="flex items-center justify-start">
+
+            <Image
+              src="/logo1.png"
+              alt="Naxora Technology"
+              width={180}
+              height={60}
+              priority
+              className="h-auto w-[125px] object-contain sm:w-[145px]"
+            />
+
+          </div>
+        </header>
+
+        {/* =================================
+            MAIN HERO CONTENT
+        ================================= */}
+
+        <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center py-8 md:py-10">
+
+          <div className="grid items-center gap-12 lg:grid-cols-[1.45fr_0.8fr] lg:gap-16">
+
+            {/* LEFT CONTENT */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.12,
+                  },
+                },
+              }}
+              className="text-center lg:text-left"
+            >
+
+              {/* Service Badge */}
+              <motion.div variants={fadeUp}>
+                <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/90 px-2.5 py-1 shadow-sm">
+
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{
+                      backgroundColor: page.highlightColor,
+                    }}
+                  />
+
+                  <span className="text-xs font-semibold text-slate-700 sm:text-sm">
+                    {page.badge}
+                  </span>
+
+                </div>
+              </motion.div>
+
+              {/* Main Heading */}
+              <motion.h1
+                variants={fadeUp}
+                className="mt-4 text-4xl font-extrabold leading-[1.12] tracking-tight text-[#14264B] sm:text-5xl md:text-6xl lg:text-[62px]"
+              >
+                {page.title}
+
+                <span
+                  className="mt-1 block"
+                  style={{
+                    color: page.highlightColor,
+                  }}
+                >
+                  {page.highlight}
+                </span>
+              </motion.h1>
+
+              {/* Mobile Price - Below Heading */}
+              <div className="mt-5 lg:hidden">
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Starting from
+                </p>
+
+                <p className="mt-1 text-3xl font-extrabold tracking-tight text-[#14264B]">
+                  {page.price}
                 </p>
               </div>
-            ))}
+
+              {/* Description */}
+              <motion.p
+                variants={fadeUp}
+                className="mx-auto mt-6 max-w-xl text-base leading-7 text-slate-600 lg:mx-0 md:text-lg"
+              >
+                {page.subtitle}
+              </motion.p>
+
+              {/* Service Benefits */}
+              <motion.div
+                variants={fadeUp}
+                className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-3 lg:justify-start"
+              >
+                {page.benefits.map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-2 text-sm font-medium text-slate-700"
+                  >
+                    <Check
+                      size={16}
+                      strokeWidth={2.5}
+                      style={{
+                        color: page.highlightColor,
+                      }}
+                    />
+
+                    {item}
+                  </div>
+                ))}
+              </motion.div>
+
+              {/* Action Buttons */}
+              <motion.div
+                variants={fadeUp}
+                className="mt-9 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start"
+              >
+
+                {/* Primary CTA */}
+                <button
+                  type="button"
+                  onClick={() => setContactOpen(true)}
+                  className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-blue-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-1 hover:bg-blue-700 active:scale-95"
+                >
+                  <Rocket size={17} />
+
+                  {page.primaryCTA}
+
+                  <ArrowUpRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                  />
+                </button>
+
+                {/* WhatsApp CTA */}
+                <a
+                  href={`https://wa.me/${WHATSAPP}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white/90 px-7 py-3 text-sm font-semibold text-slate-800 transition-all hover:-translate-y-1 hover:border-blue-400 hover:bg-white"
+                >
+                  <MessageCircle
+                    size={17}
+                    className="text-green-600"
+                  />
+
+                  {page.secondaryCTA}
+                </a>
+
+              </motion.div>
+
+              {/* Supporting Text */}
+              <motion.p
+                variants={fadeUp}
+                className="mt-5 text-xs text-slate-500"
+              >
+                Free initial consultation · No obligation to get started
+              </motion.p>
+
+            </motion.div>
+
+            {/* =================================
+                RIGHT PRICING PANEL
+            ================================= */}
+
+            <motion.div
+              initial={{
+                opacity: 0,
+                x: 25,
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+              }}
+              transition={{
+                duration: 0.8,
+                delay: 0.3,
+              }}
+              className="relative mx-auto hidden w-full max-w-[390px] lg:mx-0 lg:ml-auto lg:block"
+            >
+
+              <div
+                className="relative overflow-hidden rounded-3xl border p-7 shadow-[0_20px_70px_rgba(37,99,235,0.09)] sm:p-9"
+                style={{
+                  backgroundColor: page.accentBg,
+                  borderColor: page.accentBorder,
+                }}
+              >
+
+                {/* Top Accent */}
+                <div
+                  className="absolute left-0 top-0 h-1 w-full"
+                  style={{
+                    backgroundColor: page.highlightColor,
+                  }}
+                />
+
+                {/* Pricing Category */}
+                <p
+                  className="text-xs font-bold uppercase tracking-[0.18em]"
+                  style={{
+                    color: page.highlightColor,
+                  }}
+                >
+                  {page.priceLabel}
+                </p>
+
+                {/* Price Label */}
+                <p className="mt-8 text-sm font-medium text-slate-500">
+                  Starting from
+                </p>
+
+                {/* Price */}
+                <h2 className="mt-2 whitespace-nowrap text-5xl font-extrabold tracking-tight text-[#14264B] sm:text-6xl">
+                  {page.price}
+                </h2>
+
+                {/* Pricing Description */}
+                <p className="mt-3 text-sm leading-6 text-slate-500">
+                  {page.priceDescription}
+                </p>
+
+                <div className="my-7 h-px bg-slate-200" />
+
+                {/* Supporting Content */}
+                <div className="flex items-start gap-3">
+
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                    style={{
+                      backgroundColor: page.background,
+                      color: page.highlightColor,
+                    }}
+                  >
+                    <Rocket size={19} />
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-bold text-[#14264B]">
+                      Ready to get started?
+                    </p>
+
+                    <p className="mt-1 text-xs leading-5 text-slate-500">
+                      {page.priceNote}
+                    </p>
+                  </div>
+
+                </div>
+
+                {/* Pricing CTA */}
+                <button
+                  type="button"
+                  onClick={() => setContactOpen(true)}
+                  className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-blue-700 active:scale-[0.98]"
+                >
+                  Get Started
+
+                  <ArrowUpRight size={17} />
+                </button>
+
+                <p className="mt-4 text-center text-xs text-slate-400">
+                  Contact us for a detailed project quote
+                </p>
+
+              </div>
+
+            </motion.div>
+
           </div>
+
+          {/* =================================
+              BOTTOM BRAND LINE
+          ================================= */}
+
+          <div className="mt-12 border-t border-slate-300/60 pt-5">
+
+            <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-medium text-slate-500">
+
+              <span>NAXORA TECHNOLOGY</span>
+
+              <span>
+                Ideas into digital experiences.
+              </span>
+
+            </div>
+
+          </div>
+
         </div>
       </section>
-      {/* =========================
-        MOBILE STICKY CTA
-    ========================= */}
-      <motion.div initial={{ y: 100 }} animate={{ y: 0 }} transition={{ delay: 1 }} className="fixed bottom-0 left-0 right-0 z-[999] md:hidden">
-        <div className="grid grid-cols-2 overflow-hidden border-t border-white/10 bg-slate-950/95 backdrop-blur-xl">
-          {/* Call */}
-          <a href={`tel:${PHONE}`} className="flex h-16 items-center justify-center gap-2 bg-blue-600 text-base font-semibold text-white transition hover:bg-blue-700 active:scale-95">
-            <Phone className="h-5 w-5" />
-            Call Now
-          </a>
-          <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer"
-            className="flex h-16 items-center justify-center gap-2 bg-green-600 text-base font-semibold text-white transition hover:bg-green-700 active:scale-95">
-            <MessageCircle className="h-5 w-5" />
-            WhatsApp
-          </a>
-        </div>
-      </motion.div>
-      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+
+      {/* =================================
+          MOBILE STICKY CTA
+      ================================= */}
+
+      <div className="fixed bottom-0 left-0 right-0 z-[999] grid grid-cols-2 border-t border-slate-200 bg-white/95 shadow-lg backdrop-blur-xl md:hidden">
+
+        {/* Call Button */}
+        <a
+          href={`tel:${PHONE}`}
+          className="flex h-14 items-center justify-center gap-2 bg-blue-600 text-sm font-semibold text-white transition hover:bg-blue-700"
+        >
+          <Phone size={17} />
+
+          Call Now
+        </a>
+
+        {/* WhatsApp Button */}
+        <a
+          href={`https://wa.me/${WHATSAPP}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex h-14 items-center justify-center gap-2 bg-green-600 text-sm font-semibold text-white transition hover:bg-green-700"
+        >
+          <MessageCircle size={17} />
+
+          WhatsApp
+        </a>
+
+      </div>
+
+      {/* CONTACT MODAL */}
+      <ContactModal
+        open={contactOpen}
+        onClose={() => setContactOpen(false)}
+      />
     </>
   );
 }
